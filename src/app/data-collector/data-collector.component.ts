@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DataCollectorComponent implements OnInit {
 
-  constructor() { }
+  name: string;
+  shafts: number;
+
+  constructor() {
+    this.shafts = 4;
+    this.name = "";
+  }
 
   ngOnInit(): void {
   }
-
 }

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WeftDesignerComponent } from './weft-designer.component';
+import { TieUpPlannerComponent } from './tie-up-planner.component';
 
-describe('WeftDesignerComponent', () => {
-  let component: WeftDesignerComponent;
-  let fixture: ComponentFixture<WeftDesignerComponent>;
+describe('TieUpPlannerComponent', () => {
+  let component: TieUpPlannerComponent;
+  let fixture: ComponentFixture<TieUpPlannerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WeftDesignerComponent ]
+      declarations: [ TieUpPlannerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WeftDesignerComponent);
+    fixture = TestBed.createComponent(TieUpPlannerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

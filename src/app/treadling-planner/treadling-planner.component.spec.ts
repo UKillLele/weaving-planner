@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PatternDesignerComponent } from './pattern-designer.component';
+import { TreadlingPlannerComponent } from './treadling-planner.component';
 
-describe('PatternDesignerComponent', () => {
-  let component: PatternDesignerComponent;
-  let fixture: ComponentFixture<PatternDesignerComponent>;
+describe('TreadlingPlannerComponent', () => {
+  let component: TreadlingPlannerComponent;
+  let fixture: ComponentFixture<TreadlingPlannerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PatternDesignerComponent ]
+      declarations: [ TreadlingPlannerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PatternDesignerComponent);
+    fixture = TestBed.createComponent(TreadlingPlannerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

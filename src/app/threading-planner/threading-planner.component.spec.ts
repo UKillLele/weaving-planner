@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WarpDesignerComponent } from './warp-designer.component';
+import { ThreadingPlannerComponent } from './threading-planner.component';
 
-describe('WarpDesignerComponent', () => {
-  let component: WarpDesignerComponent;
-  let fixture: ComponentFixture<WarpDesignerComponent>;
+describe('ThreadingPlannerComponent', () => {
+  let component: ThreadingPlannerComponent;
+  let fixture: ComponentFixture<ThreadingPlannerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WarpDesignerComponent ]
+      declarations: [ ThreadingPlannerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WarpDesignerComponent);
+    fixture = TestBed.createComponent(ThreadingPlannerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
