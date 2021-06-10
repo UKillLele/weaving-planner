@@ -6,15 +6,6 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <section>
-            <mat-form-field class="example-form-field">
-                <mat-label>shafts</mat-label>
-                <input matInput type="number" [(ngModel)]="shafts">
-            </mat-form-field>
-            <input type="number" placeholder="shafts" />
-            <input type="number" placeholder="treadles" />
-            <div class="input-container">
-                <input type="checkbox" /><label>tromp as writ</label>
-            </div>
             <mat-form-field>
                 <mat-label>pattern name</mat-label>
                 <input matInput type="text" [(ngModel)]="name">
@@ -22,12 +13,36 @@
                     <mat-icon>close</mat-icon>
                   </button>
             </mat-form-field>
+            <mat-form-field>
+                <mat-label>shafts</mat-label>
+                <input matInput type="number" [(ngModel)]="shafts">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>treadles</mat-label>
+                <input matInput type="number" [(ngModel)]="treadles">
+            </mat-form-field>
+            <mat-checkbox matInput type="checkbox" [(ngModel)]="trompAsWrit">tromp as writ</mat-checkbox>
             <section>
                 <label class="subheading">Warp</label>
-                <input type="number" placeholder="ends per inch" />
-                <input type="number" placeholder="width in loom (inches)" />
-                <input type="number" placeholder="selvage (inches)" />
-                <input type="number" placeholder="loom waste (inches)" />
+                <mat-form-field>
+                    <mat-label>ends per inch</mat-label>
+                    <input matInput type="number" [(ngModel)]="epi">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>width in loom</mat-label>
+                    <input matInput type="number" [(ngModel)]="workingWidth">
+                    <mat-hint>inches</mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>selvage</mat-label>
+                    <input matInput type="number" [(ngModel)]="selvageWidth">
+                    <mat-hint>inches</mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>loom waste</mat-label>
+                    <input matInput type="number" [(ngModel)]="waste">
+                    <mat-hint>inches</mat-hint>
+                </mat-form-field>
                 <div class="input-container">
                     <select>
                         <option>fringe</option>

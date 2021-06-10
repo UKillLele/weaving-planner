@@ -13,6 +13,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 
 
 @NgModule({
@@ -30,7 +32,8 @@ import { FormsModule } from '@angular/forms';
     MatExpansionModule,
     MatIconModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

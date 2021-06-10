@@ -6,6 +6,9 @@
 }
 section {
     margin: 10px;
+    > * {
+        padding: 5px;
+    }
 }
 mat-accordion {
     width: 100vw;
