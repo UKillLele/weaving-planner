@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-pattern-visualizer',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./pattern-visualizer.component.scss']
 })
 export class PatternVisualizerComponent implements OnInit {
+  @Input() patternLength?: number;
+  @Input() patternWidth?: number;
 
   constructor() { }
 

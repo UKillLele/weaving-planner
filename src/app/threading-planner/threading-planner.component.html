@@ -1,1 +1,5 @@
-<p>threading-planner works!</p>
+<mat-grid-list [cols]="patternWidth">
+    <mat-grid-tile *ngFor="let box of threadingBoxes">
+        <mat-checkbox matInput type="checkbox" [(ngModel)]="box.checked" (click)="boxesChanged()"></mat-checkbox>
+    </mat-grid-tile>
+</mat-grid-list>

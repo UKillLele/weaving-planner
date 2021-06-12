@@ -1,7 +1,17 @@
 <div class="main-container">
-  <app-data-collector></app-data-collector>
-  <app-threading-planner></app-threading-planner>
-  <app-tie-up-planner>/</app-tie-up-planner>
-  <app-pattern-visualizer></app-pattern-visualizer>
-  <app-treadling-planner></app-treadling-planner>
+    <app-data-collector
+      (shaftsEvent)="updateShafts($event)"
+      (treadlesEvent)="updateTreadles($event)"
+      (trompEvent)="updateTromp($event)"
+      (patternWidthEvent)="updatePatternWidth($event)"
+      (patternLengthEvent)="updatePatternLength($event)"
+    ></app-data-collector>
+    <div class="row">
+      <app-threading-planner [style.width]="leftCol" [shafts]="shafts" [patternWidth]="patternWidth"></app-threading-planner>
+      <app-tie-up-planner [style.width]="rightCol" [shafts]="shafts" [treadles]="treadles" (boxesEvent)="updateBoxes($event)">/</app-tie-up-planner>
+    </div>
+    <div class="row">
+      <app-pattern-visualizer [style.width]="leftCol" [patternWidth]="patternWidth" [patternLength]="patternLength"></app-pattern-visualizer>
+      <app-treadling-planner [style.width]="rightCol" [treadles]="treadles" [patternLength]="patternLength"></app-treadling-planner>
+    </div>
 </div>

@@ -1,29 +1,20 @@
-app-data-collector {
-    background-color: aqua;
-    width: 90vw;
+.row {
     display: flex;
+    align-items: stretch;
+    width: 100%;
+}
+.col {
+    height: 100px;
 }
 app-threading-planner {
-    height: 10vw;
-    background-color: yellow;
-    width: 80vw;
-    display: inline-flex;
+    background-color: aqua;
 }
 app-tie-up-planner {
-    height: 10vw;
     background-color: orange;
-    width: 10vw;
-    display: inline-flex;
 }
 app-pattern-visualizer {
-    height: 70vh;
     background-color: pink;
-    width: 80vw;
-    display: inline-flex;
 }
 app-treadling-planner {
-    height: 70vh;
     background-color: yellowgreen;
-    width: 10vw;
-    display: inline-flex;
 }

@@ -1,1 +1,5 @@
-<p>tie-up-planner works!</p>
+<mat-grid-list [cols]="treadles">
+    <mat-grid-tile *ngFor="let box of boxes">
+        <mat-checkbox matInput type="checkbox" [(ngModel)]="box.checked" (click)="boxesChanged()"></mat-checkbox>
+    </mat-grid-tile>
+</mat-grid-list>
