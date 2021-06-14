@@ -10,8 +10,8 @@ export class TieUpPlannerComponent implements OnInit, OnChanges {
 
   @Input() shafts: number = 0;
   @Input() treadles: number = 0;
-  @Output() boxesEvent = new EventEmitter<box[]>();
-  boxes: box[] = [];
+  @Output() tieUpBoxesEvent = new EventEmitter<box[]>();
+  tieUpBoxes: box[] = [];
 
   constructor() { }
 
@@ -19,16 +19,17 @@ export class TieUpPlannerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.boxes = [];
+    this.tieUpBoxes = [];
     let row: number = 1;
     let column: number = 1;
     const cells = this.shafts * this.treadles;
     for (let i = 1; i <= cells; i++) {
       let x: box = {
         id: `${column}-${row}`,
-        checked: false
+        checked: false,
+        border: "allBorders"
       }
-      this.boxes.push(x);
+      this.tieUpBoxes.push(x);
       if (column + 1 > this.treadles) {
         column = 1;
         row ++;
@@ -39,7 +40,7 @@ export class TieUpPlannerComponent implements OnInit, OnChanges {
   }
 
   boxesChanged() {
-    this.boxesEvent.emit(this.boxes);
+    this.tieUpBoxesEvent.emit(this.tieUpBoxes);
   }
 
 }

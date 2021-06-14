@@ -14,7 +14,20 @@ app-tie-up-planner {
 }
 app-pattern-visualizer {
     background-color: pink;
+    overflow-x: hidden !important;
 }
 app-treadling-planner {
     background-color: yellowgreen;
 }
+
+.overflow {
+    overflow-x: auto;
+    direction: rtl;
+    :nth-child(1) {
+        direction: ltr;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}
+

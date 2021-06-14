@@ -1,1 +1,6 @@
-<p>pattern-visualizer works!</p>
+<div [style.width]="width + '%'">
+    <mat-grid-list [cols]="warp">
+        <mat-grid-tile *ngFor="let box of visualizerBoxes" [class]="box.border">
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

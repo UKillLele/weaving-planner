@@ -1,1 +1,5 @@
-<p>treadling-planner works!</p>
+<mat-grid-list [cols]="treadles">
+    <mat-grid-tile *ngFor="let box of treadlingBoxes" [class]="box.border">
+        <mat-checkbox matInput type="checkbox" [(ngModel)]="box.checked" (click)="boxesChanged()"></mat-checkbox>
+    </mat-grid-tile>
+</mat-grid-list>

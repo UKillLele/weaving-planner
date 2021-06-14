@@ -1,6 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 body {
     margin: 0;
+    
+    ::-webkit-scrollbar {
+        width: 15px;
+        height: 15px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background-color: darkgrey;
+        border-radius: 10px;
+    }
 }
 .main-container {
     display: block;
@@ -8,6 +22,25 @@ body {
     width: 90vw;
 }
 
-.mat-grid-tile {
+.noBorders {
+    border: none;
+}
+.allBorders {
     border: 1px solid black;
+}
+.warpBorder, .weftBorder {
+    border-color: black;
+    border-style: solid;
+}
+.warpBorder {
+    border-left: 1px;
+    border-right: 1px;
+    border-top: 0;
+    border-bottom: 0;
+}
+.weftBorder {
+    border-left: 0;
+    border-right: 0;
+    border-top: 1px;
+    border-bottom: 1px;
 }

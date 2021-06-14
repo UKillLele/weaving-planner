@@ -3,15 +3,42 @@
       (shaftsEvent)="updateShafts($event)"
       (treadlesEvent)="updateTreadles($event)"
       (trompEvent)="updateTromp($event)"
-      (patternWidthEvent)="updatePatternWidth($event)"
       (patternLengthEvent)="updatePatternLength($event)"
+      (epiEvent)="updateEpi($event)"
+      (workingWidthEvent)="updateWorkingWidth($event)"
     ></app-data-collector>
     <div class="row">
-      <app-threading-planner [style.width]="leftCol" [shafts]="shafts" [patternWidth]="patternWidth"></app-threading-planner>
-      <app-tie-up-planner [style.width]="rightCol" [shafts]="shafts" [treadles]="treadles" (boxesEvent)="updateBoxes($event)">/</app-tie-up-planner>
+      <app-threading-planner 
+        [style.width]="leftCol + '%'" 
+        class="overflow" 
+        [shafts]="shafts" 
+        [warp]="warp" 
+        [width]="internalWidth" 
+        (threadingBoxesEvent)="updateThreadingBoxes($event)"
+      ></app-threading-planner>
+      <app-tie-up-planner 
+        [style.padding]="internalWidth > 100 ? '0 0 15px 0' : '0 0 2px 0'" 
+        [style.width]="rightCol + '%'" 
+        [shafts]="shafts" 
+        [treadles]="treadles" 
+        (tieUpBoxesEvent)="updateTieUpBoxes($event)"
+      >/</app-tie-up-planner>
     </div>
     <div class="row">
-      <app-pattern-visualizer [style.width]="leftCol" [patternWidth]="patternWidth" [patternLength]="patternLength"></app-pattern-visualizer>
-      <app-treadling-planner [style.width]="rightCol" [treadles]="treadles" [patternLength]="patternLength"></app-treadling-planner>
+      <app-pattern-visualizer 
+        [style.width]="leftCol + '%'" 
+        class="overflow" [warp]="warp" 
+        [patternLength]="patternLength" 
+        [width]="internalWidth"
+        [tieUpBoxes]="tieUpBoxes"
+        [threadingBoxes]="threadingBoxes"
+        [treadlingBoxes]="treadlingBoxes"
+      ></app-pattern-visualizer>
+      <app-treadling-planner 
+        [style.width]="rightCol + '%'" 
+        [treadles]="treadles" 
+        [patternLength]="patternLength" 
+        (treadlingBoxesEvent)="updateTreadlingBoxes($event)"
+      ></app-treadling-planner>
     </div>
 </div>

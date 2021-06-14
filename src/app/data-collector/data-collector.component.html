@@ -26,11 +26,11 @@
                 <label class="subheading">Warp</label>
                 <mat-form-field>
                     <mat-label>ends per inch</mat-label>
-                    <input matInput type="number" [(ngModel)]="epi">
+                    <input matInput type="number" (change)="epiChanged()" [(ngModel)]="epi">
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>width in loom</mat-label>
-                    <input matInput type="number" [(ngModel)]="workingWidth">
+                    <input matInput type="number" (change)="workingWidthChanged()" [(ngModel)]="workingWidth">
                     <span matSuffix>inches</span>
                 </mat-form-field>
                 <mat-form-field>
@@ -58,7 +58,7 @@
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>pattern width</mat-label>
-                    <input matInput type="number" (change)="patternWidthChanged()" [(ngModel)]="patternWidth">
+                    <input matInput type="number" [(ngModel)]="patternWidth">
                     <span matSuffix>ends</span>
                 </mat-form-field>
                 <mat-form-field class="mixed">

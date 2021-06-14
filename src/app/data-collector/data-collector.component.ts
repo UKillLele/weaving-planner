@@ -9,9 +9,10 @@ export class DataCollectorComponent implements OnInit {
 
   @Output() shaftsEvent = new EventEmitter<number>();
   @Output() treadlesEvent = new EventEmitter<number>();
-  @Output() patternWidthEvent = new EventEmitter<number>();
   @Output() patternLengthEvent = new EventEmitter<number>();
   @Output() trompEvent = new EventEmitter<boolean>();
+  @Output() epiEvent = new EventEmitter<number>();
+  @Output() workingWidthEvent = new EventEmitter<number>();
 
   name: string;
   shafts?: number;
@@ -62,10 +63,13 @@ export class DataCollectorComponent implements OnInit {
   trompChanged() {
     this.trompEvent.emit(this.trompAsWrit);
   }
-  patternWidthChanged() {
-    this.patternWidthEvent.emit(this.patternWidth);
-  }
   patternLengthChanged() {
     this.patternLengthEvent.emit(this.patternLength);
+  }
+  epiChanged() {
+    this.epiEvent.emit(this.epi);
+  }
+  workingWidthChanged() {
+    this.workingWidthEvent.emit(this.workingWidth);
   }
 }

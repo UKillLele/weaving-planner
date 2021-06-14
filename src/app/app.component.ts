@@ -11,37 +11,54 @@ export class AppComponent {
   shafts: number = 0;
   treadles: number = 0;
   trompAsWrit: boolean = false;
-  patternWidth: number = 0;
+  epi: number = 0;
+  workingWidth: number = 0;
+  warp: number = 0;
   patternLength: number = 0;
   tieUpBoxes: box[] = [];
-  leftCol: string = "";
-  rightCol: string = "";
+  threadingBoxes: box[] = [];
+  treadlingBoxes: box[] = [];
+  leftCol: number = 0;;
+  rightCol: number = 0;;
+  internalWidth: number = 0;;
 
   updateShafts(shafts: number) {
     this.shafts = shafts;
   }
   updateTreadles(treadles: number) {
     this.treadles = treadles;
-    this.getWidth();
+    this.leftCol = (64 / (64 + this.treadles)) * 100;
+    this.rightCol = (this.treadles / (64 + this.treadles)) * 100;
   }
   updateTromp(trompAsWrit: boolean) {
     this.trompAsWrit = trompAsWrit;
   }
-  updatePatternWidth(patternWidth: number) {
-    this.patternWidth = patternWidth;
-    this.getWidth();
-  }
   updatePatternLength(patternLength: number) {
     this.patternLength = patternLength;
   }
-  updateBoxes(boxes: box[]) {
+  updateTieUpBoxes(boxes: box[]) {
     this.tieUpBoxes = boxes;
   }
+  updateThreadingBoxes(boxes: box[]) {
+    this.threadingBoxes = boxes;
+  }
+  updateTreadlingBoxes(boxes: box[]) {
+    this.treadlingBoxes = boxes;
+  }
+  updateEpi(epi: number) {
+    this.epi = epi;
+    this.warp = this.epi * this.workingWidth;
+    this.getWarp();
+  }
+  updateWorkingWidth(workingWidth: number) {
+    this.workingWidth = workingWidth;
+    this.getWarp();
+  }
 
-  getWidth() {
-    if (this.patternWidth > 0 && this.treadles > 0) {
-      this.leftCol = `${(this.patternWidth / (this.patternWidth + this.treadles)) * 100}%`;
-      this.rightCol = `${(this.treadles / (this.patternWidth + this.treadles)) * 100}%`;
+  getWarp() {
+    if (this.epi != 0 && this.workingWidth != 0) {
+      this.warp = this.epi * this.workingWidth;
+      this.internalWidth = (((this.rightCol/this.treadles) * this.warp)/this.leftCol) * 100;
     }
   }
 }
