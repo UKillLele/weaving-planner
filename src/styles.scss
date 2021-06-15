@@ -29,8 +29,8 @@ body {
     border: 1px solid black;
 }
 .warpBorder, .weftBorder {
-    border-color: black;
-    border-style: solid;
+    border-color: black !important;
+    border-style: solid !important;
 }
 .warpBorder {
     border-left: 1px;

@@ -26,7 +26,7 @@ export class TieUpPlannerComponent implements OnInit, OnChanges {
     for (let i = 1; i <= cells; i++) {
       let x: box = {
         id: `${column}-${row}`,
-        checked: false,
+        selected: false,
         border: "allBorders"
       }
       this.tieUpBoxes.push(x);

@@ -1,3 +1,4 @@
+import { Xliff } from '@angular/compiler';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { box } from 'src/models/box';
 
@@ -21,6 +22,7 @@ export class PatternVisualizerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    console.log(this.threadingBoxes)
     this.visualizerBoxes = [];
     let row: number = 1;
     let column: number = 1;
@@ -28,8 +30,8 @@ export class PatternVisualizerComponent implements OnInit, OnChanges {
     for (let i = 1; i <= cells; i++) {
       let x: box = {
         id: `${column}-${row}`,
-        checked: false,
-        border: "noBorders"
+        selected: false,
+        border: "weftBorder"
       }
       this.visualizerBoxes.push(x);
       if (column + 1 > this.warp) {
@@ -42,23 +44,15 @@ export class PatternVisualizerComponent implements OnInit, OnChanges {
     this.visualizerBoxes.forEach(box => {
       const threadingPosition = box.id.substring(0, box.id.indexOf("-"));
       const treadlingPosition = box.id.substring(box.id.indexOf("-") + 1);
-      //console.log(`${threadingPosition}, ${treadlingPosition}`)
-      const threadingBox = this.threadingBoxes.find(x => x.id.substring(0, x.id.indexOf("-")) == threadingPosition && x.checked);
-      let treadlingBoxes = this.treadlingBoxes.filter(x => x.id.substring(x.id.indexOf("-") + 1) == treadlingPosition);
-      //treadlingBoxes = treadlingBoxes.filter(x => x.checked == true);
-      const treadlingBox = treadlingBoxes.find(x => x.checked);
-      if (treadlingBoxes.length > 0) {
-        console.log(box.id);
-        console.log(`${threadingPosition}, ${treadlingPosition}`)
-        console.log(treadlingBoxes)
-        console.log(treadlingBox);
-      }
-      if (threadingBox != null && treadlingBox !=null) {
+      const threadingBox = this.threadingBoxes.find(x => x.id.substring(0, x.id.indexOf("-")) == threadingPosition && x.selected);
+      const treadlingBox = this.treadlingBoxes.find(x => x.id.substring(x.id.indexOf("-") + 1) == treadlingPosition && x.selected);
+      if (threadingBox && treadlingBox) {
         console.log('got here');
         const tieUpY = threadingBox.id.substring(0, threadingBox.id.indexOf("-"));
         const tieUpX = treadlingBox.id.substring(treadlingBox.id.indexOf("-") + 1);
         const tieUpBox = this.tieUpBoxes.find(x => x.id == `${tieUpX}-${tieUpY}`);
-        box.border = tieUpBox?.checked ? 'warpBorder' : 'weftBorder';
+        box.border = tieUpBox?.selected ? 'warpBorder' : 'weftBorder';
+        console.log(box)
       }
     })
   }

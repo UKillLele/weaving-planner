@@ -1,5 +1,5 @@
 export class box {
     id: string = "";
-    checked: boolean = false;
+    selected: boolean = false;
     border: string = "allBorders";
 }

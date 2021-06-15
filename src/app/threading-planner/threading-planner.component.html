@@ -1,7 +1,7 @@
 <div [style.width]="width + '%'">
     <mat-grid-list [cols]="warp">
         <mat-grid-tile *ngFor="let box of threadingBoxes" [class]="box.border">
-            <mat-checkbox matInput type="checkbox" [(ngModel)]="box.checked" (click)="boxesChanged()"></mat-checkbox>
+            <mat-checkbox matInput type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"></mat-checkbox>
         </mat-grid-tile>
     </mat-grid-list>
 </div>
