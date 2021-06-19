@@ -1,34 +1,58 @@
-import { Xliff } from '@angular/compiler';
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { box } from 'src/models/box';
+import { Component, OnInit } from '@angular/core';
+import { Box } from 'src/models/box.model';
+import { WeavingService } from 'src/services/weaving.service';
 
 @Component({
   selector: 'app-pattern-visualizer',
   templateUrl: './pattern-visualizer.component.html',
   styleUrls: ['./pattern-visualizer.component.scss']
 })
-export class PatternVisualizerComponent implements OnInit, OnChanges {
-  @Input() patternLength: number = 0;
-  @Input() warp: number = 0;
-  @Input() width: number = 0;
-  @Input() tieUpBoxes: box[] = [];
-  @Input() threadingBoxes: box[] = [];
-  @Input() treadlingBoxes: box[] = [];
-  visualizerBoxes: box[] = [];
+export class PatternVisualizerComponent implements OnInit {
+  patternLength: number = 0;
+  warp: number = 0;
+  internalWidth: number = 0;
+  tieUpBoxes: Box[] = [];
+  threadingBoxes: Box[] = [];
+  treadlingBoxes: Box[] = [];
+  visualizerBoxes: Box[] = [];
 
-  constructor() { }
+  constructor(private weavingService: WeavingService) { }
 
   ngOnInit(): void {
+    this.weavingService.warp.subscribe((warp: number) => {
+      this.warp = warp;
+      this.updateVisualizerBoxes();
+    });
+    this.weavingService.internalWidth.subscribe((internalWidth: number) => { this.internalWidth = internalWidth });
+    this.weavingService.patternLength.subscribe((patternLength: number) => {
+      this.patternLength = patternLength;
+      this.updateVisualizerBoxes();
+    });
+    this.weavingService.tieUpBoxes.subscribe((tieUpBoxes: Box[]) => {
+      this.tieUpBoxes = tieUpBoxes;
+      this.updateVisualizerSelections();
+    });
+    this.weavingService.threadingBoxes.subscribe((threadingBoxes: Box[]) => {
+      this.threadingBoxes = threadingBoxes;
+      this.updateVisualizerSelections();
+    });
+    this.weavingService.treadlingBoxes.subscribe((treadlingBoxes: Box[]) => {
+      this.treadlingBoxes = treadlingBoxes;
+      this.updateVisualizerSelections();
+    });
+    this.weavingService.visualizerBoxes.subscribe((visualizerBoxes: Box[]) => {
+      this.visualizerBoxes = visualizerBoxes;
+      this.updateVisualizerSelections();
+    });
   }
 
-  ngOnChanges() {
-    console.log(this.threadingBoxes)
+  updateVisualizerBoxes() {
     this.visualizerBoxes = [];
     let row: number = 1;
     let column: number = 1;
     const cells = this.patternLength * this.warp;
     for (let i = 1; i <= cells; i++) {
-      let x: box = {
+      let x: Box = {
         id: `${column}-${row}`,
         selected: false,
         border: "weftBorder"
@@ -41,20 +65,37 @@ export class PatternVisualizerComponent implements OnInit, OnChanges {
         column ++;
       }
     }
-    this.visualizerBoxes.forEach(box => {
-      const threadingPosition = box.id.substring(0, box.id.indexOf("-"));
-      const treadlingPosition = box.id.substring(box.id.indexOf("-") + 1);
-      const threadingBox = this.threadingBoxes.find(x => x.id.substring(0, x.id.indexOf("-")) == threadingPosition && x.selected);
-      const treadlingBox = this.treadlingBoxes.find(x => x.id.substring(x.id.indexOf("-") + 1) == treadlingPosition && x.selected);
-      if (threadingBox && treadlingBox) {
-        console.log('got here');
-        const tieUpY = threadingBox.id.substring(0, threadingBox.id.indexOf("-"));
-        const tieUpX = treadlingBox.id.substring(treadlingBox.id.indexOf("-") + 1);
-        const tieUpBox = this.tieUpBoxes.find(x => x.id == `${tieUpX}-${tieUpY}`);
-        box.border = tieUpBox?.selected ? 'warpBorder' : 'weftBorder';
-        console.log(box)
-      }
-    })
+    this.weavingService.changeVisualizerBoxes(this.visualizerBoxes);
+  }
+
+  updateVisualizerSelections() {
+    if (this.visualizerBoxes.length > 0) {
+      this.tieUpBoxes.forEach(tieUpBox => {
+        if (tieUpBox.selected) {
+          const tieUpX = tieUpBox.id.substring(0, tieUpBox.id.indexOf("-"));
+          const treadlingBoxes: Box[] = [];
+          this.treadlingBoxes.forEach(treadlingBox => {
+            if (treadlingBox.id.substring(0, treadlingBox.id.indexOf(("-"))) == tieUpX && treadlingBox.selected) treadlingBoxes.push(treadlingBox);
+          });
+          console.log(treadlingBoxes)
+          const tieUpY = tieUpBox.id.substring(tieUpBox.id.indexOf("-") + 1);
+          const threadingBoxes: Box[] = [];
+          this.threadingBoxes.forEach(threadingBox => {
+            if (threadingBox.id.substring(threadingBox.id.indexOf("-") + 1) == tieUpY && threadingBox.selected) threadingBoxes.push(threadingBox);
+          });
+          console.log(threadingBoxes)
+          treadlingBoxes.forEach(treadlingBox => {
+            threadingBoxes.forEach(threadingBox => {
+              const x = threadingBox.id.substring(0, threadingBox.id.indexOf("-"));
+              const y = treadlingBox.id.substring(treadlingBox.id.indexOf("-") + 1);
+              const selectedIndex = this.visualizerBoxes.findIndex(z => z.id == `${x}-${y}`);
+              this.visualizerBoxes[selectedIndex].border = 'warpBorder';
+              console.log(this.visualizerBoxes[selectedIndex]);
+            })
+          })
+        }
+      })
+    }
   }
 
 }

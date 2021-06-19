@@ -1,44 +1,22 @@
 <div class="main-container">
-    <app-data-collector
-      (shaftsEvent)="updateShafts($event)"
-      (treadlesEvent)="updateTreadles($event)"
-      (trompEvent)="updateTromp($event)"
-      (patternLengthEvent)="updatePatternLength($event)"
-      (epiEvent)="updateEpi($event)"
-      (workingWidthEvent)="updateWorkingWidth($event)"
-    ></app-data-collector>
+    <app-data-collector></app-data-collector>
     <div class="row">
       <app-threading-planner 
         [style.width]="leftCol + '%'" 
         class="overflow" 
-        [shafts]="shafts" 
-        [warp]="warp" 
-        [width]="internalWidth" 
-        (threadingBoxesEvent)="updateThreadingBoxes($event)"
       ></app-threading-planner>
       <app-tie-up-planner 
         [style.padding]="internalWidth > 100 ? '0 0 15px 0' : '0 0 2px 0'" 
         [style.width]="rightCol + '%'" 
-        [shafts]="shafts" 
-        [treadles]="treadles" 
-        (tieUpBoxesEvent)="updateTieUpBoxes($event)"
       >/</app-tie-up-planner>
     </div>
     <div class="row">
       <app-pattern-visualizer 
         [style.width]="leftCol + '%'" 
-        class="overflow" [warp]="warp" 
-        [patternLength]="patternLength" 
-        [width]="internalWidth"
-        [tieUpBoxes]="tieUpBoxes"
-        [threadingBoxes]="threadingBoxes"
-        [treadlingBoxes]="treadlingBoxes"
+        class="overflow"
       ></app-pattern-visualizer>
       <app-treadling-planner 
         [style.width]="rightCol + '%'" 
-        [treadles]="treadles" 
-        [patternLength]="patternLength" 
-        (treadlingBoxesEvent)="updateTreadlingBoxes($event)"
       ></app-treadling-planner>
     </div>
 </div>

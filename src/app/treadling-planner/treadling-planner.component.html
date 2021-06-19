@@ -1,5 +1,5 @@
 <mat-grid-list [cols]="treadles">
-    <mat-grid-tile *ngFor="let box of treadlingBoxes" [class]="box.border">
+    <mat-grid-tile [id]="box.id" *ngFor="let box of treadlingBoxes" [class]="box.border">
         <mat-checkbox matInput type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"></mat-checkbox>
     </mat-grid-tile>
 </mat-grid-list>

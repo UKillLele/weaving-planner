@@ -1,53 +1,39 @@
-import { Component } from '@angular/core';
-import { box } from 'src/models/box';
+import { Component, OnInit } from '@angular/core';
+import { WeavingService } from 'src/services/weaving.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'weaving-planner';
-  shafts: number = 0;
+export class AppComponent implements OnInit {
   treadles: number = 0;
-  trompAsWrit: boolean = false;
   epi: number = 0;
   workingWidth: number = 0;
   warp: number = 0;
-  patternLength: number = 0;
-  tieUpBoxes: box[] = [];
-  threadingBoxes: box[] = [];
-  treadlingBoxes: box[] = [];
   leftCol: number = 0;;
   rightCol: number = 0;;
-  internalWidth: number = 0;;
+  internalWidth: number = 0;
 
-  updateShafts(shafts: number) {
-    this.shafts = shafts;
+  constructor(private weavingService: WeavingService) { }
+
+  ngOnInit(): void {
+    this.weavingService.warp.subscribe((warp: number) => {this.warp = warp});
+    this.weavingService.treadles.subscribe((treadles: number) => {this.updateTreadles(treadles)});
+    this.weavingService.leftCol.subscribe((leftCol: number) => {this.leftCol = leftCol});
+    this.weavingService.rightCol.subscribe((rightCol: number) => {this.rightCol = rightCol});
+    this.weavingService.internalWidth.subscribe((internalWidth: number) => {this.internalWidth = internalWidth});
+    this.weavingService.epi.subscribe((epi: number) => {this.updateEpi(epi)});
+    this.weavingService.workingWidth.subscribe((workingWidth: number) => {this.updateWorkingWidth(workingWidth)});
   }
+
   updateTreadles(treadles: number) {
     this.treadles = treadles;
-    this.leftCol = (64 / (64 + this.treadles)) * 100;
-    this.rightCol = (this.treadles / (64 + this.treadles)) * 100;
-  }
-  updateTromp(trompAsWrit: boolean) {
-    this.trompAsWrit = trompAsWrit;
-  }
-  updatePatternLength(patternLength: number) {
-    this.patternLength = patternLength;
-  }
-  updateTieUpBoxes(boxes: box[]) {
-    this.tieUpBoxes = boxes;
-  }
-  updateThreadingBoxes(boxes: box[]) {
-    this.threadingBoxes = boxes;
-  }
-  updateTreadlingBoxes(boxes: box[]) {
-    this.treadlingBoxes = boxes;
+    this.weavingService.changeLeftCol((64 / (64 + this.treadles)) * 100);
+    this.weavingService.changeRightCol((this.treadles / (64 + this.treadles)) * 100);
   }
   updateEpi(epi: number) {
     this.epi = epi;
-    this.warp = this.epi * this.workingWidth;
     this.getWarp();
   }
   updateWorkingWidth(workingWidth: number) {
@@ -56,9 +42,10 @@ export class AppComponent {
   }
 
   getWarp() {
+    console.log('getting warp')
     if (this.epi != 0 && this.workingWidth != 0) {
-      this.warp = this.epi * this.workingWidth;
-      this.internalWidth = (((this.rightCol/this.treadles) * this.warp)/this.leftCol) * 100;
+      this.weavingService.changeWarp(this.epi * this.workingWidth);
+      this.weavingService.changeInternalWidth((((this.rightCol/this.treadles) * this.warp)/this.leftCol) * 100);
     }
   }
 }

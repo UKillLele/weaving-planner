@@ -1,30 +1,39 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
-import { box } from 'src/models/box';
+import { Component, OnInit } from '@angular/core';
+import { Box } from 'src/models/box.model';
+import { WeavingService } from 'src/services/weaving.service';
 
 @Component({
   selector: 'app-tie-up-planner',
   templateUrl: './tie-up-planner.component.html',
   styleUrls: ['./tie-up-planner.component.scss']
 })
-export class TieUpPlannerComponent implements OnInit, OnChanges {
+export class TieUpPlannerComponent implements OnInit {
 
-  @Input() shafts: number = 0;
-  @Input() treadles: number = 0;
-  @Output() tieUpBoxesEvent = new EventEmitter<box[]>();
-  tieUpBoxes: box[] = [];
+  shafts: number = 0;
+  treadles: number = 0;
+  tieUpBoxes: Box[] = [];
 
-  constructor() { }
+  constructor(private weavingService: WeavingService) { }
 
   ngOnInit(): void {
+    this.weavingService.shafts.subscribe((shafts: number) => {
+      this.shafts = shafts;
+      this.updateTieUp();
+    });
+    this.weavingService.treadles.subscribe((treadles: number) => {
+      this.treadles = treadles;
+      this.updateTieUp();
+    });
+    this.weavingService.tieUpBoxes.subscribe((tieUpBoxes: Box[]) => this.tieUpBoxes = tieUpBoxes);
   }
 
-  ngOnChanges() {
+  updateTieUp() {
     this.tieUpBoxes = [];
     let row: number = 1;
     let column: number = 1;
     const cells = this.shafts * this.treadles;
     for (let i = 1; i <= cells; i++) {
-      let x: box = {
+      let x: Box = {
         id: `${column}-${row}`,
         selected: false,
         border: "allBorders"
@@ -40,7 +49,7 @@ export class TieUpPlannerComponent implements OnInit, OnChanges {
   }
 
   boxesChanged() {
-    this.tieUpBoxesEvent.emit(this.tieUpBoxes);
+    this.weavingService.changeTieUpBoxes(this.tieUpBoxes);
   }
 
 }

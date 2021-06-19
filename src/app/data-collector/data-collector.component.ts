@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { WeavingService } from 'src/services/weaving.service';
 
 @Component({
   selector: 'app-data-collector',
@@ -7,44 +8,37 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class DataCollectorComponent implements OnInit {
 
-  @Output() shaftsEvent = new EventEmitter<number>();
-  @Output() treadlesEvent = new EventEmitter<number>();
-  @Output() patternLengthEvent = new EventEmitter<number>();
-  @Output() trompEvent = new EventEmitter<boolean>();
-  @Output() epiEvent = new EventEmitter<number>();
-  @Output() workingWidthEvent = new EventEmitter<number>();
+  name: string = "";
+  shafts: number = 0;
+  treadles: number = 0;
+  epi: number = 0;
+  workingWidth: number = 0;
+  selvageWidth: number = 0;
+  waste: number = 0;
+  trompAsWrit: boolean = false;
+  edgeType: string = "";
+  edgeLength: number = 0;
+  pieces: number = 0;
+  patternWidth: number = 0;
+  warpMaterial: string = "";
+  warpDrawIn: number = 0;
+  warpShrinkage: number = 0;
+  ppi: number = 0;
+  workingLength: number = 0;
+  patternLength: number = 0;
+  weftMaterial: string = "";
+  weftDrawIn: number = 0;
+  weftShrinkage: number = 0;
 
-  name: string;
-  shafts?: number;
-  treadles?: number;
-  epi?: number;
-  workingWidth?: number;
-  selvageWidth?: number;
-  waste?: number;
-  trompAsWrit: boolean;
-  edgeType: string;
-  edgeLength?: number;
-  pieces?: number;
-  patternWidth?: number;
-  warpMaterial: string;
-  warpDrawIn?: number;
-  warpShrinkage?: number;
-  ppi?: number;
-  workingLength?: number;
-  patternLength?: number;
-  weftMaterial: string;
-  weftDrawIn?: number;
-  weftShrinkage?: number;
-
-  constructor() {
-    this.name = "";
-    this.trompAsWrit = false;
-    this.edgeType = "fringe";
-    this.warpMaterial = "cotton";
-    this.weftMaterial = "cotton";
-  }
+  constructor(private weavingService: WeavingService) { }
 
   ngOnInit(): void {
+    this.weavingService.shafts.subscribe((shafts: number) => this.shafts = shafts);
+    this.weavingService.treadles.subscribe((treadles: number) => this.treadles = treadles);
+    this.weavingService.trompAsWrit.subscribe((trompAsWrit: boolean) => this.trompAsWrit = trompAsWrit);
+    this.weavingService.patternLength.subscribe((patternLength: number) => this.patternLength = patternLength);
+    this.weavingService.epi.subscribe((epi: number) => this.epi = epi);
+    this.weavingService.workingWidth.subscribe((workingWidth: number) => this.workingWidth = workingWidth);
   }
 
   toggleTromp() {
@@ -55,21 +49,21 @@ export class DataCollectorComponent implements OnInit {
   }
 
   shaftsChanged() {
-    this.shaftsEvent.emit(this.shafts);
+    this.weavingService.changeShafts(this.shafts);
   }
   treadlesChanged() {
-    this.treadlesEvent.emit(this.treadles);
+    this.weavingService.changeTreadles(this.treadles);
   }
   trompChanged() {
-    this.trompEvent.emit(this.trompAsWrit);
+    this.weavingService.changeTromp(this.trompAsWrit);
   }
   patternLengthChanged() {
-    this.patternLengthEvent.emit(this.patternLength);
+    this.weavingService.changePatternLength(this.patternLength);
   }
   epiChanged() {
-    this.epiEvent.emit(this.epi);
+    this.weavingService.changeEpi(this.epi);
   }
   workingWidthChanged() {
-    this.workingWidthEvent.emit(this.workingWidth);
+    this.weavingService.changeWorkingWidth(this.workingWidth);
   }
 }
