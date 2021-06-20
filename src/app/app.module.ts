@@ -16,6 +16,8 @@ import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { ColorPlannerComponent } from './color-planner/color-planner.component';
 
 
 @NgModule({
@@ -25,7 +27,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     PatternVisualizerComponent,
     ThreadingPlannerComponent,
     TieUpPlannerComponent,
-    TreadlingPlannerComponent
+    TreadlingPlannerComponent,
+    ColorPlannerComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatInputModule,
     MatCheckboxModule,
     MatSelectModule,
-    MatGridListModule
+    MatGridListModule,
+    ScrollingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ScrollDispatcher, CdkScrollable } from '@angular/cdk/scrolling';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { WeavingService } from 'src/services/weaving.service';
 
 @Component({
@@ -6,7 +7,7 @@ import { WeavingService } from 'src/services/weaving.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   treadles: number = 0;
   epi: number = 0;
   workingWidth: number = 0;
@@ -15,7 +16,10 @@ export class AppComponent implements OnInit {
   rightCol: number = 0;;
   internalWidth: number = 0;
 
-  constructor(private weavingService: WeavingService) { }
+  constructor(
+    private weavingService: WeavingService,
+    private scrollDispatcher: ScrollDispatcher
+    ) { }
 
   ngOnInit(): void {
     this.weavingService.warp.subscribe((warp: number) => {this.warp = warp});
@@ -25,6 +29,23 @@ export class AppComponent implements OnInit {
     this.weavingService.internalWidth.subscribe((internalWidth: number) => {this.internalWidth = internalWidth});
     this.weavingService.epi.subscribe((epi: number) => {this.updateEpi(epi)});
     this.weavingService.workingWidth.subscribe((workingWidth: number) => {this.updateWorkingWidth(workingWidth)});
+  }
+
+  ngAfterViewInit(): void {
+    this.scrollDispatcher.scrolled().subscribe(scrollable => {
+      if (scrollable) this.onScroll(scrollable);
+    });
+  }
+
+  onScroll(scrollable: CdkScrollable) {
+    const right = scrollable.measureScrollOffset('right');
+    Array.from(this.scrollDispatcher.scrollContainers.keys())
+      .filter(otherScrollable => otherScrollable && otherScrollable !== scrollable)
+      .forEach(otherScrollable => {
+        if (otherScrollable.measureScrollOffset('right') !== right) {
+          otherScrollable.scrollTo({right});
+        }
+      });
   }
 
   updateTreadles(treadles: number) {
@@ -42,7 +63,6 @@ export class AppComponent implements OnInit {
   }
 
   getWarp() {
-    console.log('getting warp')
     if (this.epi != 0 && this.workingWidth != 0) {
       this.weavingService.changeWarp(this.epi * this.workingWidth);
       this.weavingService.changeInternalWidth((((this.rightCol/this.treadles) * this.warp)/this.leftCol) * 100);

@@ -15,6 +15,7 @@ export class PatternVisualizerComponent implements OnInit {
   threadingBoxes: Box[] = [];
   treadlingBoxes: Box[] = [];
   visualizerBoxes: Box[] = [];
+  colorBoxes: Box[][] = [];
 
   constructor(private weavingService: WeavingService) { }
 
@@ -24,6 +25,10 @@ export class PatternVisualizerComponent implements OnInit {
       this.updateVisualizerBoxes();
     });
     this.weavingService.internalWidth.subscribe((internalWidth: number) => { this.internalWidth = internalWidth });
+    this.weavingService.colorBoxes.subscribe((colorBoxes: Box[][]) => { 
+      this.colorBoxes = colorBoxes;
+      this.updateVisualizerBoxes();
+    });
     this.weavingService.patternLength.subscribe((patternLength: number) => {
       this.patternLength = patternLength;
       this.updateVisualizerBoxes();
@@ -44,6 +49,7 @@ export class PatternVisualizerComponent implements OnInit {
       this.visualizerBoxes = visualizerBoxes;
       this.updateVisualizerSelections();
     });
+
   }
 
   updateVisualizerBoxes() {
@@ -69,33 +75,32 @@ export class PatternVisualizerComponent implements OnInit {
   }
 
   updateVisualizerSelections() {
+    setTimeout(() => {
     if (this.visualizerBoxes.length > 0) {
-      this.tieUpBoxes.forEach(tieUpBox => {
+      this.tieUpBoxes?.forEach(tieUpBox => {
         if (tieUpBox.selected) {
           const tieUpX = tieUpBox.id.substring(0, tieUpBox.id.indexOf("-"));
-          const treadlingBoxes: Box[] = [];
-          this.treadlingBoxes.forEach(treadlingBox => {
-            if (treadlingBox.id.substring(0, treadlingBox.id.indexOf(("-"))) == tieUpX && treadlingBox.selected) treadlingBoxes.push(treadlingBox);
+          const treadlingBoxes: string[] = [];
+          this.treadlingBoxes?.forEach(treadlingBox => {
+            if (treadlingBox.id.substring(0, treadlingBox.id.indexOf(("-"))) == tieUpX && treadlingBox.selected) treadlingBoxes.push(treadlingBox.id);
           });
-          console.log(treadlingBoxes)
           const tieUpY = tieUpBox.id.substring(tieUpBox.id.indexOf("-") + 1);
-          const threadingBoxes: Box[] = [];
-          this.threadingBoxes.forEach(threadingBox => {
-            if (threadingBox.id.substring(threadingBox.id.indexOf("-") + 1) == tieUpY && threadingBox.selected) threadingBoxes.push(threadingBox);
+          const threadingBoxes: string[] = [];
+          this.threadingBoxes?.forEach(threadingBox => {
+            if (threadingBox.id.substring(threadingBox.id.indexOf("-") + 1) == tieUpY && threadingBox.selected) threadingBoxes.push(threadingBox.id);
           });
-          console.log(threadingBoxes)
           treadlingBoxes.forEach(treadlingBox => {
             threadingBoxes.forEach(threadingBox => {
-              const x = threadingBox.id.substring(0, threadingBox.id.indexOf("-"));
-              const y = treadlingBox.id.substring(treadlingBox.id.indexOf("-") + 1);
+              const x = threadingBox.substring(0, threadingBox.indexOf("-"));
+              const y = treadlingBox.substring(treadlingBox.indexOf("-") + 1);
               const selectedIndex = this.visualizerBoxes.findIndex(z => z.id == `${x}-${y}`);
               this.visualizerBoxes[selectedIndex].border = 'warpBorder';
-              console.log(this.visualizerBoxes[selectedIndex]);
+              this.visualizerBoxes[selectedIndex].color = this.colorBoxes && this.colorBoxes[0] && this.colorBoxes[0][parseInt(x) - 1] ? this.colorBoxes[0][parseInt(x) - 1].color : "transparent";
             })
           })
         }
       })
-    }
+    }}, 5)
   }
 
 }

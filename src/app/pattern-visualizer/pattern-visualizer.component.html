@@ -1,6 +1,6 @@
 <div [style.width]="internalWidth + '%'">
     <mat-grid-list [cols]="warp">
-        <mat-grid-tile [id]="box.id" *ngFor="let box of visualizerBoxes" [class]="box.border">
+        <mat-grid-tile [id]="box.id" *ngFor="let box of visualizerBoxes" [class]="box.border" [style.backgroundColor]="box.color">
         </mat-grid-tile>
     </mat-grid-list>
 </div>

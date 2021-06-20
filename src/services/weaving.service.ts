@@ -17,6 +17,8 @@ export class WeavingService {
     treadlingBoxes = this.treadlingBoxesSubject.asObservable();
     private visualizerBoxesSubject = new BehaviorSubject<any>(null);
     visualizerBoxes = this.visualizerBoxesSubject.asObservable();
+    private colorBoxesSubject = new BehaviorSubject<any>(null);
+    colorBoxes = this.colorBoxesSubject.asObservable();
     private shaftsSubject = new BehaviorSubject<any>(null);
     shafts = this.shaftsSubject.asObservable();
     private treadlesSubject = new BehaviorSubject<any>(null);
@@ -58,6 +60,11 @@ export class WeavingService {
     changeVisualizerBoxes(b: Box[]) {
         if (b) {
             this.visualizerBoxesSubject.next(b);
+        }
+    }
+    changeColorBoxes(b: Box[][]) {
+        if (b) {
+            this.colorBoxesSubject.next(b);
         }
     }
     changeShafts(b: number) {
@@ -107,7 +114,6 @@ export class WeavingService {
     }
     changeInternalWidth(b: number) {
         if (b) {
-            console.log(b)
             this.internalWidthSubject.next(b);
         }
     }

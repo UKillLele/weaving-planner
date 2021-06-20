@@ -1,5 +1,8 @@
-<mat-grid-list [cols]="treadles">
-    <mat-grid-tile [id]="box.id" *ngFor="let box of treadlingBoxes" [class]="box.border">
-        <mat-checkbox matInput type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"></mat-checkbox>
-    </mat-grid-tile>
-</mat-grid-list>
+<div class="vertical">
+    <app-color-planner direction="vertical" [boxCount]="patternLength"></app-color-planner>
+    <mat-grid-list [cols]="treadles">
+        <mat-grid-tile [id]="box.id" *ngFor="let box of treadlingBoxes" [class]="box.border">
+            <mat-checkbox matInput type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"></mat-checkbox>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

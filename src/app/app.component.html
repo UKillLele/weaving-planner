@@ -4,6 +4,7 @@
       <app-threading-planner 
         [style.width]="leftCol + '%'" 
         class="overflow" 
+        cdkScrollable
       ></app-threading-planner>
       <app-tie-up-planner 
         [style.padding]="internalWidth > 100 ? '0 0 15px 0' : '0 0 2px 0'" 
@@ -14,6 +15,7 @@
       <app-pattern-visualizer 
         [style.width]="leftCol + '%'" 
         class="overflow"
+        cdkScrollable
       ></app-pattern-visualizer>
       <app-treadling-planner 
         [style.width]="rightCol + '%'" 
