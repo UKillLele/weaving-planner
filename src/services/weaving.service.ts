@@ -35,10 +35,8 @@ export class WeavingService {
     epi = this.patternLengthSubject.asObservable();
     private workingWidthSubject = new BehaviorSubject<any>(null);
     workingWidth = this.workingWidthSubject.asObservable();
-    private leftColSubject = new BehaviorSubject<any>(null);
-    leftCol = this.leftColSubject.asObservable();
-    private rightColSubject = new BehaviorSubject<any>(null);
-    rightCol = this.rightColSubject.asObservable();
+    private boxWidthSubject = new BehaviorSubject<any>(null);
+    boxWidth = this.boxWidthSubject.asObservable();
     private internalWidthSubject = new BehaviorSubject<any>(null);
     internalWidth = this.internalWidthSubject.asObservable();
 
@@ -102,14 +100,9 @@ export class WeavingService {
             this.workingWidthSubject.next(b);
         }
     }
-    changeLeftCol(b: number) {
+    changeBoxWidth(b: number) {
         if (b) {
-            this.leftColSubject.next(b);
-        }
-    }
-    changeRightCol(b: number) {
-        if (b) {
-            this.rightColSubject.next(b);
+            this.boxWidthSubject.next(b);
         }
     }
     changeInternalWidth(b: number) {

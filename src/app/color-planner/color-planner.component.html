@@ -1,6 +1,5 @@
 <mat-grid-list [cols]="direction == 'vertical' ? 1 : boxCount" *ngIf="selectedBoxGroup">
     <mat-grid-tile [id]="box?.id" *ngFor="let box of selectedBoxGroup" [class]="box?.border">
-        
         <mat-select *ngIf="box" [(ngModel)]="box.color" (change)="boxesChanged()" [style.backgroundColor]="box.color">
             <mat-option 
                 *ngFor="let color of colorChoices" 

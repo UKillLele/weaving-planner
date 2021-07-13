@@ -12,6 +12,9 @@ export class TreadlingPlannerComponent implements OnInit {
   treadles: number = 0;
   patternLength: number = 0;
   treadlingBoxes: Box[] = [];
+  colorWidth: number = 0;
+  boxesWidth: number = 0;
+  boxWidth: number = 0;
 
   constructor(private weavingService: WeavingService) { }
 
@@ -25,9 +28,19 @@ export class TreadlingPlannerComponent implements OnInit {
       this.updateTreadling();
     });
     this.weavingService.treadlingBoxes.subscribe((treadlingBoxes: Box[]) => this.treadlingBoxes = treadlingBoxes);
+    this.weavingService.boxWidth.subscribe((boxWidth: number) => {
+      this.boxWidth = boxWidth;
+      this.setWidths();
+    });
+  }
+
+  setWidths() {
+    this.colorWidth = this.boxWidth;
+    this.boxesWidth = this.boxWidth * this.treadles;
   }
 
   updateTreadling() {
+    this.setWidths();
     this.treadlingBoxes = [];
     let row: number = 1;
     let column: number = 1;

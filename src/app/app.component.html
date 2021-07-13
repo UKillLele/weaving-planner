@@ -2,23 +2,23 @@
     <app-data-collector></app-data-collector>
     <div class="row">
       <app-threading-planner 
-        [style.width]="leftCol + '%'" 
+        [style.width]="leftCol + 'vw'" 
         class="overflow" 
         cdkScrollable
       ></app-threading-planner>
       <app-tie-up-planner 
         [style.padding]="internalWidth > 100 ? '0 0 15px 0' : '0 0 2px 0'" 
-        [style.width]="rightCol + '%'" 
+        [style.width]="rightCol + 'vw'" 
       >/</app-tie-up-planner>
     </div>
     <div class="row">
       <app-pattern-visualizer 
-        [style.width]="leftCol + '%'" 
+        [style.width]="leftCol + 'vw'" 
         class="overflow"
         cdkScrollable
       ></app-pattern-visualizer>
       <app-treadling-planner 
-        [style.width]="rightCol + '%'" 
+        [style.width]="rightCol + 'vw'" 
       ></app-treadling-planner>
     </div>
 </div>

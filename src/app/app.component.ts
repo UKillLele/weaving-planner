@@ -12,8 +12,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   epi: number = 0;
   workingWidth: number = 0;
   warp: number = 0;
-  leftCol: number = 0;;
-  rightCol: number = 0;;
+  boxWidth: number = 0;
+  leftCol: number = 0;
+  rightCol: number = 0;
   internalWidth: number = 0;
 
   constructor(
@@ -24,8 +25,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.weavingService.warp.subscribe((warp: number) => {this.warp = warp});
     this.weavingService.treadles.subscribe((treadles: number) => {this.updateTreadles(treadles)});
-    this.weavingService.leftCol.subscribe((leftCol: number) => {this.leftCol = leftCol});
-    this.weavingService.rightCol.subscribe((rightCol: number) => {this.rightCol = rightCol});
     this.weavingService.internalWidth.subscribe((internalWidth: number) => {this.internalWidth = internalWidth});
     this.weavingService.epi.subscribe((epi: number) => {this.updateEpi(epi)});
     this.weavingService.workingWidth.subscribe((workingWidth: number) => {this.updateWorkingWidth(workingWidth)});
@@ -50,8 +49,10 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   updateTreadles(treadles: number) {
     this.treadles = treadles;
-    this.weavingService.changeLeftCol((64 / (64 + this.treadles)) * 100);
-    this.weavingService.changeRightCol((this.treadles / (64 + this.treadles)) * 100);
+    this.boxWidth = (1/(65+this.treadles))*100;
+    this.weavingService.changeBoxWidth(this.boxWidth);
+    this.leftCol = 64 * this.boxWidth;
+    this.rightCol = (this.treadles +1) * this.boxWidth;
   }
   updateEpi(epi: number) {
     this.epi = epi;
@@ -65,7 +66,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   getWarp() {
     if (this.epi != 0 && this.workingWidth != 0) {
       this.weavingService.changeWarp(this.epi * this.workingWidth);
-      this.weavingService.changeInternalWidth((((this.rightCol/this.treadles) * this.warp)/this.leftCol) * 100);
+      this.weavingService.changeInternalWidth(((this.boxWidth * this.warp)/this.leftCol) * 100);
     }
   }
 }

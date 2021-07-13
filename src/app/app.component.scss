@@ -22,6 +22,7 @@ app-treadling-planner {
 
 .overflow {
     overflow-x: auto;
+    overflow-y: hidden;
     direction: rtl;
     :nth-child(1) {
         direction: ltr;

@@ -12,6 +12,8 @@ export class TieUpPlannerComponent implements OnInit {
   shafts: number = 0;
   treadles: number = 0;
   tieUpBoxes: Box[] = [];
+  boxWidth: number = 0;
+  margin: number = 0;
 
   constructor(private weavingService: WeavingService) { }
 
@@ -22,6 +24,10 @@ export class TieUpPlannerComponent implements OnInit {
     });
     this.weavingService.treadles.subscribe((treadles: number) => {
       this.treadles = treadles;
+      this.updateTieUp();
+    });
+    this.weavingService.boxWidth.subscribe((boxWidth: number) => { 
+      this.margin = boxWidth;
       this.updateTieUp();
     });
     this.weavingService.tieUpBoxes.subscribe((tieUpBoxes: Box[]) => this.tieUpBoxes = tieUpBoxes);
