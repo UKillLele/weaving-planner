@@ -1,6 +1,13 @@
-<app-color-planner [style.width]="colorWidth + 'vw'" class="vertical" direction="vertical" [boxCount]="patternLength"></app-color-planner>
-<mat-grid-list [style.width]="boxesWidth + 'vw'" class="vertical" [cols]="treadles">
-    <mat-grid-tile [id]="box.id" *ngFor="let box of treadlingBoxes" [class]="box.border">
-        <mat-checkbox matInput type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"></mat-checkbox>
+<mat-grid-list [cols]="treadles +1">
+    <mat-grid-tile colspan="1" [rowspan]="patternLength">
+        <app-color-planner [style.width]="colorWidth + 'vw'" class="vertical" direction="vertical" [boxCount]="patternLength"></app-color-planner>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="treadles" [rowspan]="patternLength">
+        <mat-grid-list [style.width]="boxesWidth + 'vw'" class="vertical" [cols]="treadles">
+            <mat-grid-tile [id]="box.id" *ngFor="let box of treadlingBoxes" [class]="box.border">
+                <mat-checkbox matInput type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"></mat-checkbox>
+            </mat-grid-tile>
+        </mat-grid-list>
     </mat-grid-tile>
 </mat-grid-list>
+

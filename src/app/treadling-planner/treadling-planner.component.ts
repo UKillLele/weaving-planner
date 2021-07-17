@@ -28,7 +28,8 @@ export class TreadlingPlannerComponent implements OnInit {
       this.updateTreadling();
     });
     this.weavingService.treadlingBoxes.subscribe((treadlingBoxes: Box[]) => this.treadlingBoxes = treadlingBoxes);
-    this.weavingService.boxWidth.subscribe((boxWidth: number) => {
+    
+    this.weavingService.boxWidth.subscribe((boxWidth: number) => { 
       this.boxWidth = boxWidth;
       this.setWidths();
     });
