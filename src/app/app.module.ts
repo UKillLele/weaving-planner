@@ -7,8 +7,10 @@ import { PatternVisualizerComponent } from './pattern-visualizer/pattern-visuali
 import { ThreadingPlannerComponent } from './threading-planner/threading-planner.component';
 import { TieUpPlannerComponent } from './tie-up-planner/tie-up-planner.component';
 import { TreadlingPlannerComponent } from './treadling-planner/treadling-planner.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ColorPlannerComponent } from './color-planner/color-planner.component';
+import { PaletteComponent } from './palette/palette.component';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +19,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { ColorPlannerComponent } from './color-planner/color-planner.component';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 
 @NgModule({
@@ -28,7 +30,8 @@ import { ColorPlannerComponent } from './color-planner/color-planner.component';
     ThreadingPlannerComponent,
     TieUpPlannerComponent,
     TreadlingPlannerComponent,
-    ColorPlannerComponent
+    ColorPlannerComponent,
+    PaletteComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +43,8 @@ import { ColorPlannerComponent } from './color-planner/color-planner.component';
     MatCheckboxModule,
     MatSelectModule,
     MatGridListModule,
-    ScrollingModule
+    ScrollingModule,
+    ColorPickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,22 @@
+<mat-grid-list cols="3" rowHeight="30px">
+    <mat-grid-tile class="text-left">Color palette:</mat-grid-tile>
+    <mat-grid-tile *ngIf="selectedColors">
+        <div [style.backgroundColor]="color" 
+            style="width: 20px; height: 20px; margin-right: 5px;" 
+            [style.border]="color === selectedColor ? '1px solid blue' : '1px solid black'" 
+            *ngFor="let color of selectedColors; let i = index;" 
+            (dblclick)="openColorPicker(i)"
+            (click)="selectColor(color)"
+        >
+            <mat-grid-list cols="2">
+                <mat-grid-tile>
+                    <input style="z-index: 10" [(cpToggle)]="colorPickerOpen" (colorPickerChange)="onChangeColor($event)" [(colorPicker)]="tempColor"/>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div (click)="removeColor(i)">x</div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile class="btn" (click)="addColor()" type="button">+</mat-grid-tile>
+</mat-grid-list>

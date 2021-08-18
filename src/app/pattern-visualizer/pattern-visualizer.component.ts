@@ -61,7 +61,8 @@ export class PatternVisualizerComponent implements OnInit {
       let x: Box = {
         id: `${column}-${row}`,
         selected: false,
-        border: "weftBorder"
+        border: "weftBorder",
+        color: ""
       }
       this.visualizerBoxes.push(x);
       if (column + 1 > this.warp) {

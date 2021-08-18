@@ -37,7 +37,8 @@ export class ThreadingPlannerComponent implements OnInit {
       let x: Box = {
         id: `${column}-${row}`,
         selected: false,
-        border: "allBorders"
+        border: "allBorders",
+        color: ""
       }
       this.threadingBoxes.push(x);
       if (column + 1 > this.warp) {
