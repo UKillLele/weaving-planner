@@ -1,22 +1,27 @@
-<mat-grid-list cols="3" rowHeight="30px">
-    <mat-grid-tile class="text-left">Color palette:</mat-grid-tile>
-    <mat-grid-tile *ngIf="selectedColors">
-        <div [style.backgroundColor]="color" 
-            style="width: 20px; height: 20px; margin-right: 5px;" 
-            [style.border]="color === selectedColor ? '1px solid blue' : '1px solid black'" 
-            *ngFor="let color of selectedColors; let i = index;" 
-            (dblclick)="openColorPicker(i)"
-            (click)="selectColor(color)"
-        >
-            <mat-grid-list cols="2">
-                <mat-grid-tile>
-                    <input style="z-index: 10" [(cpToggle)]="colorPickerOpen" (colorPickerChange)="onChangeColor($event)" [(colorPicker)]="tempColor"/>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                    <div (click)="removeColor(i)">x</div>
-                </mat-grid-tile>
-            </mat-grid-list>
+<div class="row">
+    <div class="col">
+        <span style="margin-left:10px;line-height: 33px;">
+            Current Palette:
+        </span>
+        <div *ngIf="colorPalette" class="col">
+            <div *ngFor="let color of colorPalette; let i = index;" 
+                class="paletteItem" 
+                (click)="selectOrDelete(i)"
+                [style.backgroundColor]="color"
+                [style.border]="i == selectedIndex ? '2px outset lightblue' : ''"
+            >
+                <div *ngIf="edit" ngx-colors-trigger [(ngModel)]="colorPalette[i]">
+                    &#x270E;
+                </div>
+                <div *ngIf="remove">
+                    x
+                </div>
+            </div>
         </div>
-    </mat-grid-tile>
-    <mat-grid-tile class="btn" (click)="addColor()" type="button">+</mat-grid-tile>
-</mat-grid-list>
+    </div>
+    <div class="col">
+        <div class="btn" (click)="addToPalette()">add</div>
+        <div class="btn" (click)="toggleRemove()">{{remove ? 'done' : 'remove'}}</div>
+        <div class="btn" (click)="toggleEdit()">{{edit ? 'done' : 'edit'}}</div>
+    </div>
+</div>

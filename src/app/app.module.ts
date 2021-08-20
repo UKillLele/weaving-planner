@@ -19,7 +19,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { ColorPickerModule } from 'ngx-color-picker';
+import { NgxColorsModule } from 'ngx-colors';
 
 
 @NgModule({
@@ -44,7 +44,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     MatSelectModule,
     MatGridListModule,
     ScrollingModule,
-    ColorPickerModule
+    NgxColorsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -6,40 +6,39 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./palette.component.scss']
 })
 export class PaletteComponent implements OnInit {
-  selectedColors: string[] = [];
+  colorPalette: string[] = [];
   selectedColor: string = '';
-  tempColor: string = '#ffffff';
-  tempColorIndex: number = -1;
-  colorPickerOpen: boolean = false;
+  selectedIndex: number = -1;
+  edit: boolean = false;
+  remove: boolean = false;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  addColor() {
-    this.selectedColors.push(this.tempColor);
-    console.log(this.selectedColors);
+  selectOrDelete(index: number) {
+    if (this.remove)
+      this.colorPalette.splice(index, 1);
+    else
+    {
+      this.selectedColor = this.colorPalette[index];
+      this.selectedIndex = index;
+    }
   }
 
-  removeColor(index: number) {
-    this.selectedColors.splice(index, 1);
+  addToPalette(){
+    this.colorPalette.push("#f0f0f0");
   }
 
-  selectColor(color: string) {
-    this.selectedColor = color;
-    console.log(this.selectedColor);
+  toggleRemove() {
+    this.remove = !this.remove;
+    this.edit = false;
   }
 
-  openColorPicker(index: number) {
-    this.tempColor = this.selectedColors[index];
-    this.tempColorIndex = index;
-    this.colorPickerOpen = true;
-  }
-
-  onChangeColor(color: string): void {
-    this.selectedColors[this.tempColorIndex] = color;
-    console.log(this.selectedColors)
+  toggleEdit() {
+    this.edit = !this.edit;
+    this.remove = false;
   }
 
 }
