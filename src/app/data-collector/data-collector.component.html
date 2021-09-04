@@ -22,6 +22,7 @@
                 <input matInput type="number" (change)="treadlesChanged()" [(ngModel)]="treadles">
             </mat-form-field>
             <mat-checkbox matInput type="checkbox" (change)="trompChanged()" [(ngModel)]="trompAsWrit" (click)="toggleTromp()">tromp as writ</mat-checkbox>
+            <mat-checkbox matInput type="checkbox" (change)="halfSettChanged()" [(ngModel)]="halfSett">half sett</mat-checkbox>
             <section>
                 <label class="subheading">Warp</label>
                 <mat-form-field>
@@ -58,7 +59,7 @@
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>pattern width</mat-label>
-                    <input matInput type="number" [(ngModel)]="patternWidth">
+                    <input matInput type="number" (change)="patternLengthChanged()" [(ngModel)]="patternWidth">
                     <span matSuffix>ends</span>
                 </mat-form-field>
                 <mat-form-field class="mixed">
@@ -127,14 +128,17 @@
             </section>
             <section>
                 <label class="subheading">Yarn Breakdown</label>
-                <label>total yardage:</label>
-                <label>total warp yardage:</label>
-                <label>total weft yardage:</label>
-                <label>yards of #000000:</label>
-                <label>yards of #ffffff:</label>
-                <label>yards of #ff0000:</label>
-                <label>yards of #00ff00:</label>
-                <label>yards of #0000ff:</label>
+                <label>total yardage: {{totalYds / 36 | ceil }} yds</label>
+                <label>total warp yardage: {{warpYds / 36 | ceil }} yds</label>
+                <label>total weft yardage: {{weftYds / 36 | ceil }} yds</label>
+                <div *ngFor="let color of colors">
+                    <label>
+                        {{color.colorName}}{{!color.perfectMatch ? "*" : ""}} 
+                        <span style="width: 15px; height: 15px; display: inline-block;" [style.backgroundColor]="color.colorCode"></span>
+                        : {{color.colorInches / 36 | ceil }} yds
+                    </label>
+                </div>
+                <div *ngIf="colors.length > 0" style="font-size: 8pt;">color names provided by <a href="https://chir.ag/projects/name-that-color/#6195ED" style="color:aqua">Chirag Mehta</a>. * denotes imperfect match</div>
             </section>
             <section>
                 <label>finished width:</label>

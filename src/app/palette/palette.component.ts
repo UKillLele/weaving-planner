@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { WeavingService } from 'src/services/weaving.service';
 
 @Component({
   selector: 'app-palette',
@@ -12,7 +13,7 @@ export class PaletteComponent implements OnInit {
   edit: boolean = false;
   remove: boolean = false;
 
-  constructor() { }
+  constructor(private weavingService: WeavingService) { }
 
   ngOnInit(): void {
   }
@@ -29,16 +30,18 @@ export class PaletteComponent implements OnInit {
 
   addToPalette(){
     this.colorPalette.push("#f0f0f0");
+    this.selectedIndex = this.colorPalette.length -1;
   }
 
   toggleRemove() {
     this.remove = !this.remove;
-    this.edit = false;
+    this.selectedIndex = -1;
+    this.selectedColor = "";
   }
 
-  toggleEdit() {
-    this.edit = !this.edit;
-    this.remove = false;
+  selectedColorChanged() {
+    this.selectedColor = this.colorPalette[this.selectedIndex];
+    this.weavingService.changeSelectedColor(this.selectedColor);
   }
 
 }

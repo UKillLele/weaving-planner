@@ -12,21 +12,42 @@ export class ColorPlannerComponent implements OnInit, OnChanges {
   selectedBoxGroup: Box[] = [];
   @Input() direction: string = "";
   @Input() boxCount: number = 0;
-  colorChoices: string[] = [
-    "red",
-    "green",
-    "blue"
-  ]
+  selectedColor: string = "";
+  selectedBoxes: Box[] = [];
+  lastBoxIndex: number = -1;
 
   constructor(private weavingService: WeavingService) { }
 
   ngOnInit(): void {
-    this.weavingService.colorBoxes.subscribe((colorBoxes: Box[][]) => this.colorBoxes = colorBoxes);
+    this.weavingService.colorBoxes.subscribe((colorBoxes: Box[][]) => {
+      this.colorBoxes = colorBoxes;
+    });
+    this.weavingService.selectedColor.subscribe((selectedColor: string) => {
+      this.selectedColor = selectedColor;
+    });
     this.updateBoxes();
   }
 
-  ngOnChanges():void {
+  ngOnChanges(): void {
     this.updateBoxes();
+  }
+
+  selectBox(boxId: string | undefined, event: any) {
+    if (boxId) {
+      const box = this.selectedBoxGroup?.find(x => x.id == boxId);
+      if (box) {
+        if (event.shiftKey) {
+          this.selectedBoxGroup.forEach(b => {
+            if ((this.selectedBoxGroup.indexOf(b) > this.lastBoxIndex && this.selectedBoxGroup.indexOf(b) <= this.selectedBoxGroup.indexOf(box)) ||
+              (this.selectedBoxGroup.indexOf(b) < this.lastBoxIndex && this.selectedBoxGroup.indexOf(b) >= this.selectedBoxGroup.indexOf(box)))
+              b.color = this.selectedColor;
+          })
+        } else
+          box.color = this.selectedColor;
+        this.lastBoxIndex = this.selectedBoxGroup.indexOf(box);
+        this.boxesChanged();
+      }
+    }
   }
 
   updateBoxes() {
@@ -51,7 +72,7 @@ export class ColorPlannerComponent implements OnInit, OnChanges {
       }
     }
     this.colorBoxes[this.direction == "vertical" ? 1 : 0] = this.selectedBoxGroup;
-    this.weavingService.changeColorBoxes(this.colorBoxes);
+    this.boxesChanged();
   }
 
   boxesChanged() {

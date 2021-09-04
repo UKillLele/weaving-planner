@@ -78,38 +78,28 @@ export class PatternVisualizerComponent implements OnInit {
   updateVisualizerSelections() {
     setTimeout(() => {
       if (this.visualizerBoxes.length > 0) {
-        this.tieUpBoxes?.forEach(tieUpBox => {
-          if (tieUpBox.selected) {
-            const tieUpX = tieUpBox.id.substring(0, tieUpBox.id.indexOf("-"));
-            const treadlingBoxes: string[] = [];
-            this.treadlingBoxes?.forEach(treadlingBox => {
-              if (treadlingBox.id.substring(0, treadlingBox.id.indexOf(("-"))) == tieUpX && treadlingBox.selected) treadlingBoxes.push(treadlingBox.id);
-            });
-            const tieUpY = tieUpBox.id.substring(tieUpBox.id.indexOf("-") + 1);
-            const upRows = this.tieUpBoxes.filter(x => x.id.substring(0, x.id.indexOf(("-"))) == tieUpX && x.selected).map(box => box.id.substring(box.id.indexOf("-") + 1));
-            const selectedThreadingBoxes: string[] = [];
-            const threadingBoxes: string[] = [];
-            this.threadingBoxes?.forEach(threadingBox => {
-              const boxRow = threadingBox.id.substring(threadingBox.id.indexOf("-") + 1);
-              if (boxRow == tieUpY && threadingBox.selected) selectedThreadingBoxes.push(threadingBox.id);
-              else if (!upRows.includes(boxRow) && threadingBox.selected) threadingBoxes.push(threadingBox.id);
-            });
-            treadlingBoxes.forEach(treadlingBox => {
-              threadingBoxes.forEach(threadingBox => {
-                const x = threadingBox.substring(0, threadingBox.indexOf("-"));
-                const y = treadlingBox.substring(treadlingBox.indexOf("-") + 1);
-                const selectedIndex = this.visualizerBoxes.findIndex(z => z.id == `${x}-${y}`);
-                this.visualizerBoxes[selectedIndex].border = 'weftBorder';
-                this.visualizerBoxes[selectedIndex].color = this.colorBoxes && this.colorBoxes[1] && this.colorBoxes[1][parseInt(y) - 1] ? this.colorBoxes[1][parseInt(y) - 1].color : "transparent";
-              });
-              selectedThreadingBoxes.forEach(threadingBox => {
-                const x = threadingBox.substring(0, threadingBox.indexOf("-"));
-                const y = treadlingBox.substring(treadlingBox.indexOf("-") + 1);
-                const selectedIndex = this.visualizerBoxes.findIndex(z => z.id == `${x}-${y}`);
-                this.visualizerBoxes[selectedIndex].border = 'warpBorder';
-                this.visualizerBoxes[selectedIndex].color = this.colorBoxes && this.colorBoxes[0] && this.colorBoxes[0][parseInt(x) - 1] ? this.colorBoxes[0][parseInt(x) - 1].color : "transparent";
+        this.visualizerBoxes.forEach(box =>{
+          var warp = box.id.substring(0, box.id.indexOf("-"));
+          var weft = box.id.substring(box.id.indexOf("-") + 1);
+          var selectedThreadings = this.threadingBoxes?.filter(x => x.id.substring(0, x.id.indexOf("-")) == warp && x.selected).map(x => x.id.substring(x.id.indexOf("-") + 1));
+          var selectedTreadles = this.treadlingBoxes?.filter(x => x.id.substring(x.id.indexOf("-") + 1) == weft && x.selected).map(x => x.id.substring(0, x.id.indexOf("-")));
+          var ids = new Array();
+          if (selectedTreadles && selectedTreadles.length > 0 && selectedThreadings && selectedThreadings.length > 0) {
+            selectedThreadings.forEach(threading => {
+              selectedTreadles.forEach(treadle => {
+                ids.push(`${treadle}-${threading}`);
               });
             });
+            if (this.tieUpBoxes?.find((x: Box) => ids.includes(x.id) && x.selected) != null)
+            {
+              var c = this.colorBoxes[0][parseInt(warp) - 1]?.color;
+              box.color = c ? c : "";
+              box.border = "warpBorder"
+            } else {
+              var c = this.colorBoxes[1][parseInt(weft) - 1]?.color;
+              box.color = c ? c : "";
+              box.border = "weftBorder"
+            }
           }
         });
       }

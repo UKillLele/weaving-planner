@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col">
         <span style="margin-left:10px;line-height: 33px;">
-            Current Palette:
+            Palette:
         </span>
         <div *ngIf="colorPalette" class="col">
             <div *ngFor="let color of colorPalette; let i = index;" 
@@ -10,7 +10,11 @@
                 [style.backgroundColor]="color"
                 [style.border]="i == selectedIndex ? '2px outset lightblue' : ''"
             >
-                <div *ngIf="edit" ngx-colors-trigger [(ngModel)]="colorPalette[i]">
+                <div *ngIf="i == selectedIndex"
+                    (change)="selectedColorChanged()" 
+                    ngx-colors-trigger 
+                    [(ngModel)]="colorPalette[i]"
+                >
                     &#x270E;
                 </div>
                 <div *ngIf="remove">
@@ -18,10 +22,9 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col">
-        <div class="btn" (click)="addToPalette()">add</div>
-        <div class="btn" (click)="toggleRemove()">{{remove ? 'done' : 'remove'}}</div>
-        <div class="btn" (click)="toggleEdit()">{{edit ? 'done' : 'edit'}}</div>
+        <div class="col">
+            <div class="btn badge edit" (click)="addToPalette()">+</div>
+            <div class="btn badge remove" (click)="toggleRemove()">{{remove ? 'x' : '-'}}</div>
+        </div>
     </div>
 </div>
