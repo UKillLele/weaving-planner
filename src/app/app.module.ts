@@ -19,6 +19,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatMenuModule } from '@angular/material/menu';
 import { NgCeilPipeModule } from 'angular-pipes';
 import { NgxColorsModule } from 'ngx-colors';
 
@@ -46,7 +49,10 @@ import { NgxColorsModule } from 'ngx-colors';
     MatGridListModule,
     ScrollingModule,
     NgxColorsModule,
-    NgCeilPipeModule
+    NgCeilPipeModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

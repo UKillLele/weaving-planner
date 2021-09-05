@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { WeavingService } from 'src/services/weaving.service';
 
 @Component({
@@ -12,10 +12,16 @@ export class PaletteComponent implements OnInit {
   selectedIndex: number = -1;
   edit: boolean = false;
   remove: boolean = false;
+  previewAvailable: boolean = false;
+
+  @Output() previewEvent = new EventEmitter<any>();
 
   constructor(private weavingService: WeavingService) { }
 
   ngOnInit(): void {
+    this.weavingService.previewAvailable.subscribe(previewAvailable => this.previewAvailable = previewAvailable);
+    this.weavingService.colorPalette.subscribe(colorPalette => this.colorPalette = colorPalette);
+    this.weavingService.selectedColor.subscribe(selectedColor => this.selectedColor = selectedColor);
   }
 
   selectOrDelete(index: number) {
@@ -44,4 +50,7 @@ export class PaletteComponent implements OnInit {
     this.weavingService.changeSelectedColor(this.selectedColor);
   }
 
+  openPreview() {
+    this.previewEvent.emit();   
+  }
 }

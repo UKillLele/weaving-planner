@@ -23,8 +23,14 @@
             </mat-form-field>
             <mat-checkbox matInput type="checkbox" (change)="trompChanged()" [(ngModel)]="trompAsWrit" (click)="toggleTromp()">tromp as writ</mat-checkbox>
             <mat-checkbox matInput type="checkbox" (change)="halfSettChanged()" [(ngModel)]="halfSett">half sett</mat-checkbox>
+            <button (click)="openSRT()">SRT</button>
             <section>
                 <label class="subheading">Warp</label>
+                <mat-form-field>
+                    <mat-label>pattern width</mat-label>
+                    <input matInput type="number" (change)="patternWidthChanged()" [(ngModel)]="patternWidth">
+                    <span matSuffix>ends</span>
+                </mat-form-field>
                 <mat-form-field>
                     <mat-label>ends per inch</mat-label>
                     <input matInput type="number" (change)="epiChanged()" [(ngModel)]="epi">
@@ -57,11 +63,6 @@
                     <mat-label># of pieces</mat-label>
                     <input matInput type="number" [(ngModel)]="pieces">
                 </mat-form-field>
-                <mat-form-field>
-                    <mat-label>pattern width</mat-label>
-                    <input matInput type="number" (change)="patternLengthChanged()" [(ngModel)]="patternWidth">
-                    <span matSuffix>ends</span>
-                </mat-form-field>
                 <mat-form-field class="mixed">
                     <mat-label>yarn type</mat-label>
                     <mat-select [(value)]="warpMaterial">
@@ -89,6 +90,11 @@
             <section>
                 <label class="subheading">Weft</label>
                 <mat-form-field>
+                    <mat-label>pattern length</mat-label>
+                    <input matInput type="number" (change)="patternLengthChanged()" [(ngModel)]="patternLength" [disabled]="trompAsWrit">
+                    <span matSuffix>picks</span>
+                </mat-form-field>
+                <mat-form-field>
                     <mat-label>picks per inch</mat-label>
                     <input matInput type="number" [(ngModel)]="ppi" [disabled]="trompAsWrit">
                 </mat-form-field>
@@ -96,11 +102,6 @@
                     <mat-label>length in loom</mat-label>
                     <input matInput type="number" [(ngModel)]="workingLength">
                     <span matSuffix>inches</span>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>pattern length</mat-label>
-                    <input matInput type="number" (change)="patternLengthChanged()" [(ngModel)]="patternLength" [disabled]="trompAsWrit">
-                    <span matSuffix>picks</span>
                 </mat-form-field>
                 <mat-form-field class="mixed">
                     <mat-label>yarn type</mat-label>
@@ -128,9 +129,9 @@
             </section>
             <section>
                 <label class="subheading">Yarn Breakdown</label>
-                <label>total yardage: {{totalYds / 36 | ceil }} yds</label>
-                <label>total warp yardage: {{warpYds / 36 | ceil }} yds</label>
-                <label>total weft yardage: {{weftYds / 36 | ceil }} yds</label>
+                <label>total yardage: {{totalIn / 36 | ceil }} yds</label>
+                <label>total warp yardage: {{warpIn / 36 | ceil }} yds</label>
+                <label>total weft yardage: {{weftIn / 36 | ceil }} yds</label>
                 <div *ngFor="let color of colors">
                     <label>
                         {{color.colorName}}{{!color.perfectMatch ? "*" : ""}} 
@@ -153,3 +154,21 @@
         </section>
     </mat-expansion-panel>
 </mat-accordion>
+
+<ng-template #srtDialog>
+    <h2 matDialogTitle>Scottish Registry of Tartans</h2>
+    <mat-dialog-content>
+        <div>
+            <label>Threadcount</label>
+            <input type="text" placeholder="e.g. G20R4B40W4R4W4A40W4A40W4Y4" [(ngModel)]="srtThreadcount"/>
+        </div>
+        <div>
+            <label>Palette</label>
+            <textarea placeholder="e.g. W=E0E0E0WHITE;A=5C8CA8AZURE;R=C80000RED;B=2C2C80BLUE;G=006818GREEN;Y=E8C000YELLOW" [(ngModel)]="srtPalette"></textarea>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose color="secondary">Cancel</button>
+        <button mat-button matDialogClose color="primary" (click)="useSRT()">OK</button>
+    </mat-dialog-actions>
+</ng-template>

@@ -1,4 +1,4 @@
-<mat-grid-list [cols]="direction == 'vertical' ? 1 : boxCount" *ngIf="selectedBoxGroup">
+<mat-grid-list [cols]="direction == 'vertical' ? 1 : boxCount" *ngIf="selectedBoxGroup" [dir]="direction !='vertical' ? 'rtl' : 'ltr'">
     <mat-grid-tile 
         [id]="box?.id" 
         *ngFor="let box of selectedBoxGroup" 

@@ -33,6 +33,8 @@ export class WeavingService {
     halfSett = this.halfSettSubject.asObservable();
     private patternLengthSubject = new BehaviorSubject<any>(null);
     patternLength = this.patternLengthSubject.asObservable();
+    private patternWidthSubject = new BehaviorSubject<any>(null);
+    patternWidth = this.patternWidthSubject.asObservable();
     private epiSubject = new BehaviorSubject<any>(null);
     epi = this.epiSubject.asObservable();
     private workingWidthSubject = new BehaviorSubject<any>(null);
@@ -43,6 +45,10 @@ export class WeavingService {
     internalWidth = this.internalWidthSubject.asObservable();
     private selectedColorSubject = new BehaviorSubject<any>(null);
     selectedColor = this.selectedColorSubject.asObservable();
+    private colorPaletteSubject = new BehaviorSubject<any>(null);
+    colorPalette = this.colorPaletteSubject.asObservable();
+    private previewAvailableSubject = new BehaviorSubject<any>(null);
+    previewAvailable = this.previewAvailableSubject.asObservable();
 
     changeThreadingBoxes(b: Box[]) {
         if (b) {
@@ -99,6 +105,11 @@ export class WeavingService {
             this.patternLengthSubject.next(b);
         }
     }
+    changePatternWidth(b: number) {
+        if (b) {
+            this.patternWidthSubject.next(b);
+        }
+    }
     changeEpi(b: number) {
         if (b) {
             this.epiSubject.next(b);
@@ -122,6 +133,16 @@ export class WeavingService {
     changeSelectedColor(b: string) {
         if (b) {
             this.selectedColorSubject.next(b);
+        }
+    }
+    changeColorPalette(b: string[]) {
+        if (b) {
+            this.colorPaletteSubject.next(b);
+        }
+    }
+    changePreviewAvailable(b: boolean) {
+        if (b) {
+            this.previewAvailableSubject.next(b);
         }
     }
 }

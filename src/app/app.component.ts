@@ -1,5 +1,6 @@
+import { Component, OnInit, AfterViewInit, ViewChild, TemplateRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ScrollDispatcher, CdkScrollable } from '@angular/cdk/scrolling';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { WeavingService } from 'src/services/weaving.service';
 
 @Component({
@@ -9,25 +10,28 @@ import { WeavingService } from 'src/services/weaving.service';
 })
 export class AppComponent implements OnInit, AfterViewInit {
   treadles: number = 0;
-  epi: number = 0;
-  workingWidth: number = 0;
-  warp: number = 0;
+  patternWidth: number = 0;
   boxWidth: number = 0;
   leftCol: number = 0;
   rightCol: number = 0;
   internalWidth: number = 0;
 
+  @ViewChild('previewDialog') previewDialog!: TemplateRef<any>;
+
   constructor(
     private weavingService: WeavingService,
-    private scrollDispatcher: ScrollDispatcher
+    private scrollDispatcher: ScrollDispatcher,
+    public dialog: MatDialog
     ) { }
 
   ngOnInit(): void {
-    this.weavingService.warp.subscribe((warp: number) => {this.warp = warp});
+    this.weavingService.changePreviewAvailable(true);
+    this.weavingService.patternWidth.subscribe((patternWidth: number) => {
+      this.patternWidth = patternWidth;
+      this.getWidth();
+    });
     this.weavingService.treadles.subscribe((treadles: number) => {this.updateTreadles(treadles)});
     this.weavingService.internalWidth.subscribe((internalWidth: number) => {this.internalWidth = internalWidth});
-    this.weavingService.epi.subscribe((epi: number) => {this.updateEpi(epi)});
-    this.weavingService.workingWidth.subscribe((workingWidth: number) => {this.updateWorkingWidth(workingWidth)});
   }
 
   ngAfterViewInit(): void {
@@ -54,19 +58,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.leftCol = 64 * this.boxWidth;
     this.rightCol = (this.treadles +1) * this.boxWidth;
   }
-  updateEpi(epi: number) {
-    this.epi = epi;
-    this.getWarp();
-  }
-  updateWorkingWidth(workingWidth: number) {
-    this.workingWidth = workingWidth;
-    this.getWarp();
+
+  getWidth() {
+    if (this.patternWidth) {
+      this.weavingService.changeInternalWidth(((this.boxWidth * this.patternWidth)/this.leftCol) * 100);
+    }
   }
 
-  getWarp() {
-    if (this.epi != 0 && this.workingWidth != 0) {
-      this.weavingService.changeWarp(this.epi * this.workingWidth);
-      this.weavingService.changeInternalWidth(((this.boxWidth * this.warp)/this.leftCol) * 100);
-    }
+  openPreview(e: Event) {
+    console.log("middle")
+    this.dialog.open(this.previewDialog);
   }
 }

@@ -1,8 +1,31 @@
 <div [style.width]="internalWidth + '%'">
-    <mat-grid-list [cols]="warp">
-        <mat-grid-tile [id]="box.id" *ngFor="let box of threadingBoxes" [class]="box.border">
+    <mat-grid-list [cols]="patternWidth" dir="rtl">
+        <mat-grid-tile 
+            [id]="box.id" 
+            *ngFor="let box of threadingBoxes" 
+            [class]="box.border" 
+            (mousedown)="startSelecting(box.id)" 
+            (mouseup)="stopSelecting($event, box.id)"
+            [style.backgroundColor]="box.color"
+        >
             <mat-checkbox matInput type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"></mat-checkbox>
         </mat-grid-tile>
     </mat-grid-list>
-    <app-color-planner direction="horizontal" [boxCount]="warp"></app-color-planner>
+    <app-color-planner direction="horizontal" [boxCount]="patternWidth"></app-color-planner>
 </div>
+
+<div style="visibility: hidden; position: fixed;" 
+    [style.left]="menuTopLeftPosition.x" 
+    [style.top]="menuTopLeftPosition.y" 
+    [matMenuTriggerFor]="rightMenu"
+    #matMenuTrigger="matMenuTrigger"
+>
+</div> 
+ 
+<!-- standard material menu --> 
+<mat-menu #rightMenu="matMenu"> 
+  <ng-template matMenuContent> 
+    <button mat-menu-item (click)="repeat()">Repeat</button>
+    <button mat-menu-item (click)="cancel()">Cencel</button>
+  </ng-template> 
+</mat-menu> 

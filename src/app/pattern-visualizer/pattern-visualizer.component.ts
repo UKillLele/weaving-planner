@@ -9,7 +9,7 @@ import { WeavingService } from 'src/services/weaving.service';
 })
 export class PatternVisualizerComponent implements OnInit {
   patternLength: number = 0;
-  warp: number = 0;
+  patternWidth: number = 0;
   internalWidth: number = 0;
   tieUpBoxes: Box[] = [];
   threadingBoxes: Box[] = [];
@@ -20,8 +20,8 @@ export class PatternVisualizerComponent implements OnInit {
   constructor(private weavingService: WeavingService) { }
 
   ngOnInit(): void {
-    this.weavingService.warp.subscribe((warp: number) => {
-      this.warp = warp;
+    this.weavingService.patternWidth.subscribe((patternWidth: number) => {
+      this.patternWidth = patternWidth;
       this.updateVisualizerBoxes();
     });
     this.weavingService.internalWidth.subscribe((internalWidth: number) => { this.internalWidth = internalWidth });
@@ -56,7 +56,7 @@ export class PatternVisualizerComponent implements OnInit {
     this.visualizerBoxes = [];
     let row: number = 1;
     let column: number = 1;
-    const cells = this.patternLength * this.warp;
+    const cells = this.patternLength * this.patternWidth;
     for (let i = 1; i <= cells; i++) {
       let x: Box = {
         id: `${column}-${row}`,
@@ -65,7 +65,7 @@ export class PatternVisualizerComponent implements OnInit {
         color: ""
       }
       this.visualizerBoxes.push(x);
-      if (column + 1 > this.warp) {
+      if (column + 1 > this.patternWidth) {
         column = 1;
         row ++;
       } else {

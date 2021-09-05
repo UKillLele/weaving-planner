@@ -27,4 +27,5 @@
             <div class="btn badge remove" (click)="toggleRemove()">{{remove ? 'x' : '-'}}</div>
         </div>
     </div>
+    <div *ngIf="previewAvailable" class="col" class="btn" (click)="openPreview()">Preview</div>
 </div>

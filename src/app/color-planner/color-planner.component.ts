@@ -51,9 +51,7 @@ export class ColorPlannerComponent implements OnInit, OnChanges {
   }
 
   updateBoxes() {
-    if (this.colorBoxes == undefined) {
-      this.colorBoxes = new Array<Box[]>(2);
-    }
+    if (!this.colorBoxes) this.colorBoxes = new Array<Box[]>(2);
     this.selectedBoxGroup = this.colorBoxes[this.direction == "vertical" ? 1 : 0];
     if (this.selectedBoxGroup == undefined) {
       this.selectedBoxGroup = new Array<Box>(this.boxCount);
