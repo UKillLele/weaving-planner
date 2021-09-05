@@ -76,16 +76,7 @@ export class ThreadingPlannerComponent implements OnInit {
     else {
       this.threadingBoxes.filter(box => {
         const currentX = box.x;
-        if (
-          (this.startSelect && this.endSelect) && 
-          (
-            (currentX >= this.startSelect && currentX <= this.endSelect) || 
-            (currentX >= this.endSelect && currentX <= this.startSelect)
-          )
-        )  {
-          box.color = 'yellow';
-        }
-        else box.color = 'transparent';
+        box.color = this.isBoxInside(currentX) ? 'yellow' : 'transparent';
       });
       this.menuTopLeftPosition.x = event.clientX + 'px'; 
       this.menuTopLeftPosition.y = event.clientY + 'px'; 
@@ -93,10 +84,26 @@ export class ThreadingPlannerComponent implements OnInit {
     }
   }
 
+  isBoxInside(currentX: number) {
+    return (this.startSelect && this.endSelect) && 
+          (
+            (currentX >= this.startSelect && currentX <= this.endSelect) || 
+            (currentX >= this.endSelect && currentX <= this.startSelect)
+          )
+  }
+
   repeat() {
     // WIP
-    const model = this.threadingBoxes.filter(x => x.x);
-
+    let model = this.threadingBoxes.filter(el => this.isBoxInside(el.x) && el.selected);
+    console.log(model)
+    this.threadingBoxes.forEach(box => {
+      model.map(model => model.x).forEach(x => {
+        if (box.x % model.length === x) 
+          if (model.find(y => y.x === x && y.y === box.y)) box.selected = true;
+        if (box.x % model.length === 0)
+          if (model.find(y => y.x === Math.max(...model.map(x => x.x)) && y.y === box.y)) box.selected = true;
+      });
+    });
     this.cancel();
   }
 
