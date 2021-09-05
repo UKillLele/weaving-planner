@@ -62,7 +62,9 @@ export class PatternVisualizerComponent implements OnInit {
         id: `${column}-${row}`,
         selected: false,
         border: "weftBorder",
-        color: ""
+        color: "",
+        x: column,
+        y: row
       }
       this.visualizerBoxes.push(x);
       if (column + 1 > this.patternWidth) {
@@ -79,10 +81,10 @@ export class PatternVisualizerComponent implements OnInit {
     setTimeout(() => {
       if (this.visualizerBoxes.length > 0) {
         this.visualizerBoxes.forEach(box =>{
-          var warp = box.id.substring(0, box.id.indexOf("-"));
-          var weft = box.id.substring(box.id.indexOf("-") + 1);
-          var selectedThreadings = this.threadingBoxes?.filter(x => x.id.substring(0, x.id.indexOf("-")) == warp && x.selected).map(x => x.id.substring(x.id.indexOf("-") + 1));
-          var selectedTreadles = this.treadlingBoxes?.filter(x => x.id.substring(x.id.indexOf("-") + 1) == weft && x.selected).map(x => x.id.substring(0, x.id.indexOf("-")));
+          var warp = box.x;
+          var weft = box.y;
+          var selectedThreadings = this.threadingBoxes?.filter(x => x.x == warp && x.selected).map(x => x.y);
+          var selectedTreadles = this.treadlingBoxes?.filter(x => x.y == weft && x.selected).map(x => x.x);
           var ids = new Array();
           if (selectedTreadles && selectedTreadles.length > 0 && selectedThreadings && selectedThreadings.length > 0) {
             selectedThreadings.forEach(threading => {
@@ -92,11 +94,11 @@ export class PatternVisualizerComponent implements OnInit {
             });
             if (this.tieUpBoxes?.find((x: Box) => ids.includes(x.id) && x.selected) != null)
             {
-              var c = this.colorBoxes[0][parseInt(warp) - 1]?.color;
+              var c = this.colorBoxes[0][warp - 1]?.color;
               box.color = c ? c : "";
               box.border = "warpBorder"
             } else {
-              var c = this.colorBoxes[1][parseInt(weft) - 1]?.color;
+              var c = this.colorBoxes[1][weft - 1]?.color;
               box.color = c ? c : "";
               box.border = "weftBorder"
             }

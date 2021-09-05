@@ -35,6 +35,7 @@ export class PaletteComponent implements OnInit {
   }
 
   addToPalette(){
+    if (!this.colorPalette) this.colorPalette = new Array<string>();
     this.colorPalette.push("#f0f0f0");
     this.selectedIndex = this.colorPalette.length -1;
   }

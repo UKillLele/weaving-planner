@@ -13,8 +13,8 @@ export class ThreadingPlannerComponent implements OnInit {
   patternWidth: number = 0;
   internalWidth: number = 0;
   threadingBoxes: Box[] = [];
-  startSelect: string = "";
-  selectedGroup: Box[] = [];
+  startSelect: number | null = null;
+  endSelect: number | null = null;
   menuTopLeftPosition =  {x: '0', y: '0'} 
   
   @ViewChild('matMenuTrigger') matMenuTrigger!: MatMenuTrigger; 
@@ -44,7 +44,9 @@ export class ThreadingPlannerComponent implements OnInit {
         id: `${column}-${row}`,
         selected: false,
         border: "allBorders",
-        color: ""
+        color: "",
+        x: column,
+        y: row
       }
       this.threadingBoxes.push(x);
       if (column + 1 > this.patternWidth) {
@@ -60,21 +62,27 @@ export class ThreadingPlannerComponent implements OnInit {
     this.weavingService.changeThreadingBoxes(this.threadingBoxes);
   }
 
-  startSelecting(boxId: string) {
-    this.startSelect = boxId;
+  startSelecting(x: number) {
+    this.startSelect = x;
   }
 
-  stopSelecting(event: MouseEvent, boxId: string) {
-    if (boxId === this.startSelect) {
-      this.startSelect = "";
+  stopSelecting(event: MouseEvent, y: number) {
+    this.endSelect = y;
+    if (this.endSelect === this.startSelect) {
+      this.startSelect = null;
+      this.endSelect = null;
       this.threadingBoxes.map(x => x.color = 'transparent');
     }
     else {
-      const x1 = Number(this.startSelect.substring(0, this.startSelect.indexOf("-")));
-      const x2 = Number(boxId.substring(0, boxId.indexOf("-")));
-      this.selectedGroup = this.threadingBoxes.filter(box => {
-        const currentX = Number(box.id.substring(0, box.id.indexOf("-")));
-        if ((currentX >= x1 && currentX <= x2) || ( currentX >= x2 && currentX <= x1))  {
+      this.threadingBoxes.filter(box => {
+        const currentX = box.x;
+        if (
+          (this.startSelect && this.endSelect) && 
+          (
+            (currentX >= this.startSelect && currentX <= this.endSelect) || 
+            (currentX >= this.endSelect && currentX <= this.startSelect)
+          )
+        )  {
           box.color = 'yellow';
         }
         else box.color = 'transparent';
@@ -87,12 +95,14 @@ export class ThreadingPlannerComponent implements OnInit {
 
   repeat() {
     // WIP
+    const model = this.threadingBoxes.filter(x => x.x);
+
     this.cancel();
   }
 
   cancel() {
-    this.startSelect = "";
-    this.selectedGroup = new Array();
+    this.startSelect = null;
+    this.endSelect = null;
     this.threadingBoxes.map(x => x.color = 'transparent');
   }
 }

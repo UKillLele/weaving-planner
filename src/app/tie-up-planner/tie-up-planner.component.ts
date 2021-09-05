@@ -43,7 +43,9 @@ export class TieUpPlannerComponent implements OnInit {
         id: `${column}-${row}`,
         selected: false,
         border: "allBorders",
-        color: ""
+        color: "",
+        x: column,
+        y: row
       }
       this.tieUpBoxes.push(x);
       if (column + 1 > this.treadles) {

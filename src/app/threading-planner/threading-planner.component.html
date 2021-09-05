@@ -4,8 +4,8 @@
             [id]="box.id" 
             *ngFor="let box of threadingBoxes" 
             [class]="box.border" 
-            (mousedown)="startSelecting(box.id)" 
-            (mouseup)="stopSelecting($event, box.id)"
+            (mousedown)="startSelecting(box.x)" 
+            (mouseup)="stopSelecting($event, box.x)"
             [style.backgroundColor]="box.color"
         >
             <mat-checkbox matInput type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"></mat-checkbox>

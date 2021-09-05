@@ -110,7 +110,9 @@ export class DataCollectorComponent implements OnInit {
               border: "allBorders",
               color: colors.find(x => x.key === color).hex,
               id: `${this.colorBoxes[0].length + 1}-0`,
-              selected: false
+              selected: false,
+              x: this.colorBoxes[0].length + 1,
+              y: 0
             }
             this.colorBoxes[0].push(colorBox);
             if (this.trompAsWrit) {
@@ -187,7 +189,7 @@ export class DataCollectorComponent implements OnInit {
       // calculate number of weft and warp threads of color times width and length
       // weft threads
       this.treadlingBoxes.forEach(weft => {
-        const colorBox = this.colorBoxes[1].find(x => x.id.substring(x.id.indexOf("-")) == weft.id.substring(x.id.indexOf("-")));
+        const colorBox = this.colorBoxes[1].find(x => x.y == weft.y);
         const color = this.colors.find(x => x.colorCode === colorBox?.color)
         if (color) {
           color.colorInches += this.workingWidth ?? 0;
@@ -197,7 +199,7 @@ export class DataCollectorComponent implements OnInit {
       });
       // warp threads
       this.threadingBoxes.forEach(warp => {
-        const colorBox = this.colorBoxes[0].find(x => x.id.substring(0, x.id.indexOf("-")) == warp.id.substring(0, x.id.indexOf("-")));
+        const colorBox = this.colorBoxes[0].find(x => x.x == warp.x);
         const color = this.colors.find(x => x.colorCode == colorBox?.color)
         if (color) {
           color.colorInches += this.workingLength ?? 0;

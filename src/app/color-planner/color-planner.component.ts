@@ -64,7 +64,9 @@ export class ColorPlannerComponent implements OnInit, OnChanges {
           id: `${column}-${row}`,
           selected: false,
           border: "allBorders",
-          color: "transparent"
+          color: "transparent",
+          x: column,
+          y: row
         }
         this.selectedBoxGroup[i - 1] = x;
       }
