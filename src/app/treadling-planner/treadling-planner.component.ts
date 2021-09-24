@@ -35,6 +35,8 @@ export class TreadlingPlannerComponent implements OnInit {
     });
   }
 
+  // add support for repeats
+
   setWidths() {
     this.colorWidth = this.boxWidth;
     this.boxesWidth = this.boxWidth * this.treadles;

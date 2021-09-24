@@ -15,6 +15,9 @@ export class ThreadingPlannerComponent implements OnInit {
   threadingBoxes: Box[] = [];
   startSelect: number | null = null;
   endSelect: number | null = null;
+  secondSelection: boolean = false;
+  startSecondSelect: number | null = null;
+  endSecondSelect: number | null = null;
   menuTopLeftPosition =  {x: '0', y: '0'} 
   
   @ViewChild('matMenuTrigger') matMenuTrigger!: MatMenuTrigger; 
@@ -63,53 +66,93 @@ export class ThreadingPlannerComponent implements OnInit {
   }
 
   startSelecting(x: number) {
-    this.startSelect = x;
+    if (!this.secondSelection) {
+      this.startSelect = x;
+      this.endSelect = null;
+    } else {
+      this.startSecondSelect = x;
+      this.endSecondSelect = null;
+    }
+  }
+
+  onDrag(x: number) {
+    if (this.startSelect && !this.endSelect && !this.startSecondSelect) {
+      this.threadingBoxes.filter(box => {
+        box.color = this.isBoxInside(this.startSelect, box.x, x) ? 'yellow' : 'transparent';
+      });
+    } else if (this.startSecondSelect && !this.endSecondSelect) {
+      this.threadingBoxes.filter(box => {
+        if (this.isBoxInside(this.startSelect, box.x, this.endSelect)) box.color = 'yellow'
+        else if (this.isBoxInside(this.startSecondSelect, box.x, x)) box.color = 'orange';
+        else box.color = 'transparent';
+      });
+    }
   }
 
   stopSelecting(event: MouseEvent, y: number) {
-    this.endSelect = y;
-    if (this.endSelect === this.startSelect) {
-      this.startSelect = null;
-      this.endSelect = null;
-      this.threadingBoxes.map(x => x.color = 'transparent');
-    }
-    else {
-      this.threadingBoxes.filter(box => {
-        const currentX = box.x;
-        box.color = this.isBoxInside(currentX) ? 'yellow' : 'transparent';
-      });
-      this.menuTopLeftPosition.x = event.clientX + 'px'; 
-      this.menuTopLeftPosition.y = event.clientY + 'px'; 
-      this.matMenuTrigger.openMenu(); 
+    if (!this.secondSelection) {
+      this.endSelect = y;
+      if (this.endSelect === this.startSelect) {
+        this.cancel();
+      }
+      else {
+        this.menuTopLeftPosition.x = event.clientX + 'px'; 
+        this.menuTopLeftPosition.y = event.clientY + 'px'; 
+        this.matMenuTrigger.openMenu(); 
+      }
+    } else {
+      this.endSecondSelect = y;
+      if (this.endSecondSelect === this.startSecondSelect) {
+        this.cancel();
+      } else {
+        this.repeat();
+      }
     }
   }
 
-  isBoxInside(currentX: number) {
-    return (this.startSelect && this.endSelect) && 
+  isBoxInside(minX: number | null, currentX: number, maxX: number | null) {
+    return (minX && maxX &&
           (
-            (currentX >= this.startSelect && currentX <= this.endSelect) || 
-            (currentX >= this.endSelect && currentX <= this.startSelect)
+            (currentX >= minX && currentX <= maxX) || 
+            (currentX >= maxX && currentX <= minX)
           )
+    )
   }
 
   repeat() {
-    // WIP
-    let model = this.threadingBoxes.filter(el => this.isBoxInside(el.x) && el.selected);
-    console.log(model)
-    this.threadingBoxes.forEach(box => {
-      model.map(model => model.x).forEach(x => {
-        if (box.x % model.length === x) 
-          if (model.find(y => y.x === x && y.y === box.y)) box.selected = true;
-        if (box.x % model.length === 0)
-          if (model.find(y => y.x === Math.max(...model.map(x => x.x)) && y.y === box.y)) box.selected = true;
+    if (this.startSelect && this.endSelect) {
+      const model = this.threadingBoxes.filter(el => this.isBoxInside(this.startSelect, el.x, this.endSelect));
+      let repeatArea = this.secondSelection ? this.threadingBoxes.filter(x => this.isBoxInside(this.startSecondSelect, x.x, this.endSecondSelect)) : this.threadingBoxes;
+      const columns = Math.abs(this.endSelect - this.startSelect) + 1;
+      let row = 1;
+      let column = 0;
+      repeatArea.forEach((box, index) => {
+        if (box.y !== row) {
+          row ++;
+          column = 0;
+        }
+        const modelColumn = column % columns;
+        const modelBoxesInRow = model.filter((m, i) => Math.floor(i % columns)  === modelColumn);
+        const mBox = model.find((m, i) => Math.floor(i % columns)  === modelColumn && m.y === box.y);
+        if (mBox) {
+          box.selected = mBox.selected;
+        }
+        column ++;
       });
-    });
-    this.cancel();
+      this.cancel();
+    }
+  }
+
+  repeatOverSelection() {
+    this.secondSelection = true;
   }
 
   cancel() {
     this.startSelect = null;
     this.endSelect = null;
+    this.startSecondSelect = null;
+    this.endSecondSelect = null;
+    this.secondSelection = false;
     this.threadingBoxes.map(x => x.color = 'transparent');
   }
 }

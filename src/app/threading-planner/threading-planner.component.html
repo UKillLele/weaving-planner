@@ -6,6 +6,7 @@
             [class]="box.border" 
             (mousedown)="startSelecting(box.x)" 
             (mouseup)="stopSelecting($event, box.x)"
+            (mouseover)="onDrag(box.x)"
             [style.backgroundColor]="box.color"
         >
             <mat-checkbox matInput type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"></mat-checkbox>
@@ -25,7 +26,8 @@
 <!-- standard material menu --> 
 <mat-menu #rightMenu="matMenu"> 
   <ng-template matMenuContent> 
-    <button mat-menu-item (click)="repeat()">Repeat</button>
+    <button mat-menu-item (click)="repeat()" *ngIf="startSelect === 1 || endSelect === 1">Repeat</button>
+    <button mat-menu-item (click)="repeatOverSelection()">Repeat over selection</button>
     <button mat-menu-item (click)="cancel()">Cencel</button>
   </ng-template> 
 </mat-menu> 
