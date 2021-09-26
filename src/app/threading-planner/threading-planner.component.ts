@@ -17,8 +17,9 @@ export class ThreadingPlannerComponent implements OnInit {
   endSelect: number | null = null;
   secondSelection: boolean = false;
   startSecondSelect: number | null = null;
-  endSecondSelect: number | null = null;
-  menuTopLeftPosition =  {x: '0', y: '0'} 
+  multiSelect: number[][] = [];
+  menuTopLeftPosition =  {x: '0', y: '0'};
+  mouseDown: boolean = false;
   
   @ViewChild('matMenuTrigger') matMenuTrigger!: MatMenuTrigger; 
 
@@ -66,30 +67,45 @@ export class ThreadingPlannerComponent implements OnInit {
   }
 
   startSelecting(x: number) {
+    this.mouseDown = true;
     if (!this.secondSelection) {
       this.startSelect = x;
       this.endSelect = null;
     } else {
       this.startSecondSelect = x;
-      this.endSecondSelect = null;
     }
   }
 
   onDrag(x: number) {
-    if (this.startSelect && !this.endSelect && !this.startSecondSelect) {
-      this.threadingBoxes.filter(box => {
-        box.color = this.isBoxInside(this.startSelect, box.x, x) ? 'yellow' : 'transparent';
-      });
-    } else if (this.startSecondSelect && !this.endSecondSelect) {
-      this.threadingBoxes.filter(box => {
-        if (this.isBoxInside(this.startSelect, box.x, this.endSelect)) box.color = 'yellow'
-        else if (this.isBoxInside(this.startSecondSelect, box.x, x)) box.color = 'orange';
-        else box.color = 'transparent';
-      });
+    if (this.mouseDown) {
+      if (this.startSelect && !this.endSelect && !this.startSecondSelect) {
+        this.threadingBoxes.filter(box => {
+          box.color = this.isBoxInside(this.startSelect, box.x, x) ? 'yellow' : 'transparent';
+        });
+      } else if (this.startSecondSelect) {
+        this.threadingBoxes.filter(box => {
+          if (this.isBoxInside(this.startSelect, box.x, this.endSelect)) box.color = 'yellow'
+          else {
+            let inMulti = false;
+            if (this.isBoxInside(this.startSecondSelect, box.x, x)) {
+              box.color = 'orange';
+              inMulti = true;
+            }
+            this.multiSelect?.forEach(select => {
+              if (this.isBoxInside(select[0], box.x, select[1])) {
+                box.color = 'orange';
+                inMulti = true;
+              }
+            });
+            if (!inMulti) box.color = 'transparent';
+          }
+        });
+      }
     }
   }
 
   stopSelecting(event: MouseEvent, y: number) {
+    this.mouseDown = false;
     if (!this.secondSelection) {
       this.endSelect = y;
       if (this.endSelect === this.startSelect) {
@@ -101,12 +117,43 @@ export class ThreadingPlannerComponent implements OnInit {
         this.matMenuTrigger.openMenu(); 
       }
     } else {
-      this.endSecondSelect = y;
-      if (this.endSecondSelect === this.startSecondSelect) {
-        this.cancel();
-      } else {
-        this.repeat();
+      if (event.ctrlKey) {
+        // if start end and are the same, do nothing
+        if (y === this.startSecondSelect) return;
+        // if start or end is in multi, remove original
+        if (this.multiSelect.length > 0) {
+          this.multiSelect.forEach(section => {
+            if ((this.startSecondSelect! < section[0] && this.startSecondSelect! > section[1]) ||
+              (this.startSecondSelect! > section[0] && this.startSecondSelect! < section[1]) ||
+              (y < section[0] && y > section[1]) ||
+              (y > section[0] && y < section[1])
+            ) {
+              this.multiSelect.splice(this.multiSelect.indexOf(section))
+            }
+          })
+        }
+      } 
+
+      const newArea = [this.startSecondSelect!, y];
+      if (this.multiSelect.length == 0) this.multiSelect = [newArea];
+      else this.multiSelect.push(newArea);
+
+      if ((!event.ctrlKey)) {
+        if (y === this.startSecondSelect) {
+          this.cancel();
+        } else {
+          this.repeat();
+        }
       }
+      this.startSecondSelect = null;
+    }
+  }
+
+  // if ctrl is released after mouse click, call repeat
+  checkCtrl(event: KeyboardEvent) {
+    if (event.ctrlKey) console.log(this.mouseDown, this.multiSelect.length)
+    if (event.ctrlKey && this.multiSelect.length > 0 && !this.mouseDown) {
+      this.repeat();
     }
   }
 
@@ -120,26 +167,37 @@ export class ThreadingPlannerComponent implements OnInit {
   }
 
   repeat() {
+    let repeatArea = new Array();
+    if (this.secondSelection) {
+      this.multiSelect.forEach(select => {
+        repeatArea = this.threadingBoxes.filter(x => this.isBoxInside(select[0], x.x, select[1]));
+        this.checkBoxes(repeatArea);
+      })
+    } else {
+      repeatArea = this.threadingBoxes;
+      this.checkBoxes(repeatArea);
+    }
+      this.cancel();
+  }
+
+  checkBoxes(repeatArea: Box[]) {
     if (this.startSelect && this.endSelect) {
       const model = this.threadingBoxes.filter(el => this.isBoxInside(this.startSelect, el.x, this.endSelect));
-      let repeatArea = this.secondSelection ? this.threadingBoxes.filter(x => this.isBoxInside(this.startSecondSelect, x.x, this.endSecondSelect)) : this.threadingBoxes;
       const columns = Math.abs(this.endSelect - this.startSelect) + 1;
       let row = 1;
       let column = 0;
-      repeatArea.forEach((box, index) => {
+      repeatArea.forEach((box) => {
         if (box.y !== row) {
           row ++;
           column = 0;
         }
         const modelColumn = column % columns;
-        const modelBoxesInRow = model.filter((m, i) => Math.floor(i % columns)  === modelColumn);
         const mBox = model.find((m, i) => Math.floor(i % columns)  === modelColumn && m.y === box.y);
         if (mBox) {
           box.selected = mBox.selected;
         }
         column ++;
       });
-      this.cancel();
     }
   }
 
@@ -151,7 +209,6 @@ export class ThreadingPlannerComponent implements OnInit {
     this.startSelect = null;
     this.endSelect = null;
     this.startSecondSelect = null;
-    this.endSecondSelect = null;
     this.secondSelection = false;
     this.threadingBoxes.map(x => x.color = 'transparent');
   }
