@@ -4,10 +4,34 @@
     </mat-grid-tile>
     <mat-grid-tile [colspan]="treadles" [rowspan]="patternLength">
         <mat-grid-list [style.width]="boxesWidth + 'vw'" class="vertical" [cols]="treadles">
-            <mat-grid-tile [id]="box.id" *ngFor="let box of treadlingBoxes" [class]="box.border">
+            <mat-grid-tile 
+                [id]="box.id" 
+                *ngFor="let box of treadlingBoxes" [class]="box.border"
+                (mousedown)="startSelecting(box.y)" 
+                (mouseup)="stopSelecting($event, box.y)"
+                (mouseover)="onDrag(box.y)"
+                [style.backgroundColor]="box.color"
+            >
                 <mat-checkbox matInput type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"></mat-checkbox>
             </mat-grid-tile>
         </mat-grid-list>
     </mat-grid-tile>
 </mat-grid-list>
+
+<div style="visibility: hidden; position: fixed;" 
+    [style.left]="menuTopLeftPosition.x" 
+    [style.top]="menuTopLeftPosition.y" 
+    [matMenuTriggerFor]="rightMenu"
+    #matMenuTrigger="matMenuTrigger"
+>
+</div> 
+ 
+<!-- standard material menu --> 
+<mat-menu #rightMenu="matMenu"> 
+  <ng-template matMenuContent> 
+    <button mat-menu-item (click)="repeat()" *ngIf="startSelect === 1 || endSelect === 1">Repeat</button>
+    <button mat-menu-item (click)="repeatOverSelection()">Repeat over selection</button>
+    <button mat-menu-item (click)="cancel()">Cencel</button>
+  </ng-template> 
+</mat-menu> 
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Box } from 'src/models/box.model';
 import { WeavingService } from 'src/services/weaving.service';
@@ -20,6 +20,13 @@ export class ThreadingPlannerComponent implements OnInit {
   multiSelect: number[][] = [];
   menuTopLeftPosition =  {x: '0', y: '0'};
   mouseDown: boolean = false;
+
+  @HostListener('window:keyup', ['$event'])
+  handleKeyUp(event: KeyboardEvent) {
+    if (event.key == "Control" && this.multiSelect.length > 0 && !this.mouseDown) {
+      this.repeat();
+    }
+  }
   
   @ViewChild('matMenuTrigger') matMenuTrigger!: MatMenuTrigger; 
 
@@ -79,11 +86,11 @@ export class ThreadingPlannerComponent implements OnInit {
   onDrag(x: number) {
     if (this.mouseDown) {
       if (this.startSelect && !this.endSelect && !this.startSecondSelect) {
-        this.threadingBoxes.filter(box => {
+        this.threadingBoxes.map(box => {
           box.color = this.isBoxInside(this.startSelect, box.x, x) ? 'yellow' : 'transparent';
         });
       } else if (this.startSecondSelect) {
-        this.threadingBoxes.filter(box => {
+        this.threadingBoxes.map(box => {
           if (this.isBoxInside(this.startSelect, box.x, this.endSelect)) box.color = 'yellow'
           else {
             let inMulti = false;
@@ -146,14 +153,6 @@ export class ThreadingPlannerComponent implements OnInit {
         }
       }
       this.startSecondSelect = null;
-    }
-  }
-
-  // if ctrl is released after mouse click, call repeat
-  checkCtrl(event: KeyboardEvent) {
-    if (event.ctrlKey) console.log(this.mouseDown, this.multiSelect.length)
-    if (event.ctrlKey && this.multiSelect.length > 0 && !this.mouseDown) {
-      this.repeat();
     }
   }
 
