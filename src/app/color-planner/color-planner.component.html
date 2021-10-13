@@ -4,7 +4,9 @@
         *ngFor="let box of selectedBoxGroup" 
         [class]="box?.border" 
         [style.backgroundColor]="box?.color"
-        (click)="selectBox(box?.id, $event)"
+        (mousedown)="selectBox(box?.id, 'down')"
+        (mouseup)="selectBox(box?.id, 'up')"
+        (mouseover)="selectBox(box?.id, 'over')"
     >
     </mat-grid-tile>
 </mat-grid-list>

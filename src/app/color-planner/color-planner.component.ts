@@ -32,19 +32,18 @@ export class ColorPlannerComponent implements OnInit, OnChanges {
     this.updateBoxes();
   }
 
-  selectBox(boxId: string | undefined, event: any) {
+  selectBox(boxId: string | undefined, mouse: string) {
     if (boxId) {
       const box = this.selectedBoxGroup?.find(x => x.id == boxId);
       if (box) {
-        if (event.shiftKey) {
-          this.selectedBoxGroup.forEach(b => {
-            if ((this.selectedBoxGroup.indexOf(b) > this.lastBoxIndex && this.selectedBoxGroup.indexOf(b) <= this.selectedBoxGroup.indexOf(box)) ||
-              (this.selectedBoxGroup.indexOf(b) < this.lastBoxIndex && this.selectedBoxGroup.indexOf(b) >= this.selectedBoxGroup.indexOf(box)))
-              b.color = this.selectedColor;
-          })
-        } else
+        if (this.lastBoxIndex > -1 && mouse === "over") {
           box.color = this.selectedColor;
-        this.lastBoxIndex = this.selectedBoxGroup.indexOf(box);
+        } else if (mouse === "down") {
+          box.color = this.selectedColor;
+          this.lastBoxIndex = this.selectedBoxGroup.indexOf(box);
+        } else {
+          this.lastBoxIndex = -1;
+        }
         this.boxesChanged();
       }
     }
@@ -53,7 +52,7 @@ export class ColorPlannerComponent implements OnInit, OnChanges {
   updateBoxes() {
     if (!this.colorBoxes) this.colorBoxes = new Array<Box[]>(2);
     this.selectedBoxGroup = this.colorBoxes[this.direction == "vertical" ? 1 : 0];
-    if (this.selectedBoxGroup == undefined) {
+    if (this.selectedBoxGroup == undefined || this.selectedBoxGroup.length > this.boxCount) {
       this.selectedBoxGroup = new Array<Box>(this.boxCount);
     }
     for (let i = 1; i <= this.boxCount; i++) {
