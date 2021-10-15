@@ -63,22 +63,22 @@ export class ColorPlannerComponent implements OnInit, OnChanges {
   updateBoxes() {
     if (!this.colorBoxes) this.colorBoxes = new Array<Box[]>(2);
     this.selectedBoxGroup = this.colorBoxes[this.direction == "vertical" ? 1 : 0];
-    if (this.selectedBoxGroup == undefined || this.selectedBoxGroup.length > this.boxCount) {
+    if (this.selectedBoxGroup == undefined || this.selectedBoxGroup.length !== this.boxCount) {
       this.selectedBoxGroup = new Array<Box>(this.boxCount);
-    }
-    for (let i = 1; i <= this.boxCount; i++) {
-      if (this.selectedBoxGroup[i] == null || this.selectedBoxGroup[i] == undefined) {
-        const column = this.direction == "vertical" ? 0 : i;
-        const row = this.direction == "vertical" ? i : 0;
-        let x: Box = {
-          id: `${column}-${row}`,
-          selected: false,
-          border: "allBorders",
-          color: "transparent",
-          x: column,
-          y: row
+      for (let i = 1; i <= this.boxCount; i++) {
+        if (this.selectedBoxGroup[i] == null || this.selectedBoxGroup[i] == undefined) {
+          const column = this.direction == "vertical" ? 0 : i;
+          const row = this.direction == "vertical" ? i : 0;
+          let x: Box = {
+            id: `${column}-${row}`,
+            selected: false,
+            border: "allBorders",
+            color: "transparent",
+            x: column,
+            y: row
+          }
+          this.selectedBoxGroup[i - 1] = x;
         }
-        this.selectedBoxGroup[i - 1] = x;
       }
     }
     this.colorBoxes[this.direction == "vertical" ? 1 : 0] = this.selectedBoxGroup;

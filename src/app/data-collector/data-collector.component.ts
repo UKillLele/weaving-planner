@@ -123,8 +123,15 @@ export class DataCollectorComponent implements OnInit {
             this.colorBoxes[0].push(colorBox);
             if (this.trompAsWrit) {
               if (!this.colorBoxes[1]) this.colorBoxes[1] = new Array();
-              colorBox.id = `0-${this.colorBoxes[1].length + 1}`;
-              this.colorBoxes[1].push(colorBox);
+              const verticalCB: Box = {
+                border: "allBorders",
+                color: colors.find(x => x.key === color).hex,
+                id: `0-${this.colorBoxes[0].length + 1}`,
+                selected: false,
+                x: 0,
+                y: this.colorBoxes[0].length + 1
+              }
+              this.colorBoxes[1].push(verticalCB);
             }
           }
         }
