@@ -51,13 +51,26 @@ export class DataCollectorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.weavingService.shafts.subscribe((shafts: number) => this.shafts = shafts);
-    this.weavingService.treadles.subscribe((treadles: number) => this.treadles = treadles);
-    this.weavingService.trompAsWrit.subscribe((trompAsWrit: boolean) => this.trompAsWrit = trompAsWrit);
-    this.weavingService.halfSett.subscribe((halfSett: boolean) => this.halfSett = halfSett);
-    this.weavingService.patternLength.subscribe((patternLength: number) => this.patternLength = patternLength);
-    this.weavingService.epi.subscribe((epi: number) => this.epi = epi);
-    this.weavingService.workingWidth.subscribe((workingWidth: number) => this.workingWidth = workingWidth);
+    this.weavingService.shafts.subscribe((shafts: number) => {
+      this.shafts = shafts;
+      this.calculateYarn();
+    });
+    this.weavingService.treadles.subscribe((treadles: number) => {
+      this.treadles = treadles;
+      this.calculateYarn();
+    });
+    this.weavingService.patternLength.subscribe((patternLength: number) => {
+      this.patternLength = patternLength;
+      this.calculateYarn();
+    });
+    this.weavingService.epi.subscribe((epi: number) => {
+      this.epi = epi;
+      this.calculateYarn();
+    });
+    this.weavingService.workingWidth.subscribe((workingWidth: number) => {
+      this.workingWidth = workingWidth;
+      this.calculateYarn();
+    });
     this.weavingService.colorBoxes.subscribe((colorBoxes: Box[][]) => {
       this.colorBoxes = colorBoxes;
       this.calculateYarn();
@@ -70,13 +83,6 @@ export class DataCollectorComponent implements OnInit {
       this.threadingBoxes = threadingBoxes;
       this.calculateYarn();
     });
-  }
-
-  toggleTromp() {
-    if (this.trompAsWrit) {
-      this.patternLength = this.patternWidth;
-      this.ppi = this.epi;
-    }
   }
 
   openSRT() {
@@ -140,6 +146,7 @@ export class DataCollectorComponent implements OnInit {
     this.weavingService.changeTromp(this.trompAsWrit);
     if (this.trompAsWrit) {
       this.patternLength = this.patternWidth;
+      this.ppi = this.epi;
       this.patternLengthChanged();
     }
   }

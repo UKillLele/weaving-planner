@@ -21,7 +21,7 @@
                 <mat-label>treadles</mat-label>
                 <input matInput type="number" (change)="treadlesChanged()" [(ngModel)]="treadles">
             </mat-form-field>
-            <mat-checkbox matInput type="checkbox" (change)="trompChanged()" [(ngModel)]="trompAsWrit" (click)="toggleTromp()">tromp as writ</mat-checkbox>
+            <mat-checkbox matInput type="checkbox" (change)="trompChanged()" [(ngModel)]="trompAsWrit">tromp as writ</mat-checkbox>
             <mat-checkbox matInput type="checkbox" (change)="halfSettChanged()" [(ngModel)]="halfSett">half sett</mat-checkbox>
             <button (click)="openSRT()">SRT</button>
             <section>

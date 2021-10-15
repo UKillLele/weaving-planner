@@ -15,6 +15,7 @@ export class ColorPlannerComponent implements OnInit, OnChanges {
   selectedColor: string = "";
   selectedBoxes: Box[] = [];
   lastBoxIndex: number = -1;
+  trompAsWrit: boolean = false;
 
   constructor(private weavingService: WeavingService) { }
 
@@ -25,6 +26,10 @@ export class ColorPlannerComponent implements OnInit, OnChanges {
     this.weavingService.selectedColor.subscribe((selectedColor: string) => {
       this.selectedColor = selectedColor;
     });
+    this.weavingService.trompAsWrit.subscribe((trompAsWrit: boolean) => {
+      this.trompAsWrit = trompAsWrit;
+      this.updateBoxes();
+    });
     this.updateBoxes();
   }
 
@@ -33,14 +38,20 @@ export class ColorPlannerComponent implements OnInit, OnChanges {
   }
 
   selectBox(boxId: string | undefined, mouse: string) {
-    if (boxId) {
+    if (boxId && !(this.trompAsWrit && this.direction === "vertical")) {
       const box = this.selectedBoxGroup?.find(x => x.id == boxId);
       if (box) {
         if (this.lastBoxIndex > -1 && mouse === "over") {
           box.color = this.selectedColor;
+          if (this.trompAsWrit) {
+            this.colorBoxes![1].find(b => b.y === box.x && b.x === box.y)!.color = this.selectedColor;
+          }
         } else if (mouse === "down") {
           box.color = this.selectedColor;
           this.lastBoxIndex = this.selectedBoxGroup.indexOf(box);
+          if (this.trompAsWrit) {
+            this.colorBoxes![1].find(b => b.y === box.x && b.x === box.y)!.color = this.selectedColor;
+          }
         } else {
           this.lastBoxIndex = -1;
         }

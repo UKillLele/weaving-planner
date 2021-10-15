@@ -51,97 +51,97 @@ export class WeavingService {
     previewAvailable = this.previewAvailableSubject.asObservable();
 
     changeThreadingBoxes(b: Box[]) {
-        if (b) {
+        if (b != null) {
             this.threadingBoxesSubject.next(b);
         }
     }
     changeTieUpBoxes(b: Box[]) {
-        if (b) {
+        if (b != null) {
             this.tieUpBoxesSubject.next(b);
         }
     }
     changeTreadlingBoxes(b: Box[]) {
-        if (b) {
+        if (b != null) {
             this.treadlingBoxesSubject.next(b);
         }
     }
     changeVisualizerBoxes(b: Box[]) {
-        if (b) {
+        if (b != null) {
             this.visualizerBoxesSubject.next(b);
         }
     }
     changeColorBoxes(b: Box[][]) {
-        if (b) {
+        if (b != null) {
             this.colorBoxesSubject.next(b);
         }
     }
     changeShafts(b: number) {
-        if (b) {
+        if (b != null) {
             this.shaftsSubject.next(b);
         }
     }
     changeTreadles(b: number) {
-        if (b) {
+        if (b != null) {
             this.treadlesSubject.next(b);
         }
     }
     changeWarp(b: number) {
-        if (b) {
+        if (b != null) {
             this.warpSubject.next(b);
         }
     }
     changeTromp(b: boolean) {
-        if (b) {
+        if (b != null) {
             this.trompAsWritSubject.next(b);
         }
     }
     changeHalfSett(b: boolean) {
-        if (b) {
+        if (b != null) {
             this.halfSettSubject.next(b);
         }
     }
     changePatternLength(b: number) {
-        if (b) {
+        if (b != null) {
             this.patternLengthSubject.next(b);
         }
     }
     changePatternWidth(b: number) {
-        if (b) {
+        if (b != null) {
             this.patternWidthSubject.next(b);
         }
     }
     changeEpi(b: number) {
-        if (b) {
+        if (b != null) {
             this.epiSubject.next(b);
         }
     }
     changeWorkingWidth(b: number) {
-        if (b) {
+        if (b != null) {
             this.workingWidthSubject.next(b);
         }
     }
     changeBoxWidth(b: number) {
-        if (b) {
+        if (b != null) {
             this.boxWidthSubject.next(b);
         }
     }
     changeInternalWidth(b: number) {
-        if (b) {
+        if (b != null) {
             this.internalWidthSubject.next(b);
         }
     }
     changeSelectedColor(b: string) {
-        if (b) {
+        if (b != null) {
             this.selectedColorSubject.next(b);
         }
     }
     changeColorPalette(b: string[]) {
-        if (b) {
+        if (b != null) {
             this.colorPaletteSubject.next(b);
         }
     }
     changePreviewAvailable(b: boolean) {
-        if (b) {
+        if (b != null) {
             this.previewAvailableSubject.next(b);
         }
     }
