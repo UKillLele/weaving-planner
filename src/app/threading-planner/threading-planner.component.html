@@ -1,6 +1,6 @@
 <div [style.width]="internalWidth + '%'">
-    <mat-grid-list [cols]="patternWidth" dir="rtl">
-        <mat-grid-tile 
+    <div [cols]="patternWidth" dir="rtl">
+        <div 
             [id]="box.id" 
             *ngFor="let box of threadingBoxes" 
             [class]="box.border" 
@@ -9,9 +9,9 @@
             (mouseover)="onDrag(box.x)"
             [style.backgroundColor]="box.color"
         >
-            <mat-checkbox matInput type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"></mat-checkbox>
-        </mat-grid-tile>
-    </mat-grid-list>
+            <div matInput type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"></div>
+        </div>
+    </div>
     <app-color-planner direction="horizontal" [boxCount]="patternWidth"></app-color-planner>
 </div>
 
@@ -24,10 +24,10 @@
 </div> 
  
 <!-- standard material menu --> 
-<mat-menu #rightMenu="matMenu"> 
+<div #rightMenu="matMenu"> 
   <ng-template matMenuContent> 
-    <button mat-menu-item (click)="repeat()" *ngIf="startSelect === 1 || endSelect === 1">Repeat</button>
-    <button mat-menu-item (click)="repeatOverSelection()">Repeat over selection</button>
-    <button mat-menu-item (click)="cancel()">Cencel</button>
+    <button div-item (click)="repeat()" *ngIf="startSelect === 1 || endSelect === 1">Repeat</button>
+    <button div-item (click)="repeatOverSelection()">Repeat over selection</button>
+    <button div-item (click)="cancel()">Cencel</button>
   </ng-template> 
-</mat-menu> 
+</div> 

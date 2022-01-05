@@ -14,15 +14,15 @@ input {
     text-align: right;
     width: auto;
 }
-mat-accordion:first-child mat-expansion-panel:last-of-type {
+div:first-child div:last-of-type {
     border-radius: 4px 4px  0 0;
 }
-mat-accordion:not(:first-child) mat-expansion-panel {
+div:not(:first-child) div {
     border-top: 1px solid gray;
 }
-mat-accordion:last-child mat-expansion-panel {
+div:last-child div {
     border-radius: 0 0 4px 4px;
 }
-mat-accordion:not(:first-child, :last-child) mat-expansion-panel {
+div:not(:first-child, :last-child) div {
     border-radius: 0;
 }

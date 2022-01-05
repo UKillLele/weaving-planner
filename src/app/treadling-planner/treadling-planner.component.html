@@ -1,10 +1,10 @@
-<mat-grid-list [cols]="treadles +1">
-    <mat-grid-tile colspan="1" [rowspan]="patternLength">
+<div [cols]="treadles +1">
+    <div colspan="1" [rowspan]="patternLength">
         <app-color-planner [style.width]="colorWidth + 'vw'" class="vertical" direction="vertical" [boxCount]="patternLength"></app-color-planner>
-    </mat-grid-tile>
-    <mat-grid-tile [colspan]="treadles" [rowspan]="patternLength">
-        <mat-grid-list [style.width]="boxesWidth + 'vw'" class="vertical" [cols]="treadles">
-            <mat-grid-tile 
+    </div>
+    <div [colspan]="treadles" [rowspan]="patternLength">
+        <div [style.width]="boxesWidth + 'vw'" class="vertical" [cols]="treadles">
+            <div 
                 [id]="box.id" 
                 *ngFor="let box of treadlingBoxes" [class]="box.border"
                 (mousedown)="startSelecting(box.y)" 
@@ -13,25 +13,23 @@
                 [style.backgroundColor]="box.color"
             >
                 <input type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"/>
-            </mat-grid-tile>
-        </mat-grid-list>
-    </mat-grid-tile>
-</mat-grid-list>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div style="visibility: hidden; position: fixed;" 
     [style.left]="menuTopLeftPosition.x" 
     [style.top]="menuTopLeftPosition.y" 
-    [matMenuTriggerFor]="rightMenu"
-    #matMenuTrigger="matMenuTrigger"
 >
 </div> 
  
 <!-- standard material menu --> 
-<mat-menu #rightMenu="matMenu"> 
+<!-- <div #rightMenu="matMenu"> 
   <ng-template matMenuContent> 
-    <button mat-menu-item (click)="repeat()" *ngIf="startSelect === 1 || endSelect === 1">Repeat</button>
-    <button mat-menu-item (click)="repeatOverSelection()">Repeat over selection</button>
-    <button mat-menu-item (click)="cancel()">Cencel</button>
+    <button div-item (click)="repeat()" *ngIf="startSelect === 1 || endSelect === 1">Repeat</button>
+    <button div-item (click)="repeatOverSelection()">Repeat over selection</button>
+    <button div-item (click)="cancel()">Cencel</button>
   </ng-template> 
-</mat-menu> 
+</div>  -->
 
