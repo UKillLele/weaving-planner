@@ -16,6 +16,7 @@ export class ColorPlannerComponent implements OnInit, OnChanges {
   selectedBoxes: Box[] = [];
   lastBoxIndex: number = -1;
   trompAsWrit: boolean = false;
+  boxWidth: number = 0;
 
   constructor(private weavingService: WeavingService) { }
 
@@ -29,6 +30,9 @@ export class ColorPlannerComponent implements OnInit, OnChanges {
     this.weavingService.trompAsWrit.subscribe((trompAsWrit: boolean) => {
       this.trompAsWrit = trompAsWrit;
       this.updateBoxes();
+    });
+    this.weavingService.boxWidth.subscribe((boxWidth: number) => { 
+      this.boxWidth = boxWidth;
     });
     this.updateBoxes();
   }

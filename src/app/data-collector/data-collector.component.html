@@ -1,134 +1,160 @@
-<mat-accordion>
-    <mat-expansion-panel expanded="true">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Pattern Information
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <section>
-            <mat-form-field>
-                <mat-label>pattern name</mat-label>
-                <input matInput type="text" [(ngModel)]="name">
-                <button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
-                    <mat-icon>close</mat-icon>
-                  </button>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>shafts</mat-label>
-                <input matInput type="number" (change)="shaftsChanged()" [(ngModel)]="shafts">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>treadles</mat-label>
-                <input matInput type="number" (change)="treadlesChanged()" [(ngModel)]="treadles">
-            </mat-form-field>
-            <mat-checkbox matInput type="checkbox" (change)="trompChanged()" [(ngModel)]="trompAsWrit">tromp as writ</mat-checkbox>
-            <mat-checkbox matInput type="checkbox" (change)="halfSettChanged()" [(ngModel)]="halfSett">half sett</mat-checkbox>
-            <button (click)="openSRT()">SRT</button>
+<div>
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="viewPatternInfo">
+            <mat-expansion-panel-header>
+            <mat-panel-title>
+                Pattern Information
+            </mat-panel-title>
+            </mat-expansion-panel-header>
             <section>
-                <label class="subheading">Warp</label>
                 <mat-form-field>
-                    <mat-label>pattern width</mat-label>
-                    <input matInput type="number" (change)="patternWidthChanged()" [(ngModel)]="patternWidth">
-                    <span matSuffix>ends</span>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>ends per inch</mat-label>
-                    <input matInput type="number" (change)="epiChanged()" [(ngModel)]="epi">
+                    <mat-label>pattern name</mat-label>
+                    <input matInput type="text" [(ngModel)]="name">
+                    <button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
                 </mat-form-field>
                 <mat-form-field>
-                    <mat-label>width in loom</mat-label>
-                    <input matInput type="number" (change)="workingWidthChanged()" [(ngModel)]="workingWidth">
-                    <span matSuffix>inches</span>
+                    <mat-label>shafts</mat-label>
+                    <input matInput type="number" [(ngModel)]="shafts">
                 </mat-form-field>
                 <mat-form-field>
-                    <mat-label>selvage</mat-label>
-                    <input matInput type="number" [(ngModel)]="selvageWidth">
-                    <span matSuffix>inches</span>
+                    <mat-label>treadles</mat-label>
+                    <input matInput type="number" [(ngModel)]="treadles">
                 </mat-form-field>
-                <mat-form-field>
-                    <mat-label>loom waste</mat-label>
-                    <input matInput type="number" [(ngModel)]="waste">
-                    <span matSuffix>inches</span>
-                </mat-form-field>
-                <mat-form-field class="mixed">
-                    <mat-label>finishing</mat-label>
-                    <mat-select [(value)]="edgeType">
-                        <mat-option value="fringe">fringe</mat-option>
-                        <mat-option value="hem">hem</mat-option>
-                    </mat-select>
-                    <input matSuffix matInput type="number" [(ngModel)]="edgeLength">
-                    <span matSuffix>inches</span>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label># of pieces</mat-label>
-                    <input matInput type="number" [(ngModel)]="pieces">
-                </mat-form-field>
-                <mat-form-field class="mixed">
-                    <mat-label>yarn type</mat-label>
-                    <mat-select [(value)]="warpMaterial">
-                        <mat-option value="bamboo">bamboo</mat-option>
-                        <mat-option value="cottolin">cottolin</mat-option>
-                        <mat-option value="cotton">cotton</mat-option>
-                        <mat-option value="hemp">hemp</mat-option>
-                        <mat-option value="silk">silk</mat-option>
-                        <mat-option value="tensel">tensel</mat-option>
-                        <mat-option value="wool">wool</mat-option>
-                        <mat-option value="wool/silk">wool/silk</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>draw-in</mat-label>
-                    <input matInput type="number" [(ngModel)]="warpDrawIn">
-                    <span matSuffix>%</span>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>shrinkage</mat-label>
-                    <input matInput type="number" [(ngModel)]="warpShrinkage">
-                    <span matSuffix>%</span>
-                </mat-form-field>
+                <mat-checkbox matInput type="checkbox" (change)="trompChanged()" [(ngModel)]="trompAsWrit">tromp as writ</mat-checkbox>
+                <mat-checkbox matInput type="checkbox" [(ngModel)]="halfSett">half sett</mat-checkbox>
+                <button mat-button (click)="openSRT()">SRT</button>
+                <section>
+                    <label class="subheading">Warp</label>
+                    <mat-form-field>
+                        <mat-label>pattern width</mat-label>
+                        <input matInput type="number" (change)="patternWidthChanged()" [(ngModel)]="patternWidth">
+                        <span matSuffix>ends</span>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>ends per inch</mat-label>
+                        <input matInput type="number" [(ngModel)]="epi">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>width in loom</mat-label>
+                        <input matInput type="number" [(ngModel)]="workingWidth">
+                        <span matSuffix>inches</span>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>selvage</mat-label>
+                        <input matInput type="number" [(ngModel)]="selvageWidth">
+                        <span matSuffix>inches</span>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>loom waste</mat-label>
+                        <input matInput type="number" [(ngModel)]="waste">
+                        <span matSuffix>inches</span>
+                    </mat-form-field>
+                    <mat-form-field class="mixed">
+                        <mat-label>finishing</mat-label>
+                        <mat-select [(value)]="edgeType">
+                            <mat-option value="fringe">fringe</mat-option>
+                            <mat-option value="hem">hem</mat-option>
+                        </mat-select>
+                        <input matSuffix matInput type="number" [(ngModel)]="edgeLength">
+                        <span matSuffix>inches</span>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label># of pieces</mat-label>
+                        <input matInput type="number" [(ngModel)]="pieces">
+                    </mat-form-field>
+                    <mat-form-field class="mixed">
+                        <mat-label>yarn type</mat-label>
+                        <mat-select [(value)]="warpMaterial">
+                            <mat-option value="bamboo">bamboo</mat-option>
+                            <mat-option value="cottolin">cottolin</mat-option>
+                            <mat-option value="cotton">cotton</mat-option>
+                            <mat-option value="hemp">hemp</mat-option>
+                            <mat-option value="silk">silk</mat-option>
+                            <mat-option value="tensel">tensel</mat-option>
+                            <mat-option value="wool">wool</mat-option>
+                            <mat-option value="wool/silk">wool/silk</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>draw-in</mat-label>
+                        <input matInput type="number" [(ngModel)]="warpDrawIn">
+                        <span matSuffix>%</span>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>shrinkage</mat-label>
+                        <input matInput type="number" [(ngModel)]="warpShrinkage">
+                        <span matSuffix>%</span>
+                    </mat-form-field>
+                </section>
+                <section>
+                    <label class="subheading">Weft</label>
+                    <mat-form-field>
+                        <mat-label>pattern length</mat-label>
+                        <input matInput type="number" [(ngModel)]="patternLength" [disabled]="trompAsWrit">
+                        <span matSuffix>picks</span>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>picks per inch</mat-label>
+                        <input matInput type="number" [(ngModel)]="ppi" [disabled]="trompAsWrit">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>length in loom</mat-label>
+                        <input matInput type="number" [(ngModel)]="workingLength">
+                        <span matSuffix>inches</span>
+                    </mat-form-field>
+                    <mat-form-field class="mixed">
+                        <mat-label>yarn type</mat-label>
+                        <mat-select [(value)]="weftMaterial">
+                            <mat-option value="bamboo">bamboo</mat-option>
+                            <mat-option value="cottolin">cottolin</mat-option>
+                            <mat-option value="cotton">cotton</mat-option>
+                            <mat-option value="hemp">hemp</mat-option>
+                            <mat-option value="silk">silk</mat-option>
+                            <mat-option value="tensel">tensel</mat-option>
+                            <mat-option value="wool">wool</mat-option>
+                            <mat-option value="wool/silk">wool/silk</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>draw-in</mat-label>
+                        <input matInput type="number" [(ngModel)]="weftDrawIn">
+                        <span matSuffix>%</span>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>shrinkage</mat-label>
+                        <input matInput type="number" [(ngModel)]="weftShrinkage">
+                        <span matSuffix>%</span>
+                    </mat-form-field>
+                </section>
             </section>
-            <section>
-                <label class="subheading">Weft</label>
-                <mat-form-field>
-                    <mat-label>pattern length</mat-label>
-                    <input matInput type="number" (change)="patternLengthChanged()" [(ngModel)]="patternLength" [disabled]="trompAsWrit">
-                    <span matSuffix>picks</span>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>picks per inch</mat-label>
-                    <input matInput type="number" [(ngModel)]="ppi" [disabled]="trompAsWrit">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>length in loom</mat-label>
-                    <input matInput type="number" [(ngModel)]="workingLength">
-                    <span matSuffix>inches</span>
-                </mat-form-field>
-                <mat-form-field class="mixed">
-                    <mat-label>yarn type</mat-label>
-                    <mat-select [(value)]="weftMaterial">
-                        <mat-option value="bamboo">bamboo</mat-option>
-                        <mat-option value="cottolin">cottolin</mat-option>
-                        <mat-option value="cotton">cotton</mat-option>
-                        <mat-option value="hemp">hemp</mat-option>
-                        <mat-option value="silk">silk</mat-option>
-                        <mat-option value="tensel">tensel</mat-option>
-                        <mat-option value="wool">wool</mat-option>
-                        <mat-option value="wool/silk">wool/silk</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>draw-in</mat-label>
-                    <input matInput type="number" [(ngModel)]="weftDrawIn">
-                    <span matSuffix>%</span>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>shrinkage</mat-label>
-                    <input matInput type="number" [(ngModel)]="weftShrinkage">
-                    <span matSuffix>%</span>
-                </mat-form-field>
+            <section align="end">
+                <button mat-button (click)="update()">Update</button>
             </section>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion>
+        <mat-expansion-panel expanded="false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Instructions
+                </mat-panel-title>
+            </mat-expansion-panel-header>
             <section>
-                <label class="subheading">Yarn Breakdown</label>
+            </section>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion>
+        <mat-expansion-panel expanded="false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Yarn Breakdown
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <section>
                 <label>total yardage: {{totalIn / 36 | ceil }} yds</label>
                 <label>total warp yardage: {{warpIn / 36 | ceil }} yds</label>
                 <label>total weft yardage: {{weftIn / 36 | ceil }} yds</label>
@@ -144,16 +170,15 @@
             <section>
                 <label>finished width:</label>
                 <label>finished length:</label>
-                <!-- project preview -->
             </section>
             <section>
                 <label>width repeats:</label>
                 <label>length repeats:</label>
                 <!-- project preview -->
             </section>
-        </section>
-    </mat-expansion-panel>
-</mat-accordion>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
 
 <ng-template #srtDialog>
     <h2 matDialogTitle>Scottish Registry of Tartans</h2>

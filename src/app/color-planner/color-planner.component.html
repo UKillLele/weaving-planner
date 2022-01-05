@@ -1,5 +1,5 @@
-<mat-grid-list [cols]="direction == 'vertical' ? 1 : boxCount" *ngIf="selectedBoxGroup" [dir]="direction !='vertical' ? 'rtl' : 'ltr'">
-    <mat-grid-tile 
+<div class="row" *ngIf="selectedBoxGroup" [dir]="direction !='vertical' ? 'rtl' : 'ltr'">
+    <div 
         [id]="box?.id" 
         *ngFor="let box of selectedBoxGroup" 
         [class]="box?.border" 
@@ -8,5 +8,7 @@
         (mouseup)="selectBox(box?.id, 'up')"
         (mouseover)="selectBox(box?.id, 'over')"
     >
-    </mat-grid-tile>
-</mat-grid-list>
+    </div>
+</div>
+
+<!-- [cols]="direction == 'vertical' ? 1 : boxCount" -->

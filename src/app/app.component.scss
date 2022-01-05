@@ -2,22 +2,20 @@
     display: flex;
     align-items: stretch;
     width: 100%;
+    margin-bottom: 10px;
+}
+.invisible {
+    display: none;
 }
 .col {
     height: 100px;
 }
-app-threading-planner {
-    background-color: aqua;
-}
-app-tie-up-planner {
-    background-color: orange;
-}
 app-pattern-visualizer {
-    background-color: pink;
     overflow-x: hidden !important;
 }
-app-treadling-planner {
-    background-color: yellowgreen;
+
+.rightCol {
+    margin-left: 10px;
 }
 
 .overflow {

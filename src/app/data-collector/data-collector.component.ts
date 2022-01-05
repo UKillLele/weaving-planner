@@ -42,6 +42,7 @@ export class DataCollectorComponent implements OnInit {
   totalIn: number = 0;
   srtThreadcount: string = "";
   srtPalette: string = "";
+  viewPatternInfo: boolean = true;
   
   @ViewChild('srtDialog') srtDialog!: TemplateRef<any>;
 
@@ -83,6 +84,19 @@ export class DataCollectorComponent implements OnInit {
       this.threadingBoxes = threadingBoxes;
       this.calculateYarn();
     });
+  }
+
+  update() {
+    this.shafts? this.weavingService.changeShafts(this.shafts) : null;
+    this.treadles ? this.weavingService.changeTreadles(this.treadles) : null;
+    this.weavingService.changeTromp(this.trompAsWrit);
+    this.weavingService.changeHalfSett(this.halfSett);
+    this.patternLength ? this.weavingService.changePatternLength(this.patternLength) : null;
+    this.patternWidth ? this.weavingService.changePatternWidth(this.patternWidth) : null;
+    this.epi ? this.weavingService.changeEpi(this.epi) : null;
+    this.workingWidth ? this.weavingService.changeWorkingWidth(this.workingWidth) : null;
+    this.colorBoxes ? this.weavingService.changeColorBoxes(this.colorBoxes) : null;
+    this.viewPatternInfo = false;
   }
 
   openSRT() {
@@ -137,47 +151,21 @@ export class DataCollectorComponent implements OnInit {
         }
       }
     });
-    this.colorBoxesChanged();
     // set patternWidth
     this.patternWidth = this.colorBoxes[0].length;
     this.patternWidthChanged();
   }
 
-  shaftsChanged() {
-    this.shafts? this.weavingService.changeShafts(this.shafts) : null;
-  }
-  treadlesChanged() {
-    this.treadles ? this.weavingService.changeTreadles(this.treadles) : null;
-  }
   trompChanged() {
-    this.weavingService.changeTromp(this.trompAsWrit);
     if (this.trompAsWrit) {
       this.patternLength = this.patternWidth;
       this.ppi = this.epi;
-      this.patternLengthChanged();
     }
-  }
-  halfSettChanged() {
-    this.weavingService.changeHalfSett(this.halfSett);
-  }
-  patternLengthChanged() {
-    this.patternLength ? this.weavingService.changePatternLength(this.patternLength) : null;
   }
   patternWidthChanged() {
-    this.patternWidth ? this.weavingService.changePatternWidth(this.patternWidth) : null;
     if (this.trompAsWrit) {
       this.patternLength = this.patternWidth;
-      this.patternLengthChanged();
     }
-  }
-  epiChanged() {
-    this.epi ? this.weavingService.changeEpi(this.epi) : null;
-  }
-  workingWidthChanged() {
-    this.workingWidth ? this.weavingService.changeWorkingWidth(this.workingWidth) : null;
-  }
-  colorBoxesChanged() {
-    this.colorBoxes ? this.weavingService.changeColorBoxes(this.colorBoxes) : null;
   }
 
   calculateYarn() {
@@ -201,6 +189,7 @@ export class DataCollectorComponent implements OnInit {
         });
       });
       // calculate number of weft and warp threads of color times width and length
+      // TODO: add multipliers (e.g. repeats) and additions (e.g. selvage, fringe)
       // weft threads
       this.treadlingBoxes.forEach(weft => {
         const colorBox = this.colorBoxes[1].find(x => x.y == weft.y);

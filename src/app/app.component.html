@@ -1,24 +1,26 @@
 <div class="main-container">
     <app-data-collector></app-data-collector>
     <app-palette (previewEvent)="openPreview($event)"></app-palette>
-    <div class="row">
+    <div [ngClass]="{'row': true, 'invisible': !treadles}">
       <app-threading-planner 
         [style.width]="leftCol + 'vw'" 
         class="overflow" 
         cdkScrollable
       ></app-threading-planner>
       <app-tie-up-planner 
+        class="rightCol"
         [style.padding]="internalWidth > 100 ? '0 0 15px 0' : '0 0 2px 0'" 
         [style.width]="rightCol + 'vw'" 
       >/</app-tie-up-planner>
     </div>
-    <div class="row">
+    <div [ngClass]="{'row': true, 'invisible': !treadles}">
       <app-pattern-visualizer 
         [style.width]="leftCol + 'vw'" 
         class="overflow"
         cdkScrollable
       ></app-pattern-visualizer>
       <app-treadling-planner 
+        class="rightCol"
         [style.width]="rightCol + 'vw'" 
       ></app-treadling-planner>
     </div>

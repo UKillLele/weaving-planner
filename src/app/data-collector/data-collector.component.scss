@@ -1,4 +1,4 @@
-.heading, .subheading {
+.subheading {
     display: block;
 }
 .input-container {
@@ -10,10 +10,19 @@ section {
         padding: 5px;
     }
 }
-mat-accordion {
-    width: 100vw;
-}
 input {
     text-align: right;
     width: auto;
+}
+mat-accordion:first-child mat-expansion-panel:last-of-type {
+    border-radius: 4px 4px  0 0;
+}
+mat-accordion:not(:first-child) mat-expansion-panel {
+    border-top: 1px solid gray;
+}
+mat-accordion:last-child mat-expansion-panel {
+    border-radius: 0 0 4px 4px;
+}
+mat-accordion:not(:first-child, :last-child) mat-expansion-panel {
+    border-radius: 0;
 }
