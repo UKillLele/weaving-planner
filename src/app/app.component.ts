@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterViewInit, ViewChild, TemplateRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ScrollDispatcher, CdkScrollable } from '@angular/cdk/scrolling';
 import { WeavingService } from 'src/services/weaving.service';
 
@@ -21,7 +20,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   constructor(
     private weavingService: WeavingService,
     private scrollDispatcher: ScrollDispatcher,
-    public dialog: MatDialog
+    //public dialog: MatDialog
     ) { }
 
   ngOnInit(): void {

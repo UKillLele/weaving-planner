@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Box } from 'src/models/box.model';
 import { WeavingService } from 'src/services/weaving.service';
-import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-treadling-planner',
@@ -30,8 +29,6 @@ export class TreadlingPlannerComponent implements OnInit {
       this.repeat();
     }
   }
-  
-  @ViewChild('matMenuTrigger') matMenuTrigger!: MatMenuTrigger; 
 
   constructor(private weavingService: WeavingService) { }
 
@@ -136,7 +133,7 @@ export class TreadlingPlannerComponent implements OnInit {
       else {
         this.menuTopLeftPosition.x = event.clientX + 'px'; 
         this.menuTopLeftPosition.y = event.clientY + 'px'; 
-        this.matMenuTrigger.openMenu(); 
+        //this.matMenuTrigger.openMenu(); 
       }
     } else {
       if (event.ctrlKey) {

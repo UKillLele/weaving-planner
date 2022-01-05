@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { Box } from 'src/models/box.model';
 import { WeavingService } from 'src/services/weaving.service';
 
@@ -27,8 +26,6 @@ export class ThreadingPlannerComponent implements OnInit {
       this.repeat();
     }
   }
-  
-  @ViewChild('matMenuTrigger') matMenuTrigger!: MatMenuTrigger; 
 
   constructor(private weavingService: WeavingService) { }
 
@@ -121,7 +118,7 @@ export class ThreadingPlannerComponent implements OnInit {
       else {
         this.menuTopLeftPosition.x = event.clientX + 'px'; 
         this.menuTopLeftPosition.y = event.clientY + 'px'; 
-        this.matMenuTrigger.openMenu(); 
+        //this.matMenuTrigger.openMenu(); 
       }
     } else {
       if (event.ctrlKey) {

@@ -11,17 +11,8 @@ import { ColorPlannerComponent } from './color-planner/color-planner.component';
 import { PaletteComponent } from './palette/palette.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatSelectModule } from '@angular/material/select';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatMenuModule } from '@angular/material/menu';
 import { NgCeilPipeModule } from 'angular-pipes';
 import { NgxColorsModule } from 'ngx-colors';
 
@@ -40,19 +31,10 @@ import { NgxColorsModule } from 'ngx-colors';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MatExpansionModule,
-    MatIconModule,
     FormsModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    MatGridListModule,
     ScrollingModule,
     NgxColorsModule,
     NgCeilPipeModule,
-    MatDialogModule,
-    MatProgressSpinnerModule,
-    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

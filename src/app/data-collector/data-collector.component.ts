@@ -1,5 +1,4 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { Box } from 'src/models/box.model';
 import { WeavingService } from 'src/services/weaving.service';
 declare let ntc: any;
@@ -48,7 +47,7 @@ export class DataCollectorComponent implements OnInit {
 
   constructor(
     private weavingService: WeavingService,
-    public dialog: MatDialog
+   // public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
