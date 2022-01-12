@@ -1,5 +1,5 @@
 <div [style.width]="internalWidth + '%'">
-    <div [cols]="patternWidth" dir="rtl">
+    <div dir="rtl">
         <div 
             [id]="box.id" 
             *ngFor="let box of threadingBoxes" 
@@ -14,20 +14,21 @@
     </div>
     <app-color-planner direction="horizontal" [boxCount]="patternWidth"></app-color-planner>
 </div>
+<!--  [cols]="patternWidth"  -->
 
-<div style="visibility: hidden; position: fixed;" 
+<!-- <div style="visibility: hidden; position: fixed;" 
     [style.left]="menuTopLeftPosition.x" 
     [style.top]="menuTopLeftPosition.y" 
     [matMenuTriggerFor]="rightMenu"
     #matMenuTrigger="matMenuTrigger"
 >
-</div> 
+</div>  -->
  
 <!-- standard material menu --> 
-<div #rightMenu="matMenu"> 
+<!-- <div #rightMenu="matMenu"> 
   <ng-template matMenuContent> 
     <button div-item (click)="repeat()" *ngIf="startSelect === 1 || endSelect === 1">Repeat</button>
     <button div-item (click)="repeatOverSelection()">Repeat over selection</button>
     <button div-item (click)="cancel()">Cencel</button>
   </ng-template> 
-</div> 
+</div>  -->

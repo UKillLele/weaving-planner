@@ -1,7 +1,9 @@
 <div [style.marginLeft]="margin + 'vw'">
-    <div [cols]="treadles">
+    <div>
         <div [id]="box.id" *ngFor="let box of tieUpBoxes" [class]="box.border">
             <div matInput type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"></div>
         </div>
     </div>
 </div>
+
+<!--  [cols]="treadles" -->

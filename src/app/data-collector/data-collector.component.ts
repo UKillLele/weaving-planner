@@ -99,7 +99,7 @@ export class DataCollectorComponent implements OnInit {
   }
 
   openSRT() {
-    this.dialog.open(this.srtDialog);
+    // this.dialog.open(this.srtDialog);
   }
 
   useSRT() {

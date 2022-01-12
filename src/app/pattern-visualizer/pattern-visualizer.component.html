@@ -1,6 +1,7 @@
 <div [style.width]="internalWidth + '%'">
-    <div [cols]="patternWidth" dir="rtl">
+    <div dir="rtl">
         <div [id]="box.id" *ngFor="let box of visualizerBoxes" [class]="box.border" [style.backgroundColor]="box.color">
         </div>
     </div>
 </div>
+<!-- [cols]="patternWidth"  -->

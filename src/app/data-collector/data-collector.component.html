@@ -1,11 +1,12 @@
 <div>
     <div>
-        <div [expanded]="viewPatternInfo">
-            <div-header>
+        <!-- [expanded]="viewPatternInfo" -->
+        <div >
+            <header>
             <div>
                 Pattern Information
             </div>
-            </div-header>
+            </header>
             <section>
                 <div>
                     <div>pattern name</div>
@@ -53,10 +54,11 @@
                     </div>
                     <div class="mixed">
                         <div>finishing</div>
-                        <div [(value)]="edgeType">
-                            <div value="fringe">fringe</div>
-                            <div value="hem">hem</div>
-                        </div>
+                        <!--  [(value)]="edgeType" -->
+                        <select>
+                            <option value="fringe">fringe</option>
+                            <option value="hem">hem</option>
+                        </select>
                         <input matSuffix matInput type="number" [(ngModel)]="edgeLength">
                         <span matSuffix>inches</span>
                     </div>
@@ -66,16 +68,17 @@
                     </div>
                     <div class="mixed">
                         <div>yarn type</div>
-                        <div [(value)]="warpMaterial">
-                            <div value="bamboo">bamboo</div>
-                            <div value="cottolin">cottolin</div>
-                            <div value="cotton">cotton</div>
-                            <div value="hemp">hemp</div>
-                            <div value="silk">silk</div>
-                            <div value="tensel">tensel</div>
-                            <div value="wool">wool</div>
-                            <div value="wool/silk">wool/silk</div>
-                        </div>
+                        <!--  [(value)]="warpMaterial" -->
+                        <select>
+                            <option value="bamboo">bamboo</option>
+                            <option value="cottolin">cottolin</option>
+                            <option value="cotton">cotton</option>
+                            <option value="hemp">hemp</option>
+                            <option value="silk">silk</option>
+                            <option value="tensel">tensel</option>
+                            <option value="wool">wool</option>
+                            <option value="wool/silk">wool/silk</option>
+                        </select>
                     </div>
                     <div>
                         <div>draw-in</div>
@@ -106,16 +109,17 @@
                     </div>
                     <div class="mixed">
                         <div>yarn type</div>
-                        <div [(value)]="weftMaterial">
-                            <div value="bamboo">bamboo</div>
-                            <div value="cottolin">cottolin</div>
-                            <div value="cotton">cotton</div>
-                            <div value="hemp">hemp</div>
-                            <div value="silk">silk</div>
-                            <div value="tensel">tensel</div>
-                            <div value="wool">wool</div>
-                            <div value="wool/silk">wool/silk</div>
-                        </div>
+                        <!-- [(value)]="weftMaterial" -->
+                        <select >
+                            <option value="bamboo">bamboo</option>
+                            <option value="cottolin">cottolin</option>
+                            <option value="cotton">cotton</option>
+                            <option value="hemp">hemp</option>
+                            <option value="silk">silk</option>
+                            <option value="tensel">tensel</option>
+                            <option value="wool">wool</option>
+                            <option value="wool/silk">wool/silk</option>
+                        </select>
                     </div>
                     <div>
                         <div>draw-in</div>
@@ -137,11 +141,11 @@
 
     <div>
         <div expanded="false">
-            <div-header>
+            <header>
                 <div>
                     Instructions
                 </div>
-            </div-header>
+            </header>
             <section>
             </section>
         </div>
@@ -149,11 +153,11 @@
 
     <div>
         <div expanded="false">
-            <div-header>
+            <header>
                 <div>
                     Yarn Breakdown
                 </div>
-            </div-header>
+            </header>
             <section>
                 <label>total yardage: {{totalIn / 36 | ceil }} yds</label>
                 <label>total warp yardage: {{warpIn / 36 | ceil }} yds</label>
@@ -180,7 +184,7 @@
     </div>
 </div>
 
-<ng-template #srtDialog>
+<!-- <ng-template #srtDialog>
     <h2 matDialogTitle>Scottish Registry of Tartans</h2>
     <div>
         <div>
@@ -196,4 +200,4 @@
         <button div matDialogClose color="secondary">Cancel</button>
         <button div matDialogClose color="primary" (click)="useSRT()">OK</button>
     </div>
-</ng-template>
+</ng-template> -->

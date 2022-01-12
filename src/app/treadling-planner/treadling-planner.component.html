@@ -1,9 +1,9 @@
-<div [cols]="treadles +1">
-    <div colspan="1" [rowspan]="patternLength">
+<div >
+    <div colspan="1">
         <app-color-planner [style.width]="colorWidth + 'vw'" class="vertical" direction="vertical" [boxCount]="patternLength"></app-color-planner>
     </div>
-    <div [colspan]="treadles" [rowspan]="patternLength">
-        <div [style.width]="boxesWidth + 'vw'" class="vertical" [cols]="treadles">
+    <div>
+        <div [style.width]="boxesWidth + 'vw'" class="vertical">
             <div 
                 [id]="box.id" 
                 *ngFor="let box of treadlingBoxes" [class]="box.border"
@@ -23,6 +23,10 @@
     [style.top]="menuTopLeftPosition.y" 
 >
 </div> 
+<!-- [cols]="treadles +1" -->
+<!--  [cols]="treadles" -->
+<!--  [rowspan]="patternLength" -->
+<!--  [colspan]="treadles" [rowspan]="patternLength" -->
  
 <!-- standard material menu --> 
 <!-- <div #rightMenu="matMenu"> 

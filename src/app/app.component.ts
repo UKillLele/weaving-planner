@@ -65,6 +65,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   openPreview(e: Event) {
-    this.dialog.open(this.previewDialog);
+    // this.dialog.open(this.previewDialog);
   }
 }
