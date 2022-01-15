@@ -1,185 +1,269 @@
-<div>
-    <div>
-        <!-- [expanded]="viewPatternInfo" -->
-        <div >
-            <header>
-            <div>
+<div class="accordion" id="dataAccordion">
+    <div class="accordion-item">
+        <div class="accordion-header" id="patternInfo">
+            <button class="accordion-button" type="button" (click)="collapse.toggle()" [attr.aria-expanded]="viewPatternInfo" aria-controls="collapseInfo">
                 Pattern Information
+            </button>
+        </div>
+        <div class="accordion-collapse collapse show" id="collapseInfo" aria-labelledby="patternInfo" data-bs-parent="#dataAccordion" #collapse="ngbCollapse" [(ngbCollapse)]="!viewPatternInfo">
+            <form class="accordion-body container-fluid">
+                <div class="row row-col-auto">
+                    <div class="col col-auto mb-3">
+                        <div class="form-floating">
+                            <input class="form-control" type="text" placeholder="pattern name" formControlName="name" id="name">
+                            <label for="name">pattern name</label>
+                        </div>
+                    </div>
+                    <div class="col col-auto mb-3">
+                        <div class="form-floating">
+                            <input class="form-control" type="number" placeholder="shafts" id="shafts">
+                            <label for="shafts">shafts</label>
+                        </div>
+                    </div>
+                    <div class="col col-auto mb-3">
+                        <div class="form-floating">
+                            <input class="form-control" type="number" placeholder="treadles" id="treadles" formControlName="treadles">
+                            <label for="treadles">treadles</label>
+                        </div>
+                    </div>
+                    <div class="col col-auto my-auto">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" formControlName="trompAsWrit" (change)="trompChanged()" id="trompAsWrit">
+                            <label class="form-check-label" for="trompAsWrit">
+                                tromp as writ
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col col-auto my-auto">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" formControlName="halfSett" (change)="settChanged()" id="halfSett">
+                            <label class="form-check-label" for="halfSett">
+                                half sett
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col col-auto my-auto">
+                        <button class="btn btn-primary mb-3" (click)="openSRT()">SRT</button>
+                    </div>
+                </div>
+                <section>
+                    <h1 class="h3">Warp</h1>
+                    <div class="row row-col-auto">
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" (change)="patternWidthChanged()" placeholder="patternWidth" id="patternWidth" formControlName="patternWidth">
+                                    <label for="patternWidth">pattern width</label>
+                                </div>
+                                <span class="input-group-text">ends</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" placeholder="epi" id="epi" formControlName="epi">
+                                <label for="epi">ends per inch</label>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" placeholder="working width" id="workingWidth" formControlName="workingWidth">
+                                    <label for="workingWidth">width in loom</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" id="selvageWidth" placeholder="selvage" type="number" formControlName="selvageWidth"/>
+                                    <label for="selvageWidth">selvage</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" id="waste" placeholder="loom waste" type="number" formControlName="waste">
+                                    <label for="waste">loom waste</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <select class="form-select" id="edgeType" formControlName="edgeType">
+                                        <option value="fringe">fringe</option>
+                                        <option value="hem">hem</option>
+                                    </select>
+                                    <label for="edgeType">edge type</label>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="edgeLength" placeholder="edge length" type="number" formControlName="edgeLength">
+                                    <label for="edgeLength">edge length</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="pieces" placeholder="pieces" formControlName="pieces">
+                                    <label for="pieces"># of pieces</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="warpMaterial" formControlName="warpMaterial">
+                                    <option value="bamboo">bamboo</option>
+                                    <option value="cottolin">cottolin</option>
+                                    <option value="cotton">cotton</option>
+                                    <option value="hemp">hemp</option>
+                                    <option value="silk">silk</option>
+                                    <option value="tensel">tensel</option>
+                                    <option value="wool">wool</option>
+                                    <option value="wool/silk">wool/silk</option>
+                                </select>
+                                <label for="warpMaterial">yarn type</label>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="warpDrawIn" placeholder="draw-in" formControlName="warpDrawIn">
+                                    <label for="warpDrawIn">draw-in</label>
+                                </div>
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="warpShrinkage" placeholder="shrinkage" formControlName="warpShrinkage">
+                                    <label for="warpShrinkage">shrinkage</label>
+                                </div>
+                                <span class="input-group-text" for="">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h1 class="h3">Weft</h1>
+                    <div class="row row-col-auto">
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="patternLength" placeholder="pattern length" formControlName="patternLength" [disabled]="patternForm.controls['trompAsWrit'].value">
+                                    <label for="patternLength">pattern length</label>
+                                </div>
+                                <span class="input-group-text">picks</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="form-floating">
+                                <input class="form-control" type="number" id="ppi" placeholder="picks per inch" formControlName="ppi" [disabled]="patternForm.controls['trompAsWrit'].value">
+                                <label for="ppi">picks per inch</label>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="working-length" placeholder="length in loom" formControlName="workingLength">
+                                    <label for="workingLength">length in loom</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="weftMaterial" formControlName="weftMaterial">
+                                    <option value="bamboo">bamboo</option>
+                                    <option value="cottolin">cottolin</option>
+                                    <option value="cotton">cotton</option>
+                                    <option value="hemp">hemp</option>
+                                    <option value="silk">silk</option>
+                                    <option value="tensel">tensel</option>
+                                    <option value="wool">wool</option>
+                                    <option value="wool/silk">wool/silk</option>
+                                </select>
+                                <label for="weftMaterial">yarn type</label>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="weftDrawIn" placeholder="draw-in" formControlName="weftDrawIn">
+                                    <label for="weftDrawIn">draw-in</label>
+                                </div>
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="weftShrinkage" placeholder="shrinkage" formControlName="weftShrinkage">
+                                    <label for="weftShrinkage">shrinkage</label>
+                                </div>
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section align="end">
+                    <button class="btn btn-primary" (click)="update()">Update</button>
+                </section>
+            </form>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <div class="accordion-header" id="instructions">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructions" aria-expanded="false" aria-controls="collapseInstructions">
+                Instructions
+            </button>
+        </div>
+        <div class="accordion-collapse collapse" id="collapseInstructions" aria-labelledby="instructions" data-bs-parent="#dataAccordion">
+            <div class="accordion-body">
+                <section>
+                </section>
             </div>
-            </header>
-            <section>
-                <div>
-                    <div>pattern name</div>
-                    <input matInput type="text" [(ngModel)]="name">
-                    <button *ngIf="name" matSuffix div-button aria-label="Clear" (click)="name=''">
-                        <div>close</div>
-                    </button>
-                </div>
-                <div>
-                    <div>shafts</div>
-                    <input matInput type="number" [(ngModel)]="shafts">
-                </div>
-                <div>
-                    <div>treadles</div>
-                    <input matInput type="number" [(ngModel)]="treadles">
-                </div>
-                <div matInput type="checkbox" (change)="trompChanged()" [(ngModel)]="trompAsWrit">tromp as writ</div>
-                <div matInput type="checkbox" [(ngModel)]="halfSett">half sett</div>
-                <button div (click)="openSRT()">SRT</button>
-                <section>
-                    <label class="subheading">Warp</label>
-                    <div>
-                        <div>pattern width</div>
-                        <input matInput type="number" (change)="patternWidthChanged()" [(ngModel)]="patternWidth">
-                        <span matSuffix>ends</span>
-                    </div>
-                    <div>
-                        <div>ends per inch</div>
-                        <input matInput type="number" [(ngModel)]="epi">
-                    </div>
-                    <div>
-                        <div>width in loom</div>
-                        <input matInput type="number" [(ngModel)]="workingWidth">
-                        <span matSuffix>inches</span>
-                    </div>
-                    <div>
-                        <div>selvage</div>
-                        <input matInput type="number" [(ngModel)]="selvageWidth">
-                        <span matSuffix>inches</span>
-                    </div>
-                    <div>
-                        <div>loom waste</div>
-                        <input matInput type="number" [(ngModel)]="waste">
-                        <span matSuffix>inches</span>
-                    </div>
-                    <div class="mixed">
-                        <div>finishing</div>
-                        <!--  [(value)]="edgeType" -->
-                        <select>
-                            <option value="fringe">fringe</option>
-                            <option value="hem">hem</option>
-                        </select>
-                        <input matSuffix matInput type="number" [(ngModel)]="edgeLength">
-                        <span matSuffix>inches</span>
-                    </div>
-                    <div>
-                        <div># of pieces</div>
-                        <input matInput type="number" [(ngModel)]="pieces">
-                    </div>
-                    <div class="mixed">
-                        <div>yarn type</div>
-                        <!--  [(value)]="warpMaterial" -->
-                        <select>
-                            <option value="bamboo">bamboo</option>
-                            <option value="cottolin">cottolin</option>
-                            <option value="cotton">cotton</option>
-                            <option value="hemp">hemp</option>
-                            <option value="silk">silk</option>
-                            <option value="tensel">tensel</option>
-                            <option value="wool">wool</option>
-                            <option value="wool/silk">wool/silk</option>
-                        </select>
-                    </div>
-                    <div>
-                        <div>draw-in</div>
-                        <input matInput type="number" [(ngModel)]="warpDrawIn">
-                        <span matSuffix>%</span>
-                    </div>
-                    <div>
-                        <div>shrinkage</div>
-                        <input matInput type="number" [(ngModel)]="warpShrinkage">
-                        <span matSuffix>%</span>
-                    </div>
-                </section>
-                <section>
-                    <label class="subheading">Weft</label>
-                    <div>
-                        <div>pattern length</div>
-                        <input matInput type="number" [(ngModel)]="patternLength" [disabled]="trompAsWrit">
-                        <span matSuffix>picks</span>
-                    </div>
-                    <div>
-                        <div>picks per inch</div>
-                        <input matInput type="number" [(ngModel)]="ppi" [disabled]="trompAsWrit">
-                    </div>
-                    <div>
-                        <div>length in loom</div>
-                        <input matInput type="number" [(ngModel)]="workingLength">
-                        <span matSuffix>inches</span>
-                    </div>
-                    <div class="mixed">
-                        <div>yarn type</div>
-                        <!-- [(value)]="weftMaterial" -->
-                        <select >
-                            <option value="bamboo">bamboo</option>
-                            <option value="cottolin">cottolin</option>
-                            <option value="cotton">cotton</option>
-                            <option value="hemp">hemp</option>
-                            <option value="silk">silk</option>
-                            <option value="tensel">tensel</option>
-                            <option value="wool">wool</option>
-                            <option value="wool/silk">wool/silk</option>
-                        </select>
-                    </div>
-                    <div>
-                        <div>draw-in</div>
-                        <input matInput type="number" [(ngModel)]="weftDrawIn">
-                        <span matSuffix>%</span>
-                    </div>
-                    <div>
-                        <div>shrinkage</div>
-                        <input matInput type="number" [(ngModel)]="weftShrinkage">
-                        <span matSuffix>%</span>
-                    </div>
-                </section>
-            </section>
-            <section align="end">
-                <button div (click)="update()">Update</button>
-            </section>
         </div>
     </div>
 
-    <div>
-        <div expanded="false">
-            <header>
-                <div>
-                    Instructions
-                </div>
-            </header>
-            <section>
-            </section>
+    <div class="accordion-item">
+        <div class="accordion-header" id="yarnBreakdown">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBreakdown" aria-expanded="false" aria-controls="collapseBreakdown">
+                Yarn Breakdown
+            </button>
         </div>
-    </div>
-
-    <div>
-        <div expanded="false">
-            <header>
-                <div>
-                    Yarn Breakdown
-                </div>
-            </header>
-            <section>
-                <label>total yardage: {{totalIn / 36 | ceil }} yds</label>
-                <label>total warp yardage: {{warpIn / 36 | ceil }} yds</label>
-                <label>total weft yardage: {{weftIn / 36 | ceil }} yds</label>
-                <div *ngFor="let color of colors">
-                    <label>
-                        {{color.colorName}}{{!color.perfectMatch ? "*" : ""}} 
-                        <span style="width: 15px; height: 15px; display: inline-block;" [style.backgroundColor]="color.colorCode"></span>
-                        : {{color.colorInches / 36 | ceil }} yds
-                    </label>
-                </div>
-                <div *ngIf="colors.length > 0" style="font-size: 8pt;">color names provided by <a href="https://chir.ag/projects/name-that-color/#6195ED" style="color:aqua">Chirag Mehta</a>. * denotes imperfect match</div>
-            </section>
-            <section>
-                <label>finished width:</label>
-                <label>finished length:</label>
-            </section>
-            <section>
-                <label>width repeats:</label>
-                <label>length repeats:</label>
-                <!-- project preview -->
-            </section>
+        <div class="accordion-collapse collapse" id="collapseBreakdown" aria-labelledby="yarnBreakdown" data-bs-parent="#dataAccordion">
+            <div class="accordion-body">
+                <section>
+                    <label>total yardage: {{totalIn / 36 | ceil }} yds</label>
+                    <label>total warp yardage: {{warpIn / 36 | ceil }} yds</label>
+                    <label>total weft yardage: {{weftIn / 36 | ceil }} yds</label>
+                    <div *ngFor="let color of colors">
+                        <label>
+                            {{color.colorName}}{{!color.perfectMatch ? "*" : ""}} 
+                            <span style="width: 15px; height: 15px; display: inline-block;" [style.backgroundColor]="color.colorCode"></span>
+                            : {{color.colorInches / 36 | ceil }} yds
+                        </label>
+                    </div>
+                    <div *ngIf="colors.length > 0" style="font-size: 8pt;">color names provided by <a href="https://chir.ag/projects/name-that-color/#6195ED" style="color:aqua">Chirag Mehta</a>. * denotes imperfect match</div>
+                </section>
+                <section>
+                    <label>finished width:</label>
+                    <label>finished length:</label>
+                </section>
+                <section>
+                    <label>width repeats:</label>
+                    <label>length repeats:</label>
+                    <!-- project preview -->
+                </section>
+            </div>
         </div>
     </div>
 </div>
@@ -189,11 +273,11 @@
     <div>
         <div>
             <label>Threadcount</label>
-            <input type="text" placeholder="e.g. G20R4B40W4R4W4A40W4A40W4Y4" [(ngModel)]="srtThreadcount"/>
+            <input type="text" placeholder="e.g. G20R4B40W4R4W4A40W4A40W4Y4" formControlName="srtThreadcount"/>
         </div>
         <div>
             <label>Palette</label>
-            <textarea placeholder="e.g. W=E0E0E0WHITE;A=5C8CA8AZURE;R=C80000RED;B=2C2C80BLUE;G=006818GREEN;Y=E8C000YELLOW" [(ngModel)]="srtPalette"></textarea>
+            <textarea placeholder="e.g. W=E0E0E0WHITE;A=5C8CA8AZURE;R=C80000RED;B=2C2C80BLUE;G=006818GREEN;Y=E8C000YELLOW" formControlName="srtPalette"></textarea>
         </div>
     </div>
     <div align="end">

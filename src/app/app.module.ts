@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -11,6 +12,7 @@ import { ColorPlannerComponent } from './color-planner/color-planner.component';
 import { PaletteComponent } from './palette/palette.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgCeilPipeModule } from 'angular-pipes';
@@ -31,10 +33,12 @@ import { NgxColorsModule } from 'ngx-colors';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     FormsModule,
     ScrollingModule,
     NgxColorsModule,
     NgCeilPipeModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
