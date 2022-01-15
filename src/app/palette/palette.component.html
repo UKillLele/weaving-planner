@@ -1,31 +1,47 @@
-<div class="row">
-    <div class="col">
-        <span style="margin-left:10px;line-height: 33px;">
+<div class="row align-items-center m-3">
+    <div class="col col-auto">
+        <h1 class="h4">
             Palette:
-        </span>
-        <div *ngIf="colorPalette" class="col">
-            <div *ngFor="let color of colorPalette; let i = index;" 
-                class="paletteItem" 
-                (click)="selectOrDelete(i)"
-                [style.backgroundColor]="color"
-                [style.border]="i == selectedIndex ? '2px outset lightblue' : ''"
-            >
-                <div *ngIf="i == selectedIndex"
-                    (change)="selectedColorChanged()" 
-                    ngx-colors-trigger 
-                    [(ngModel)]="colorPalette[i]"
+        </h1>
+    </div>
+    <div class="col">
+        <div class="row">
+            <div class="col col-auto my-2" *ngFor="let color of colorPalette; let i = index;" >
+                <div
+                    class="rounded" 
+                    style="width: 2.75rem; height: 2.75rem;"
+                    (click)="selectOrDelete(i)"
+                    [style.backgroundColor]="color"
+                    [style.border]="i === selectedIndex ? '2px outset lightblue' : ''"
                 >
-                    &#x270E;
-                </div>
-                <div *ngIf="remove">
-                    x
+                    <button *ngIf="i === selectedIndex && edit"
+                        (change)="selectedColorChanged()" 
+                        ngx-colors-trigger="editable"
+                        [(ngModel)]="colorPalette[i]"
+                        class="btn"
+                    >
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </button>
+                    <button *ngIf="i === selectedIndex && !edit" class="btn">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="btn badge edit" (click)="addToPalette()">+</div>
-            <div class="btn badge remove" (click)="toggleRemove()">{{remove ? 'x' : '-'}}</div>
+    </div>
+    <div class="col col-auto">
+        <button class="btn btn-success rounded-circle" (click)="addToPalette()" aria-label="add">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+    </div>
+    <div class="col col-auto">
+        <div class="form-switch form-floating">
+            <input [disabled]="!selectedColor" type="checkbox" class="form-check-input form-control" style="width: 7rem; height: 2rem;" role="switch" id="edit" [(ngModel)]="edit" />
+            <label for="edit" class="text-light" *ngIf="edit">edit</label>
+            <label for="edit" class="right-0 text-light" style="left: auto;" *ngIf="!edit">remove</label>
         </div>
     </div>
-    <div *ngIf="previewAvailable" class="col" class="btn" (click)="openPreview()">Preview</div>
+    <div class="col col-auto">
+        <button class="btn btn-outline-primary" [disabled]="!previewAvailable" (click)="openPreview()">Preview</button>
+    </div>
 </div>

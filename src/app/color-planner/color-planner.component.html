@@ -1,4 +1,4 @@
-<div class="row" *ngIf="selectedBoxGroup" [dir]="direction !='vertical' ? 'rtl' : 'ltr'">
+<div class="row" *ngIf="selectedBoxGroup" [ngClass]="direction === 'vertical' ? 'd-block' : 'd-flex'" [dir]="direction !='vertical' ? 'rtl' : 'ltr'">
     <div 
         [id]="box?.id" 
         *ngFor="let box of selectedBoxGroup" 
@@ -10,5 +10,3 @@
     >
     </div>
 </div>
-
-<!-- [cols]="direction == 'vertical' ? 1 : boxCount" -->

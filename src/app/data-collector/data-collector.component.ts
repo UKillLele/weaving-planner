@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { NgbAccordion, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Box } from 'src/models/box.model';

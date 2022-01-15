@@ -10,8 +10,7 @@ export class PaletteComponent implements OnInit {
   colorPalette: string[] = [];
   selectedColor: string = '';
   selectedIndex: number = -1;
-  edit: boolean = false;
-  remove: boolean = false;
+  edit: boolean = true;
   previewAvailable: boolean = false;
 
   @Output() previewEvent = new EventEmitter<any>();
@@ -25,10 +24,12 @@ export class PaletteComponent implements OnInit {
   }
 
   selectOrDelete(index: number) {
-    if (this.remove)
+    if (!this.edit) {
       this.colorPalette.splice(index, 1);
-    else
-    {
+      this.selectedColor = '';
+      this.selectedIndex = -1;
+      if (this.colorPalette.length === 0) this.edit = true;
+    } else {
       this.selectedColor = this.colorPalette[index];
       this.selectedIndex = index;
     }
@@ -40,11 +41,10 @@ export class PaletteComponent implements OnInit {
     this.selectedIndex = this.colorPalette.length -1;
   }
 
-  toggleRemove() {
-    this.remove = !this.remove;
-    this.selectedIndex = -1;
-    this.selectedColor = "";
-  }
+  toggleEditRemove()
+ {
+   this.edit = !this.edit;
+ }
 
   selectedColorChanged() {
     this.selectedColor = this.colorPalette[this.selectedIndex];
