@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
 import { Box } from 'src/models/box.model';
 import { WeavingService } from 'src/services/weaving.service';
 declare let ntc: any;
@@ -10,6 +11,8 @@ declare let ntc: any;
   styleUrls: ['./data-collector.component.scss']
 })
 export class DataCollectorComponent implements OnInit {
+  @ViewChild('acc') accordionComponent!: NgbAccordion;
+  
   patternForm = this.fb.group({
     name: [ "" ],
     shafts: [ null ],
@@ -43,10 +46,7 @@ export class DataCollectorComponent implements OnInit {
   weftIn: number = 0;
   warpIn: number = 0;
   totalIn: number = 0;
-  viewPatternInfo: boolean = true;
   
-  @ViewChild('srtDialog') srtDialog!: TemplateRef<any>;
-
   constructor(
     private weavingService: WeavingService,
     private fb: FormBuilder
@@ -87,7 +87,7 @@ export class DataCollectorComponent implements OnInit {
     });
   }
 
-  update() {
+  onSubmit() {
     this.weavingService.changeShafts(this.patternForm.controls['shafts'].value ?? null);
     this.weavingService.changeTreadles(this.patternForm.controls['treadles'].value ?? null);
     this.weavingService.changeTromp(this.patternForm.controls['trompAsWrit'].value);
@@ -97,7 +97,7 @@ export class DataCollectorComponent implements OnInit {
     this.weavingService.changeEpi(this.patternForm.controls['epi'].value ?? null);
     this.weavingService.changeWorkingWidth(this.patternForm.controls['workingWidth'].value ?? null);
     this.weavingService.changeColorBoxes(this.colorBoxes ?? null);
-    this.viewPatternInfo = false;
+    this.accordionComponent.toggle('patternInfo');
   }
 
   openSRT() {
@@ -158,9 +158,16 @@ export class DataCollectorComponent implements OnInit {
   }
 
   trompChanged() {
+    const patternLength = this.patternForm.controls['patternLength'];
+    const ppi = this.patternForm.controls['ppi'];
     if (this.patternForm.controls['trompAsWrit'].value === true) {
-      this.patternForm.controls['patternLength'].setValue(this.patternForm.controls['patternWidth'].value);
-      this.patternForm.controls['ppi'].setValue(this.patternForm.controls['epi'].value);
+      patternLength.setValue(this.patternForm.controls['patternWidth'].value);
+      patternLength.disable();
+      ppi.setValue(this.patternForm.controls['epi'].value);
+      ppi.disable();
+    } else {
+      patternLength.enable();
+      ppi.enable();
     }
   }
 

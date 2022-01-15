@@ -1,12 +1,13 @@
-<div class="accordion" id="dataAccordion">
-    <div class="accordion-item">
-        <div class="accordion-header" id="patternInfo">
-            <button class="accordion-button" type="button" (click)="collapse.toggle()" [attr.aria-expanded]="viewPatternInfo" aria-controls="collapseInfo">
-                Pattern Information
-            </button>
-        </div>
-        <div class="accordion-collapse collapse show" id="collapseInfo" aria-labelledby="patternInfo" data-bs-parent="#dataAccordion" #collapse="ngbCollapse" [(ngbCollapse)]="!viewPatternInfo">
-            <form class="accordion-body container-fluid">
+<ngb-accordion activeIds="patternInfo" #acc="ngbAccordion" animation="true">
+    <ngb-panel id="patternInfo">
+        <ng-template ngbPanelHeader let-opened="opened">
+            <div class="d-flex align-items-center justify-content-between">
+              <h1 class="h2 m-0">Pattern Information</h1>
+              <button ngbPanelToggle class="btn btn-link p-0" type="button" aria-label="toggle instructions"><i [ngClass]="['fa', opened ? 'fa-angle-up' : 'fa-angle-down', 'fa-2x']" aria-hidden="true"></i></button>
+            </div>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            <form [formGroup]="patternForm" (ngSubmit)="onSubmit()" class="container-fluid">
                 <div class="row row-col-auto">
                     <div class="col col-auto mb-3">
                         <div class="form-floating">
@@ -16,7 +17,7 @@
                     </div>
                     <div class="col col-auto mb-3">
                         <div class="form-floating">
-                            <input class="form-control" type="number" placeholder="shafts" id="shafts">
+                            <input class="form-control" type="number" placeholder="shafts" id="shafts" formControlName="shafts">
                             <label for="shafts">shafts</label>
                         </div>
                     </div>
@@ -43,11 +44,11 @@
                         </div>
                     </div>
                     <div class="col col-auto my-auto">
-                        <button class="btn btn-primary mb-3" (click)="openSRT()">SRT</button>
+                        <button class="btn btn-primary mb-3" type="button" (click)="openSRT()">SRT</button>
                     </div>
                 </div>
                 <section>
-                    <h1 class="h3">Warp</h1>
+                    <h2 class="h3">Warp</h2>
                     <div class="row row-col-auto">
                         <div class="col col-auto mb-3">
                             <div class="input-group">
@@ -151,12 +152,12 @@
                     </div>
                 </section>
                 <section>
-                    <h1 class="h3">Weft</h1>
+                    <h2 class="h3">Weft</h2>
                     <div class="row row-col-auto">
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" id="patternLength" placeholder="pattern length" formControlName="patternLength" [disabled]="patternForm.controls['trompAsWrit'].value">
+                                    <input class="form-control" type="number" id="patternLength" placeholder="pattern length" formControlName="patternLength">
                                     <label for="patternLength">pattern length</label>
                                 </div>
                                 <span class="input-group-text">picks</span>
@@ -164,7 +165,7 @@
                         </div>
                         <div class="col col-auto mb-3">
                             <div class="form-floating">
-                                <input class="form-control" type="number" id="ppi" placeholder="picks per inch" formControlName="ppi" [disabled]="patternForm.controls['trompAsWrit'].value">
+                                <input class="form-control" type="number" id="ppi" placeholder="picks per inch" formControlName="ppi">
                                 <label for="ppi">picks per inch</label>
                             </div>
                         </div>
@@ -213,60 +214,59 @@
                     </div>
                 </section>
                 <section align="end">
-                    <button class="btn btn-primary" (click)="update()">Update</button>
+                    <button class="btn btn-primary">Update</button>
                 </section>
             </form>
-        </div>
-    </div>
+        </ng-template>
+    </ngb-panel>
 
-    <div class="accordion-item">
-        <div class="accordion-header" id="instructions">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructions" aria-expanded="false" aria-controls="collapseInstructions">
-                Instructions
-            </button>
-        </div>
-        <div class="accordion-collapse collapse" id="collapseInstructions" aria-labelledby="instructions" data-bs-parent="#dataAccordion">
-            <div class="accordion-body">
-                <section>
-                </section>
+    <ngb-panel id="instructions">
+        <ng-template ngbPanelHeader let-opened="opened">
+            <div class="d-flex align-items-center justify-content-between">
+              <h1 class="h2 m-0">Instructions</h1>
+              <button ngbPanelToggle class="btn btn-link p-0" type="button" aria-label="toggle instructions"><i [ngClass]="['fa', opened ? 'fa-angle-up' : 'fa-angle-down', 'fa-2x']" aria-hidden="true"></i></button>
             </div>
-        </div>
-    </div>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            <section>
+                content
+            </section>
+        </ng-template>
+    </ngb-panel>
 
-    <div class="accordion-item">
-        <div class="accordion-header" id="yarnBreakdown">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBreakdown" aria-expanded="false" aria-controls="collapseBreakdown">
-                Yarn Breakdown
-            </button>
-        </div>
-        <div class="accordion-collapse collapse" id="collapseBreakdown" aria-labelledby="yarnBreakdown" data-bs-parent="#dataAccordion">
-            <div class="accordion-body">
-                <section>
-                    <label>total yardage: {{totalIn / 36 | ceil }} yds</label>
-                    <label>total warp yardage: {{warpIn / 36 | ceil }} yds</label>
-                    <label>total weft yardage: {{weftIn / 36 | ceil }} yds</label>
-                    <div *ngFor="let color of colors">
-                        <label>
-                            {{color.colorName}}{{!color.perfectMatch ? "*" : ""}} 
-                            <span style="width: 15px; height: 15px; display: inline-block;" [style.backgroundColor]="color.colorCode"></span>
-                            : {{color.colorInches / 36 | ceil }} yds
-                        </label>
+    <ngb-panel id="yarnBreakdown">
+        <ng-template ngbPanelHeader let-opened="opened">
+            <div class="d-flex align-items-center justify-content-between">
+              <h1 class="h2 m-0">Yarn Breakdown</h1>
+              <button ngbPanelToggle class="btn btn-link p-0" type="button" aria-label="toggle instructions"><i [ngClass]="['fa', opened ? 'fa-angle-up' : 'fa-angle-down', 'fa-2x']" aria-hidden="true"></i></button>
+            </div>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            <section class="row row-col-auto">
+                <div class="col col-auto">total yardage: {{totalIn / 36 | ceil }} yds</div>
+                <div class="col col-auto">total warp yardage: {{warpIn / 36 | ceil }} yds</div>
+                <div class="col col-auto">total weft yardage: {{weftIn / 36 | ceil }} yds</div>
+                <div class="col col-auto" *ngFor="let color of colors">
+                    <div>
+                        {{color.colorName}}{{!color.perfectMatch ? "*" : ""}} 
+                        <span style="width: 15px; height: 15px; display: inline-block;" [style.backgroundColor]="color.colorCode"></span>
+                        : {{color.colorInches / 36 | ceil }} yds
                     </div>
-                    <div *ngIf="colors.length > 0" style="font-size: 8pt;">color names provided by <a href="https://chir.ag/projects/name-that-color/#6195ED" style="color:aqua">Chirag Mehta</a>. * denotes imperfect match</div>
-                </section>
-                <section>
-                    <label>finished width:</label>
-                    <label>finished length:</label>
-                </section>
-                <section>
-                    <label>width repeats:</label>
-                    <label>length repeats:</label>
-                    <!-- project preview -->
-                </section>
-            </div>
-        </div>
-    </div>
-</div>
+                </div>
+                <div class="col col-auto" *ngIf="colors.length > 0" style="font-size: 8pt;">color names provided by <a href="https://chir.ag/projects/name-that-color/#6195ED" style="color:aqua">Chirag Mehta</a>. * denotes imperfect match</div>
+            </section>
+            <section class="row row-col-auto">
+                <div class="col col-auto">finished width:</div>
+                <div class="col col-auto">finished length:</div>
+            </section>
+            <section class="row row-col-auto">
+                <div class="col col-auto">width repeats:</div>
+                <div class="col col-auto">length repeats:</div>
+                <!-- project preview -->
+            </section>
+        </ng-template>
+    </ngb-panel>
+</ngb-accordion>
 
 <!-- <ng-template #srtDialog>
     <h2 matDialogTitle>Scottish Registry of Tartans</h2>
