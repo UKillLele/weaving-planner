@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordion, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Box } from 'src/models/box.model';
 import { WeavingService } from 'src/services/weaving.service';
 declare let ntc: any;
@@ -35,10 +35,12 @@ export class DataCollectorComponent implements OnInit {
     patternLength: [ null ],
     weftMaterial: [ "" ],
     weftDrawIn: [ null ],
-    weftShrinkage: [ null ],
-  })
-  srtThreadcount: string = "";
-  srtPalette: string = "";
+    weftShrinkage: [ null ]
+  });
+  srtForm = this.fb.group({
+    srtThreadcount: [ "" ],
+    srtPalette: [ "" ]
+  });
   colorBoxes: Box[][] = [];
   threadingBoxes: Box[] = [];
   treadlingBoxes: Box[] = [];
@@ -49,7 +51,8 @@ export class DataCollectorComponent implements OnInit {
   
   constructor(
     private weavingService: WeavingService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -87,7 +90,7 @@ export class DataCollectorComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onPatternSubmit() {
     this.weavingService.changeShafts(this.patternForm.controls['shafts'].value ?? null);
     this.weavingService.changeTreadles(this.patternForm.controls['treadles'].value ?? null);
     this.weavingService.changeTromp(this.patternForm.controls['trompAsWrit'].value);
@@ -100,16 +103,12 @@ export class DataCollectorComponent implements OnInit {
     this.accordionComponent.toggle('patternInfo');
   }
 
-  openSRT() {
-    // this.dialog.open(this.srtDialog);
-  }
-
-  useSRT() {
+  onSrtSubmit() {
     this.colorBoxes = new Array<Box[]>(2);
     // add colors to palette
     const colors = new Array();
-    const rawColors = this.srtPalette.split(";");
-    rawColors.forEach(color => {
+    const rawColors = this.srtForm.controls['srtPalette'].value.split(";");
+    rawColors.forEach((color: string) => {
       const srtColor: SRTColor = {
         key: color.slice(0, color.indexOf("=")),
         hex: `#${color.slice(color.indexOf("=") + 1, color.indexOf("=") + 7)}`
@@ -118,8 +117,8 @@ export class DataCollectorComponent implements OnInit {
     });
     this.weavingService.changeColorPalette(colors.map(x => x.hex));
     // parse each set of numbers from threadcount
-    const sections = this.srtThreadcount.split(/([A-Z]+\d+)/);
-    sections.forEach(group => {
+    const sections = this.srtForm.controls['srtThreadcount'].value.split(/([A-Z]+\d+)/);
+    sections.forEach((group: string) => {
       if (group != '') {
         const count = Number(group.replace(/(\D+)/, ""));
         const color = group.replace(/(\d+)/, "");
@@ -226,6 +225,14 @@ export class DataCollectorComponent implements OnInit {
         }
       });
     }
+  }
+  
+  open(content: any) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      // this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 }
 

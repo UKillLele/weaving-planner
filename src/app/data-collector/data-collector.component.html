@@ -7,7 +7,7 @@
             </div>
         </ng-template>
         <ng-template ngbPanelContent>
-            <form [formGroup]="patternForm" (ngSubmit)="onSubmit()" class="container-fluid">
+            <form [formGroup]="patternForm" (ngSubmit)="onPatternSubmit()" class="container-fluid">
                 <div class="row row-col-auto">
                     <div class="col col-auto mb-3">
                         <div class="form-floating">
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="col col-auto my-auto">
-                        <button class="btn btn-primary mb-3" type="button" (click)="openSRT()">SRT</button>
+                        <button class="btn btn-outline-primary mb-3" type="button" (click)="open(srtDialog)">SRT</button>
                     </div>
                 </div>
                 <section>
@@ -94,8 +94,8 @@
                         </div>
                         <div class="col col-auto mb-3">
                             <div class="input-group">
-                                <div class="form-floating">
-                                    <select class="form-select" id="edgeType" formControlName="edgeType">
+                                <div class="form-floating w-auto">
+                                    <select class="form-select" style="width: 7.5rem" id="edgeType" formControlName="edgeType">
                                         <option value="fringe">fringe</option>
                                         <option value="hem">hem</option>
                                     </select>
@@ -268,20 +268,25 @@
     </ngb-panel>
 </ngb-accordion>
 
-<!-- <ng-template #srtDialog>
-    <h2 matDialogTitle>Scottish Registry of Tartans</h2>
-    <div>
-        <div>
-            <label>Threadcount</label>
-            <input type="text" placeholder="e.g. G20R4B40W4R4W4A40W4A40W4Y4" formControlName="srtThreadcount"/>
+<ng-template #srtDialog let-modal>
+    <div class="modal-header">
+        <h1 class="h3" ngbAutofocus>Scottish Registry of Tartans</h1>
+        <button type="button" class="close btn btn-link" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+        </button>
+    </div>
+    <form class="modal-body" [formGroup]="srtForm" (ngSubmit)="onSrtSubmit()">
+        <div class="mb-3">
+            <label for="srtThreadcount">Threadcount</label>
+            <input class="form-control" type="text" placeholder="e.g. G20R4B40W4R4W4A40W4A40W4Y4" id="srtThreadcount" formControlName="srtThreadcount" />
         </div>
         <div>
-            <label>Palette</label>
-            <textarea placeholder="e.g. W=E0E0E0WHITE;A=5C8CA8AZURE;R=C80000RED;B=2C2C80BLUE;G=006818GREEN;Y=E8C000YELLOW" formControlName="srtPalette"></textarea>
+            <label for="srtPalette">Palette</label>
+            <textarea class="form-control" rows="3" placeholder="e.g. W=E0E0E0WHITE;A=5C8CA8AZURE;R=C80000RED;B=2C2C80BLUE;G=006818GREEN;Y=E8C000YELLOW" id="srtPalette" formControlName="srtPalette"></textarea>
         </div>
+    </form>
+    <div class="modal-footer">
+        <button class="btn btn-secondary">Cancel</button>
+        <button class="btn btn-primary">OK</button>
     </div>
-    <div align="end">
-        <button div matDialogClose color="secondary">Cancel</button>
-        <button div matDialogClose color="primary" (click)="useSRT()">OK</button>
-    </div>
-</ng-template> -->
+</ng-template>
