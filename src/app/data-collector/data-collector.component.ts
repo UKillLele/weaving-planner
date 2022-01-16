@@ -109,11 +109,14 @@ export class DataCollectorComponent implements OnInit {
     const colors = new Array();
     const rawColors = this.srtForm.controls['srtPalette'].value.split(";");
     rawColors.forEach((color: string) => {
-      const srtColor: SRTColor = {
-        key: color.slice(0, color.indexOf("=")),
-        hex: `#${color.slice(color.indexOf("=") + 1, color.indexOf("=") + 7)}`
+      color = color.replace("\n", "");
+      if (color.length > 0) {
+        const srtColor: SRTColor = {
+          key: color.slice(0, color.indexOf("=")),
+          hex: `#${color.slice(color.indexOf("=") + 1, color.indexOf("=") + 7)}`
+        }
+        colors.push(srtColor);
       }
-      colors.push(srtColor);
     });
     this.weavingService.changeColorPalette(colors.map(x => x.hex));
     // parse each set of numbers from threadcount

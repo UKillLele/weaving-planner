@@ -3,35 +3,40 @@
         <div 
             [id]="box.id" 
             *ngFor="let box of threadingBoxes; let i = index;" 
-            [ngClass]="[ box.selected ? 'bg-primary' : 'bg-body', box.border]" 
-            [style.width]="boxWidth + 'vw'"
+            [ngClass]="[box.selected ? 'bg-primary' : box.color, 'warp-weft-tieup']" 
+            [ngStyle]="{'height': boxWidth + 'vw', 'width': boxWidth + 'vw'}"
+            (click)="boxesChanged(i)"
             (mousedown)="startSelecting(box.x)" 
             (mouseup)="stopSelecting($event, box.x)"
             (mouseover)="onDrag(box.x)"
-            [style.backgroundColor]="box.color"
             [(ngModel)]="box.selected"
-            (click)="boxesChanged(i)"
             ngDefaultControl
         >
-        <i class="fa fa-check text-white" aria-hidden="true"></i>
+          <i [ngClass]="[box.selected ? 'visible' : 'invisible', 'fa-check']" aria-hidden="true"></i>
         </div>
     </div>
     <app-color-planner direction="horizontal" [boxCount]="patternWidth"></app-color-planner>
+
 </div>
 
-<!-- <div style="visibility: hidden; position: fixed;" 
-    [style.left]="menuTopLeftPosition.x" 
-    [style.top]="menuTopLeftPosition.y" 
-    [matMenuTriggerFor]="rightMenu"
-    #matMenuTrigger="matMenuTrigger"
+
+<button 
+  type="button"
+  [ngbPopover]="repeatMenu"
+  #menuTrigger
+  [ngStyle]="{
+    'left': menuTopLeftPosition.x, 
+    'top': menuTopLeftPosition.y, 
+    'visibility': 'hidden', 
+    'position': 'fixed'
+  }"
 >
-</div>  -->
+</button> 
  
-<!-- standard material menu --> 
-<!-- <div #rightMenu="matMenu"> 
-  <ng-template matMenuContent> 
-    <button div-item (click)="repeat()" *ngIf="startSelect === 1 || endSelect === 1">Repeat</button>
-    <button div-item (click)="repeatOverSelection()">Repeat over selection</button>
-    <button div-item (click)="cancel()">Cencel</button>
-  </ng-template> 
-</div>  -->
+<ng-template #repeatMenu> 
+  <div class="d-flex flex-column justify-content-between">
+    <button class="btn btn-secondary my-2" (click)="repeat()" *ngIf="startSelect === 1 || endSelect === 1">Repeat</button>
+    <button class="btn btn-primary my-2" (click)="repeatOverSelection()">Repeat over selection</button>
+    <button class="btn btn-outline-danger my-2" (click)="cancel()">Cancel</button>
+  </div>
+</ng-template> 

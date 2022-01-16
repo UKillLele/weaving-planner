@@ -2,13 +2,12 @@
     <div 
         [id]="box?.id" 
         *ngFor="let box of selectedBoxGroup" 
-        [class]="box?.border"
-        [style.width]="boxWidth + 'vw'"
-        [style.backgroundColor]="box?.color"
+        class="warp-weft-tieup hover" 
+        [ngStyle]="{'height': boxWidth + 'vw','width': boxWidth + 'vw', 'background-color': box?.color}"
         (mousedown)="selectBox(box?.id, 'down')"
         (mouseup)="selectBox(box?.id, 'up')"
         (mouseover)="selectBox(box?.id, 'over')"
     >
-        <i class="fa fa-paint-brush hover" aria-hidden="true"></i>
+        <i class="fa-paint-brush" aria-hidden="true"></i>
     </div>
 </div>

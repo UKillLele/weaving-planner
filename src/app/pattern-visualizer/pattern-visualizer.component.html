@@ -4,11 +4,8 @@
             [id]="box.id" 
             *ngFor="let box of visualizerBoxes" 
             [class]="box.border" 
-            [style.width]="boxWidth + 'vw'"
-            [style.backgroundColor]="box.color"
+            [ngStyle]="{'height': boxWidth + 'vw','width': boxWidth + 'vw', 'background-color': box.color}"
         >
-            <!-- controls box height -->
-            <i class="fa fa-check" [style.color]="box.color ? box.color : 'transparent'" aria-hidden="true"></i>
         </div>
     </div>
 </div>

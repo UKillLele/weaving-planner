@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { Box } from 'src/models/box.model';
 import { WeavingService } from 'src/services/weaving.service';
 
@@ -8,6 +8,9 @@ import { WeavingService } from 'src/services/weaving.service';
   styleUrls: ['./threading-planner.component.scss']
 })
 export class ThreadingPlannerComponent implements OnInit {
+
+  @ViewChild('menuTrigger') menuTrigger!: ElementRef;
+
   shafts: number = 0;
   patternWidth: number = 0;
   internalWidth: number = 0;
@@ -89,24 +92,24 @@ export class ThreadingPlannerComponent implements OnInit {
     if (this.mouseDown) {
       if (this.startSelect && !this.endSelect && !this.startSecondSelect) {
         this.threadingBoxes.map(box => {
-          box.color = this.isBoxInside(this.startSelect, box.x, x) ? 'yellow' : 'transparent';
+          box.color = this.isBoxInside(this.startSelect, box.x, x) ? 'select' : '';
         });
       } else if (this.startSecondSelect) {
         this.threadingBoxes.map(box => {
-          if (this.isBoxInside(this.startSelect, box.x, this.endSelect)) box.color = 'yellow'
+          if (this.isBoxInside(this.startSelect, box.x, this.endSelect)) box.color = 'select'
           else {
             let inMulti = false;
             if (this.isBoxInside(this.startSecondSelect, box.x, x)) {
-              box.color = 'orange';
+              box.color = 'multiselect';
               inMulti = true;
             }
             this.multiSelect?.forEach(select => {
               if (this.isBoxInside(select[0], box.x, select[1])) {
-                box.color = 'orange';
+                box.color = 'multiselect';
                 inMulti = true;
               }
             });
-            if (!inMulti) box.color = 'transparent';
+            if (!inMulti) box.color = '';
           }
         });
       }
@@ -123,7 +126,7 @@ export class ThreadingPlannerComponent implements OnInit {
       else {
         this.menuTopLeftPosition.x = event.clientX + 'px'; 
         this.menuTopLeftPosition.y = event.clientY + 'px'; 
-        //this.matMenuTrigger.openMenu(); 
+        this.menuTrigger.nativeElement.click(); 
       }
     } else {
       if (event.ctrlKey) {

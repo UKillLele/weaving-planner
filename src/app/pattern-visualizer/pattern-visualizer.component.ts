@@ -21,38 +21,54 @@ export class PatternVisualizerComponent implements OnInit {
   constructor(private weavingService: WeavingService) { }
 
   ngOnInit(): void {
+    let initialLoad = true;
     this.weavingService.patternWidth.subscribe((patternWidth: number) => {
       this.patternWidth = patternWidth;
-      this.updateVisualizerBoxes();
+      if (!initialLoad) {
+        console.log("width");
+        this.updateVisualizerBoxes();
+      }
+    });
+    this.weavingService.patternLength.subscribe((patternLength: number) => {
+      this.patternLength = patternLength;
+      if (!initialLoad) {
+        console.log("length");
+        this.updateVisualizerBoxes();
+      }
     });
     this.weavingService.internalWidth.subscribe((internalWidth: number) => { this.internalWidth = internalWidth });
     this.weavingService.colorBoxes.subscribe((colorBoxes: Box[][]) => { 
       this.colorBoxes = colorBoxes;
-      this.updateVisualizerBoxes();
-    });
-    this.weavingService.patternLength.subscribe((patternLength: number) => {
-      this.patternLength = patternLength;
-      this.updateVisualizerBoxes();
+      if (!initialLoad) {
+        console.log("colors");
+        this.updateVisualizerSelections();
+      }
     });
     this.weavingService.tieUpBoxes.subscribe((tieUpBoxes: Box[]) => {
       this.tieUpBoxes = tieUpBoxes;
-      this.updateVisualizerSelections();
+      if (!initialLoad) {
+        console.log("tie up");
+        this.updateVisualizerSelections();
+      }
     });
     this.weavingService.threadingBoxes.subscribe((threadingBoxes: Box[]) => {
       this.threadingBoxes = threadingBoxes;
-      this.updateVisualizerSelections();
+      if (!initialLoad) {
+        console.log("threading");
+        this.updateVisualizerSelections();
+      }
     });
     this.weavingService.treadlingBoxes.subscribe((treadlingBoxes: Box[]) => {
       this.treadlingBoxes = treadlingBoxes;
-      this.updateVisualizerSelections();
-    });
-    this.weavingService.visualizerBoxes.subscribe((visualizerBoxes: Box[]) => {
-      this.visualizerBoxes = visualizerBoxes;
-      this.updateVisualizerSelections();
+      if (!initialLoad) {
+        console.log("treadling");
+        this.updateVisualizerSelections();
+      }
     });
     this.weavingService.boxWidth.subscribe((boxWidth: number) => { 
       this.boxWidth = boxWidth;
     });
+    initialLoad = false;
   }
 
   updateVisualizerBoxes() {
@@ -77,7 +93,6 @@ export class PatternVisualizerComponent implements OnInit {
         column ++;
       }
     }
-    this.weavingService.changeVisualizerBoxes(this.visualizerBoxes);
   }
 
   updateVisualizerSelections() {

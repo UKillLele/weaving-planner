@@ -1,8 +1,13 @@
-.allBorders {    
-    .hover {
+@import "bootstrap";
+@import "font-awesome";
+
+.hover {    
+    & > i {
         visibility: hidden;
     }
-    &:focus .hover, &:hover .hover {
+    &:focus i, &:hover i {
         visibility: visible;
+        @extend .fa;
+        @extend .text-dark;
     }
 }

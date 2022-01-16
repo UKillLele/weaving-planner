@@ -8,7 +8,7 @@ import { WeavingService } from 'src/services/weaving.service';
   styleUrls: ['./color-planner.component.scss']
 })
 export class ColorPlannerComponent implements OnInit, OnChanges {
-  colorBoxes?: Box[][];
+  colorBoxes!: Box[][];
   selectedBoxGroup: Box[] = [];
   @Input() direction: string = "";
   @Input() boxCount: number = 0;
@@ -29,12 +29,10 @@ export class ColorPlannerComponent implements OnInit, OnChanges {
     });
     this.weavingService.trompAsWrit.subscribe((trompAsWrit: boolean) => {
       this.trompAsWrit = trompAsWrit;
-      this.updateBoxes();
     });
     this.weavingService.boxWidth.subscribe((boxWidth: number) => { 
       this.boxWidth = boxWidth;
     });
-    this.updateBoxes();
   }
 
   ngOnChanges(): void {
@@ -42,51 +40,56 @@ export class ColorPlannerComponent implements OnInit, OnChanges {
   }
 
   selectBox(boxId: string | undefined, mouse: string) {
-    if (boxId && !(this.trompAsWrit && this.direction === "vertical")) {
-      const box = this.selectedBoxGroup?.find(x => x.id == boxId);
-      if (box) {
-        if (this.lastBoxIndex > -1 && mouse === "over") {
-          box.color = this.selectedColor;
-          if (this.trompAsWrit) {
-            this.colorBoxes![1].find(b => b.y === box.x && b.x === box.y)!.color = this.selectedColor;
+    // ignore hovers when not clicked
+    if ((this.lastBoxIndex > -1 && mouse === "over") || mouse !== "over") {
+      if (boxId && !(this.trompAsWrit && this.direction === "vertical")) {
+        const box = this.selectedBoxGroup?.find(x => x.id == boxId);
+        if (box) {
+          if (this.lastBoxIndex > -1 && mouse === "over") {
+            box.color = this.selectedColor;
+            if (this.trompAsWrit) {
+              this.colorBoxes![1].find(b => b.y === box.x && b.x === box.y)!.color = this.selectedColor;
+            }
+          } else if (mouse === "down") {
+            box.color = this.selectedColor;
+            this.lastBoxIndex = this.selectedBoxGroup.indexOf(box);
+            if (this.trompAsWrit) {
+              this.colorBoxes![1].find(b => b.y === box.x && b.x === box.y)!.color = this.selectedColor;
+            }
+          } else {
+            this.lastBoxIndex = -1;
           }
-        } else if (mouse === "down") {
-          box.color = this.selectedColor;
-          this.lastBoxIndex = this.selectedBoxGroup.indexOf(box);
-          if (this.trompAsWrit) {
-            this.colorBoxes![1].find(b => b.y === box.x && b.x === box.y)!.color = this.selectedColor;
-          }
-        } else {
-          this.lastBoxIndex = -1;
+          this.boxesChanged();
         }
-        this.boxesChanged();
       }
     }
   }
 
   updateBoxes() {
-    if (!this.colorBoxes) this.colorBoxes = new Array<Box[]>(2);
-    this.selectedBoxGroup = this.colorBoxes[this.direction == "vertical" ? 1 : 0];
-    if (this.selectedBoxGroup == undefined || this.selectedBoxGroup.length !== this.boxCount) {
-      this.selectedBoxGroup = new Array<Box>(this.boxCount);
-      for (let i = 1; i <= this.boxCount; i++) {
-        if (this.selectedBoxGroup[i] == null || this.selectedBoxGroup[i] == undefined) {
-          const column = this.direction == "vertical" ? 0 : i;
-          const row = this.direction == "vertical" ? i : 0;
-          let x: Box = {
-            id: `${column}-${row}`,
-            selected: false,
-            border: "allBorders",
-            color: "transparent",
-            x: column,
-            y: row
+    if (this.boxCount > 0) {
+      if (!this.colorBoxes) this.colorBoxes = new Array<Box[]>(2);
+      this.selectedBoxGroup = this.colorBoxes[this.direction == "vertical" ? 1 : 0];
+      if (this.selectedBoxGroup == undefined || this.selectedBoxGroup.length !== this.boxCount) {
+        this.selectedBoxGroup = new Array<Box>(this.boxCount);
+        for (let i = 1; i <= this.boxCount; i++) {
+          if (this.selectedBoxGroup[i] == null || this.selectedBoxGroup[i] == undefined) {
+            const column = this.direction == "vertical" ? 0 : i;
+            const row = this.direction == "vertical" ? i : 0;
+            let x: Box = {
+              id: `${column}-${row}`,
+              selected: false,
+              border: "allBorders",
+              color: "transparent",
+              x: column,
+              y: row
+            }
+            this.selectedBoxGroup[i - 1] = x;
           }
-          this.selectedBoxGroup[i - 1] = x;
         }
       }
+      this.colorBoxes[this.direction == "vertical" ? 1 : 0] = this.selectedBoxGroup;
+      this.boxesChanged();
     }
-    this.colorBoxes[this.direction == "vertical" ? 1 : 0] = this.selectedBoxGroup;
-    this.boxesChanged();
   }
 
   boxesChanged() {

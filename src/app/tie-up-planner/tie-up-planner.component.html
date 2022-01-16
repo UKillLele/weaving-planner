@@ -2,12 +2,12 @@
     <div 
         [id]="box.id" 
         *ngFor="let box of tieUpBoxes; let i = index;" 
-        [ngClass]="[ box.selected ? 'bg-primary' : 'bg-body', box.border]" 
-        [style.width]="boxWidth + 'vw'"
+        [ngClass]="[box.selected ? 'bg-primary' : 'bg-body', 'warp-weft-tieup']" 
+        [ngStyle]="{'height': boxWidth + 'vw', 'width': boxWidth + 'vw'}"
         [(ngModel)]="box.selected" 
         (click)="boxesChanged(i)"
         ngDefaultControl
     >
-        <i class="fa fa-check text-white" aria-hidden="true"></i>
+        <i [ngClass]="[box.selected ? 'visible' : 'invisible', 'fa-check']" aria-hidden="true"></i>
     </div>
 </div>

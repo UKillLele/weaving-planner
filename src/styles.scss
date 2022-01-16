@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+@import "bootstrap";
+@import "font-awesome";
+
 body {
     margin: 0;
     
@@ -25,8 +28,17 @@ body {
 .noBorders {
     border: none;
 }
-.allBorders {
-    border: 1px solid black;
+.warp-weft-tieup {
+    @extend .border;
+    @extend .border-dark;
+    @extend .border;
+    @extend .d-flex;
+    @extend .justify-content-center;
+    @extend .align-items-center;
+    &:not(.hover) > i {
+        @extend .text-white;
+        @extend .fa;
+    }
 }
 .warpBorder, .weftBorder {
     border-color: black !important;
@@ -51,4 +63,12 @@ body {
 
 .content-box {
     box-sizing: content-box;
+}
+
+.select {
+    background-color: lightblue;
+}
+
+.multiselect {
+    background-color: lightyellow;
 }
