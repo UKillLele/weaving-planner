@@ -19,6 +19,7 @@ export class ThreadingPlannerComponent implements OnInit {
   multiSelect: number[][] = [];
   menuTopLeftPosition =  {x: '0', y: '0'};
   mouseDown: boolean = false;
+  boxWidth: number = 0;
 
   @HostListener('window:keyup', ['$event'])
   handleKeyUp(event: KeyboardEvent) {
@@ -38,6 +39,9 @@ export class ThreadingPlannerComponent implements OnInit {
     this.weavingService.patternWidth.subscribe((patternWidth: number) => {
       this.patternWidth = patternWidth;
       this.updateThreading();
+    });
+    this.weavingService.boxWidth.subscribe((boxWidth: number) => { 
+      this.boxWidth = boxWidth;
     });
     this.weavingService.internalWidth.subscribe((internalWidth: number) => this.internalWidth = internalWidth);
   }
@@ -66,7 +70,8 @@ export class ThreadingPlannerComponent implements OnInit {
     }
   }
 
-  boxesChanged() {
+  boxesChanged(i: number) {
+    this.threadingBoxes[i].selected = !this.threadingBoxes[i].selected;
     this.weavingService.changeThreadingBoxes(this.threadingBoxes);
   }
 

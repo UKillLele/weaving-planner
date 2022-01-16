@@ -16,6 +16,7 @@ export class PatternVisualizerComponent implements OnInit {
   treadlingBoxes: Box[] = [];
   visualizerBoxes: Box[] = [];
   colorBoxes: Box[][] = [];
+  boxWidth: number = 0;
 
   constructor(private weavingService: WeavingService) { }
 
@@ -49,7 +50,9 @@ export class PatternVisualizerComponent implements OnInit {
       this.visualizerBoxes = visualizerBoxes;
       this.updateVisualizerSelections();
     });
-
+    this.weavingService.boxWidth.subscribe((boxWidth: number) => { 
+      this.boxWidth = boxWidth;
+    });
   }
 
   updateVisualizerBoxes() {

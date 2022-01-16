@@ -13,7 +13,8 @@ export class TieUpPlannerComponent implements OnInit {
   treadles: number = 0;
   tieUpBoxes: Box[] = [];
   boxWidth: number = 0;
-  margin: number = 0;
+  rowColsTreadles: string = '';
+  width: number = 0;
 
   constructor(private weavingService: WeavingService) { }
 
@@ -24,16 +25,18 @@ export class TieUpPlannerComponent implements OnInit {
     });
     this.weavingService.treadles.subscribe((treadles: number) => {
       this.treadles = treadles;
+      this.rowColsTreadles = `row-cols-${treadles}`;
       this.updateTieUp();
     });
     this.weavingService.boxWidth.subscribe((boxWidth: number) => { 
-      this.margin = boxWidth;
+      this.boxWidth = boxWidth;
       this.updateTieUp();
     });
     this.weavingService.tieUpBoxes.subscribe((tieUpBoxes: Box[]) => this.tieUpBoxes = tieUpBoxes);
   }
 
   updateTieUp() {
+    this.width = this.boxWidth * this.treadles;
     this.tieUpBoxes = [];
     let row: number = 1;
     let column: number = 1;
@@ -57,7 +60,8 @@ export class TieUpPlannerComponent implements OnInit {
     }
   }
 
-  boxesChanged() {
+  boxesChanged(i: number) {
+    this.tieUpBoxes[i].selected = !this.tieUpBoxes[i].selected;
     this.weavingService.changeTieUpBoxes(this.tieUpBoxes);
   }
 

@@ -1,21 +1,5 @@
-.row {
-    display: flex;
-    align-items: stretch;
-    width: 100%;
-    margin-bottom: 10px;
-}
-.invisible {
-    display: none;
-}
-.col {
-    height: 100px;
-}
 app-pattern-visualizer {
     overflow-x: hidden !important;
-}
-
-.rightCol {
-    margin-left: 10px;
 }
 
 .overflow {
@@ -29,4 +13,3 @@ app-pattern-visualizer {
         right: 0;
     }
 }
-

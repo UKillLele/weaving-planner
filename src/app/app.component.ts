@@ -60,7 +60,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   getWidth() {
     if (this.patternWidth) {
-      this.weavingService.changeInternalWidth(((this.boxWidth * this.patternWidth)/this.leftCol) * 100);
+      this.weavingService.changeInternalWidth(this.boxWidth * this.patternWidth);
     }
   }
 

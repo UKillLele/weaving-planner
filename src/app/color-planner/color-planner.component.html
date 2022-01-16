@@ -1,12 +1,14 @@
-<div class="row" *ngIf="selectedBoxGroup" [ngClass]="direction === 'vertical' ? 'd-block' : 'd-flex'" [dir]="direction !='vertical' ? 'rtl' : 'ltr'">
+<div *ngIf="selectedBoxGroup" [ngClass]="direction === 'vertical' ? 'd-block' : 'd-flex'" [dir]="direction !='vertical' ? 'rtl' : 'ltr'">
     <div 
         [id]="box?.id" 
         *ngFor="let box of selectedBoxGroup" 
-        [class]="box?.border" 
+        [class]="box?.border"
+        [style.width]="boxWidth + 'vw'"
         [style.backgroundColor]="box?.color"
         (mousedown)="selectBox(box?.id, 'down')"
         (mouseup)="selectBox(box?.id, 'up')"
         (mouseover)="selectBox(box?.id, 'over')"
     >
+        <i class="fa fa-paint-brush hover" aria-hidden="true"></i>
     </div>
 </div>

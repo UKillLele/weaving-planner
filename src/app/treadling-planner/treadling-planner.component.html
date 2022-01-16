@@ -1,19 +1,20 @@
-<div >
-    <div colspan="1">
-        <app-color-planner [style.width]="colorWidth + 'vw'" class="vertical" direction="vertical" [boxCount]="patternLength"></app-color-planner>
-    </div>
-    <div>
-        <div [style.width]="boxesWidth + 'vw'" class="vertical">
-            <div 
-                [id]="box.id" 
-                *ngFor="let box of treadlingBoxes" [class]="box.border"
-                (mousedown)="startSelecting(box.y)" 
-                (mouseup)="stopSelecting($event, box.y)"
-                (mouseover)="onDrag(box.y)"
-                [style.backgroundColor]="box.color"
-            >
-                <input type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"/>
-            </div>
+<div class="d-flex" style="margin-left: .5vw;">
+    <app-color-planner [style.width]="boxWidth + 'vw'" class="vertical" direction="vertical" [boxCount]="patternLength"></app-color-planner>
+    <div class="d-flex flex-wrap border-start border-light">
+        <div 
+            [id]="box.id" 
+            *ngFor="let box of treadlingBoxes; let i = index;" 
+            [ngClass]="[ box.selected ? 'bg-primary' : 'bg-body', box.border]" 
+            (mousedown)="startSelecting(box.y)" 
+            (mouseup)="stopSelecting($event, box.y)"
+            (mouseover)="onDrag(box.y)"
+            [style.backgroundColor]="box.color"
+            [style.width]="boxWidth + 'vw'"
+            [(ngModel)]="box.selected"
+            (click)="boxesChanged(i)"
+            ngDefaultControl
+        >
+            <i class="fa fa-check text-white" aria-hidden="true"></i>
         </div>
     </div>
 </div>

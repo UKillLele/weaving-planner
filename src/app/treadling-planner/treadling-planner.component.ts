@@ -12,8 +12,7 @@ export class TreadlingPlannerComponent implements OnInit {
   treadles: number = 0;
   patternLength: number = 0;
   treadlingBoxes: Box[] = [];
-  colorWidth: number = 0;
-  boxesWidth: number = 0;
+  width: number = 0;
   boxWidth: number = 0;
   startSelect: number | null = null;
   endSelect: number | null = null;
@@ -52,8 +51,7 @@ export class TreadlingPlannerComponent implements OnInit {
   // add support for repeats
 
   setWidths() {
-    this.colorWidth = this.boxWidth;
-    this.boxesWidth = this.boxWidth * this.treadles;
+    this.width = this.boxWidth * this.treadles;
   }
 
   updateTreadling() {
@@ -81,7 +79,8 @@ export class TreadlingPlannerComponent implements OnInit {
     }
   }
 
-  boxesChanged() {
+  boxesChanged(i: number) {
+    this.treadlingBoxes[i].selected = !this.treadlingBoxes[i].selected;
     this.weavingService.changeTreadlingBoxes(this.treadlingBoxes);
   }
 

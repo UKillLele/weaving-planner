@@ -1,7 +1,14 @@
-<div [style.width]="internalWidth + '%'">
-    <div dir="rtl">
-        <div [id]="box.id" *ngFor="let box of visualizerBoxes" [class]="box.border" [style.backgroundColor]="box.color">
+<div [style.width]="internalWidth + 'vw'">
+    <div class="d-flex flex-wrap" dir="rtl">
+        <div 
+            [id]="box.id" 
+            *ngFor="let box of visualizerBoxes" 
+            [class]="box.border" 
+            [style.width]="boxWidth + 'vw'"
+            [style.backgroundColor]="box.color"
+        >
+            <!-- controls box height -->
+            <i class="fa fa-check" [style.color]="box.color ? box.color : 'transparent'" aria-hidden="true"></i>
         </div>
     </div>
 </div>
-<!-- [cols]="patternWidth"  -->

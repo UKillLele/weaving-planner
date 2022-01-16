@@ -154,6 +154,7 @@ export class DataCollectorComponent implements OnInit {
     // set patternWidth
     this.patternForm.controls['patternWidth'].setValue(this.colorBoxes[0].length);
     this.patternWidthChanged();
+    this.modalService.dismissAll();
   }
 
   trompChanged() {

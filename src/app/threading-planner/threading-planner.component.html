@@ -1,20 +1,23 @@
-<div [style.width]="internalWidth + '%'">
-    <div dir="rtl">
+<div [style.width]="internalWidth + 'vw'">
+    <div class="d-flex flex-wrap border-bottom border-light" dir="rtl">
         <div 
             [id]="box.id" 
-            *ngFor="let box of threadingBoxes" 
-            [class]="box.border" 
+            *ngFor="let box of threadingBoxes; let i = index;" 
+            [ngClass]="[ box.selected ? 'bg-primary' : 'bg-body', box.border]" 
+            [style.width]="boxWidth + 'vw'"
             (mousedown)="startSelecting(box.x)" 
             (mouseup)="stopSelecting($event, box.x)"
             (mouseover)="onDrag(box.x)"
             [style.backgroundColor]="box.color"
+            [(ngModel)]="box.selected"
+            (click)="boxesChanged(i)"
+            ngDefaultControl
         >
-            <div matInput type="checkbox" [(ngModel)]="box.selected" (click)="boxesChanged()"></div>
+        <i class="fa fa-check text-white" aria-hidden="true"></i>
         </div>
     </div>
     <app-color-planner direction="horizontal" [boxCount]="patternWidth"></app-color-planner>
 </div>
-<!--  [cols]="patternWidth"  -->
 
 <!-- <div style="visibility: hidden; position: fixed;" 
     [style.left]="menuTopLeftPosition.x" 

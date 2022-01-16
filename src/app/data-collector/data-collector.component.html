@@ -275,7 +275,7 @@
           <i class="fa fa-times fa-2x" aria-hidden="true"></i>
         </button>
     </div>
-    <form class="modal-body" [formGroup]="srtForm" (ngSubmit)="onSrtSubmit()">
+    <form class="modal-body" [formGroup]="srtForm">
         <div class="mb-3">
             <label for="srtThreadcount">Threadcount</label>
             <input class="form-control" type="text" placeholder="e.g. G20R4B40W4R4W4A40W4A40W4Y4" id="srtThreadcount" formControlName="srtThreadcount" />
@@ -287,6 +287,6 @@
     </form>
     <div class="modal-footer">
         <button class="btn btn-secondary">Cancel</button>
-        <button class="btn btn-primary">OK</button>
+        <button (click)="onSrtSubmit()" class="btn btn-primary">OK</button>
     </div>
 </ng-template>
