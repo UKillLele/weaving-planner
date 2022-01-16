@@ -82,8 +82,18 @@ export class TreadlingPlannerComponent implements OnInit {
   }
 
   boxesChanged(i: number) {
+    this.clearSelections();
     this.treadlingBoxes[i].selected = !this.treadlingBoxes[i].selected;
     this.weavingService.changeTreadlingBoxes(this.treadlingBoxes);
+  }
+
+  clearSelections() {
+    this.mouseDown = false;
+    this.startSelect = null;
+    this.startSecondSelect = null;
+    this.endSelect = null;
+    this.secondSelection = false;
+    this.multiSelect = [];
   }
 
   startSelecting(y: number) {
@@ -124,10 +134,10 @@ export class TreadlingPlannerComponent implements OnInit {
     }
   }
 
-  stopSelecting(event: MouseEvent, x: number) {
+  stopSelecting(event: MouseEvent, y: number) {
     this.mouseDown = false;
     if (!this.secondSelection) {
-      this.endSelect = x;
+      this.endSelect = y;
       if (this.endSelect === this.startSelect) {
         this.cancel();
       }
@@ -139,14 +149,14 @@ export class TreadlingPlannerComponent implements OnInit {
     } else {
       if (event.ctrlKey) {
         // if start end and are the same, do nothing
-        if (x === this.startSecondSelect) return;
+        if (y === this.startSecondSelect) return;
         // if start or end is in multi, remove original
         if (this.multiSelect.length > 0) {
           this.multiSelect.forEach(section => {
             if ((this.startSecondSelect! < section[0] && this.startSecondSelect! > section[1]) ||
               (this.startSecondSelect! > section[0] && this.startSecondSelect! < section[1]) ||
-              (x < section[0] && x > section[1]) ||
-              (x > section[0] && x < section[1])
+              (y < section[0] && y > section[1]) ||
+              (y > section[0] && y < section[1])
             ) {
               this.multiSelect.splice(this.multiSelect.indexOf(section))
             }
@@ -154,12 +164,12 @@ export class TreadlingPlannerComponent implements OnInit {
         }
       } 
 
-      const newArea = [this.startSecondSelect!, x];
+      const newArea = [this.startSecondSelect!, y];
       if (this.multiSelect.length == 0) this.multiSelect = [newArea];
       else this.multiSelect.push(newArea);
 
       if ((!event.ctrlKey)) {
-        if (x === this.startSecondSelect) {
+        if (y === this.startSecondSelect) {
           this.cancel();
         } else {
           this.repeat();
@@ -218,10 +228,7 @@ export class TreadlingPlannerComponent implements OnInit {
   }
 
   cancel() {
-    this.startSelect = null;
-    this.endSelect = null;
-    this.startSecondSelect = null;
-    this.secondSelection = false;
+    this.clearSelections();
     this.treadlingBoxes.map(x => x.color = 'transparent');
   }
 

@@ -74,8 +74,18 @@ export class ThreadingPlannerComponent implements OnInit {
   }
 
   boxesChanged(i: number) {
+    this.clearSelections();
     this.threadingBoxes[i].selected = !this.threadingBoxes[i].selected;
     this.weavingService.changeThreadingBoxes(this.threadingBoxes);
+  }
+
+  clearSelections() {
+    this.mouseDown = false;
+    this.startSelect = null;
+    this.startSecondSelect = null;
+    this.endSelect = null;
+    this.secondSelection = false;
+    this.multiSelect = [];
   }
 
   startSelecting(x: number) {
@@ -116,10 +126,10 @@ export class ThreadingPlannerComponent implements OnInit {
     }
   }
 
-  stopSelecting(event: MouseEvent, y: number) {
+  stopSelecting(event: MouseEvent, x: number) {
     this.mouseDown = false;
     if (!this.secondSelection) {
-      this.endSelect = y;
+      this.endSelect = x;
       if (this.endSelect === this.startSelect) {
         this.cancel();
       }
@@ -131,14 +141,14 @@ export class ThreadingPlannerComponent implements OnInit {
     } else {
       if (event.ctrlKey) {
         // if start end and are the same, do nothing
-        if (y === this.startSecondSelect) return;
+        if (x === this.startSecondSelect) return;
         // if start or end is in multi, remove original
         if (this.multiSelect.length > 0) {
           this.multiSelect.forEach(section => {
             if ((this.startSecondSelect! < section[0] && this.startSecondSelect! > section[1]) ||
               (this.startSecondSelect! > section[0] && this.startSecondSelect! < section[1]) ||
-              (y < section[0] && y > section[1]) ||
-              (y > section[0] && y < section[1])
+              (x < section[0] && x > section[1]) ||
+              (x > section[0] && x < section[1])
             ) {
               this.multiSelect.splice(this.multiSelect.indexOf(section))
             }
@@ -146,12 +156,12 @@ export class ThreadingPlannerComponent implements OnInit {
         }
       } 
 
-      const newArea = [this.startSecondSelect!, y];
+      const newArea = [this.startSecondSelect!, x];
       if (this.multiSelect.length == 0) this.multiSelect = [newArea];
       else this.multiSelect.push(newArea);
 
       if ((!event.ctrlKey)) {
-        if (y === this.startSecondSelect) {
+        if (x === this.startSecondSelect) {
           this.cancel();
         } else {
           this.repeat();
@@ -210,10 +220,7 @@ export class ThreadingPlannerComponent implements OnInit {
   }
 
   cancel() {
-    this.startSelect = null;
-    this.endSelect = null;
-    this.startSecondSelect = null;
-    this.secondSelection = false;
+    this.clearSelections();
     this.threadingBoxes.map(x => x.color = 'transparent');
   }
 }
