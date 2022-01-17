@@ -1,13 +1,8 @@
-@import "bootstrap";
-@import "font-awesome";
-
 .hover {    
     & > i {
         visibility: hidden;
     }
     &:focus i, &:hover i {
         visibility: visible;
-        @extend .fa;
-        @extend .text-dark;
     }
 }
