@@ -35,7 +35,7 @@
  
 <ng-template #repeatMenu> 
   <div class="d-flex flex-column justify-content-between">
-    <button class="btn btn-secondary my-2" (click)="repeat()" *ngIf="startSelect === 1 || endSelect === 1">Repeat</button>
+    <button class="btn btn-outline-primary my-2" (click)="repeat()" *ngIf="startSelect === 1 || endSelect === 1">Repeat</button>
     <button class="btn btn-primary my-2" (click)="repeatOverSelection()">Repeat over selection</button>
     <button class="btn btn-outline-danger my-2" (click)="cancel()">Cancel</button>
   </div>

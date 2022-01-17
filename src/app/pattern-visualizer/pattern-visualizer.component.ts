@@ -25,14 +25,12 @@ export class PatternVisualizerComponent implements OnInit {
     this.weavingService.patternWidth.subscribe((patternWidth: number) => {
       this.patternWidth = patternWidth;
       if (!initialLoad) {
-        console.log("width");
         this.updateVisualizerBoxes();
       }
     });
     this.weavingService.patternLength.subscribe((patternLength: number) => {
       this.patternLength = patternLength;
       if (!initialLoad) {
-        console.log("length");
         this.updateVisualizerBoxes();
       }
     });
@@ -40,28 +38,24 @@ export class PatternVisualizerComponent implements OnInit {
     this.weavingService.colorBoxes.subscribe((colorBoxes: Box[][]) => { 
       this.colorBoxes = colorBoxes;
       if (!initialLoad) {
-        console.log("colors");
         this.updateVisualizerSelections();
       }
     });
     this.weavingService.tieUpBoxes.subscribe((tieUpBoxes: Box[]) => {
       this.tieUpBoxes = tieUpBoxes;
       if (!initialLoad) {
-        console.log("tie up");
         this.updateVisualizerSelections();
       }
     });
     this.weavingService.threadingBoxes.subscribe((threadingBoxes: Box[]) => {
       this.threadingBoxes = threadingBoxes;
       if (!initialLoad) {
-        console.log("threading");
         this.updateVisualizerSelections();
       }
     });
     this.weavingService.treadlingBoxes.subscribe((treadlingBoxes: Box[]) => {
       this.treadlingBoxes = treadlingBoxes;
       if (!initialLoad) {
-        console.log("treadling");
         this.updateVisualizerSelections();
       }
     });

@@ -58,11 +58,9 @@ export class DataCollectorComponent implements OnInit {
   ngOnInit(): void {
     this.weavingService.shafts.subscribe((shafts: number) => {
       this.patternForm.controls['shafts'].setValue(shafts);
-      this.calculateYarn();
     });
     this.weavingService.treadles.subscribe((treadles: number) => {
       this.patternForm.controls['treadles'].setValue(treadles);
-      this.calculateYarn();
     });
     this.weavingService.patternLength.subscribe((patternLength: number) => {
       this.patternForm.controls['patternLength'].setValue(patternLength);
@@ -160,6 +158,12 @@ export class DataCollectorComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
+  epiChanged() {
+    if (this.patternForm.controls['trompAsWrit'].value === true) {
+      this.patternForm.controls['ppi'].setValue(this.patternForm.controls['epi'].value);
+    }
+  }
+
   trompChanged() {
     const patternLength = this.patternForm.controls['patternLength'];
     const ppi = this.patternForm.controls['ppi'];
@@ -207,27 +211,35 @@ export class DataCollectorComponent implements OnInit {
         });
       });
       // calculate number of weft and warp threads of color times width and length
-      // TODO: add multipliers (e.g. repeats) and additions (e.g. selvage, fringe)
+      // TODO: account for half sett
       // weft threads
       this.treadlingBoxes.forEach(weft => {
         const colorBox = this.colorBoxes[1].find(x => x.y == weft.y);
         const color = this.colors.find(x => x.colorCode === colorBox?.color)
         if (color) {
-          color.colorInches += this.patternForm.controls['workingWidth'].value ?? 0;
-          this.weftIn += this.patternForm.controls['workingWidth'].value ?? 0;
-          this.totalIn += this.patternForm.controls['workingWidth'].value ?? 0;
+          let inches = 0;
+          inches= (this.patternForm.controls['workingWidth'].value * this.patternForm.controls['ppi'].value) ?? 0;
+          color.colorInches += inches;
+          this.weftIn += inches;
         }
       });
+
       // warp threads
       this.threadingBoxes.forEach(warp => {
         const colorBox = this.colorBoxes[0].find(x => x.x == warp.x);
         const color = this.colors.find(x => x.colorCode == colorBox?.color)
         if (color) {
-          color.colorInches += this.patternForm.controls['workingLength'].value ?? 0;
-          this.warpIn += this.patternForm.controls['workingLength'].value ?? 0;
-          this.totalIn += this.patternForm.controls['workingLength'].value ?? 0;
+          let inches = 0;
+          inches += (this.patternForm.controls['workingLength'].value * this.patternForm.controls['epi'].value) ?? 0;
+          inches += this.patternForm.controls['waste'].value ?? 0;
+          inches += (this.patternForm.controls['selvageWidth'].value * 2) ?? 0;
+          inches += (this.patternForm.controls['edgeLength'].value * 2 * this.patternForm.controls['pieces'].value) ?? 0;
+          color.colorInches += inches;
+          this.warpIn += inches;
         }
       });
+
+      this.totalIn = this.warpIn + this.weftIn;
     }
   }
   

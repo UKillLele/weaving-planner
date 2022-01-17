@@ -61,7 +61,7 @@
                         </div>
                         <div class="col col-auto mb-3">
                             <div class="form-floating">
-                                <input type="number" class="form-control" placeholder="epi" id="epi" formControlName="epi">
+                                <input type="number" class="form-control" placeholder="epi" id="epi" formControlName="epi" (change)="epiChanged()">
                                 <label for="epi">ends per inch</label>
                             </div>
                         </div>
@@ -70,15 +70,6 @@
                                 <div class="form-floating">
                                     <input class="form-control" type="number" placeholder="working width" id="workingWidth" formControlName="workingWidth">
                                     <label for="workingWidth">width in loom</label>
-                                </div>
-                                <span class="input-group-text">inches</span>
-                            </div>
-                        </div>
-                        <div class="col col-auto mb-3">
-                            <div class="input-group">
-                                <div class="form-floating">
-                                    <input class="form-control" id="selvageWidth" placeholder="selvage" type="number" formControlName="selvageWidth"/>
-                                    <label for="selvageWidth">selvage</label>
                                 </div>
                                 <span class="input-group-text">inches</span>
                             </div>
@@ -179,6 +170,15 @@
                             </div>
                         </div>
                         <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" id="selvageWidth" placeholder="selvage" type="number" formControlName="selvageWidth"/>
+                                    <label for="selvageWidth">selvage</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
                             <div class="form-floating">
                                 <select class="form-select" id="weftMaterial" formControlName="weftMaterial">
                                     <option value="bamboo">bamboo</option>
@@ -220,20 +220,6 @@
         </ng-template>
     </ngb-panel>
 
-    <ngb-panel id="instructions">
-        <ng-template ngbPanelHeader let-opened="opened">
-            <div class="d-flex align-items-center justify-content-between">
-              <h1 class="h2 m-0">Instructions</h1>
-              <button ngbPanelToggle class="btn btn-link p-0" type="button" aria-label="toggle instructions"><i [ngClass]="['fa', opened ? 'fa-angle-up' : 'fa-angle-down', 'fa-2x']" aria-hidden="true"></i></button>
-            </div>
-        </ng-template>
-        <ng-template ngbPanelContent>
-            <section>
-                content
-            </section>
-        </ng-template>
-    </ngb-panel>
-
     <ngb-panel id="yarnBreakdown">
         <ng-template ngbPanelHeader let-opened="opened">
             <div class="d-flex align-items-center justify-content-between">
@@ -246,14 +232,14 @@
                 <div class="col col-auto">total yardage: {{totalIn / 36 | ceil }} yds</div>
                 <div class="col col-auto">total warp yardage: {{warpIn / 36 | ceil }} yds</div>
                 <div class="col col-auto">total weft yardage: {{weftIn / 36 | ceil }} yds</div>
+            </section>
+            <section class="row row-col-auto">
                 <div class="col col-auto" *ngFor="let color of colors">
-                    <div>
-                        {{color.colorName}}{{!color.perfectMatch ? "*" : ""}} 
-                        <span style="width: 15px; height: 15px; display: inline-block;" [style.backgroundColor]="color.colorCode"></span>
+                    <div class="align-middle">
+                        <span style="width: 15px; height: 15px; display: inline-block; border: 1px solid black" [style.backgroundColor]="color.colorCode"></span>
                         : {{color.colorInches / 36 | ceil }} yds
                     </div>
                 </div>
-                <div class="col col-auto" *ngIf="colors.length > 0" style="font-size: 8pt;">color names provided by <a href="https://chir.ag/projects/name-that-color/#6195ED" style="color:aqua">Chirag Mehta</a>. * denotes imperfect match</div>
             </section>
             <section class="row row-col-auto">
                 <div class="col col-auto">finished width:</div>
