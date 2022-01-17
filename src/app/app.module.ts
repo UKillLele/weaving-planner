@@ -16,7 +16,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgCeilPipeModule } from 'angular-pipes';
-import { NgxColorsModule } from 'ngx-colors';
 
 
 @NgModule({
@@ -36,7 +35,6 @@ import { NgxColorsModule } from 'ngx-colors';
     ReactiveFormsModule,
     FormsModule,
     ScrollingModule,
-    NgxColorsModule,
     NgCeilPipeModule,
     NgbModule,
   ],
