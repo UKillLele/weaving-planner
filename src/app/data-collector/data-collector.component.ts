@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { NgbAccordion, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Box } from 'src/models/box.model';
+import { ApiService } from 'src/services/api.service';
 import { WeavingService } from 'src/services/weaving.service';
 declare let ntc: any;
 
@@ -48,14 +49,17 @@ export class DataCollectorComponent implements OnInit {
   weftIn: number = 0;
   warpIn: number = 0;
   totalIn: number = 0;
+  apiResponse: string = "";
   
   constructor(
     private weavingService: WeavingService,
+    private apiService: ApiService,
     private fb: FormBuilder,
     private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
+    this.apiResponse = this.apiService.getPatterns();
     this.weavingService.shafts.subscribe((shafts: number) => {
       this.patternForm.controls['shafts'].setValue(shafts);
     });

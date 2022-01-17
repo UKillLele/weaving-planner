@@ -8,6 +8,9 @@
         </ng-template>
         <ng-template ngbPanelContent>
             <form [formGroup]="patternForm" (ngSubmit)="onPatternSubmit()" class="container-fluid">
+                <div class="row">
+                    {{apiResponse}}
+                </div>
                 <div class="row row-col-auto">
                     <div class="col col-auto mb-3">
                         <div class="form-floating">
