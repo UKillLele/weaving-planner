@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, TemplateRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { ScrollDispatcher, CdkScrollable } from '@angular/cdk/scrolling';
 import { WeavingService } from 'src/services/weaving.service';
 
@@ -20,8 +21,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   constructor(
     private weavingService: WeavingService,
     private scrollDispatcher: ScrollDispatcher,
-    //public dialog: MatDialog
-    ) { }
+    private http: HttpClient
+    ) {
+      this.http.get('/api/getPatterns')
+        .subscribe((resp: any) => console.log(resp.text));
+  }
 
   ngOnInit(): void {
     this.weavingService.changePreviewAvailable(true);
