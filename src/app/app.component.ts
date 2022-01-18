@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, TemplateRef } from '@angul
 import { ScrollDispatcher, CdkScrollable } from '@angular/cdk/scrolling';
 import { WeavingService } from 'src/services/weaving.service';
 import { UserInfo } from 'src/models/user-info';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   constructor(
     private weavingService: WeavingService,
-    private scrollDispatcher: ScrollDispatcher
+    private scrollDispatcher: ScrollDispatcher,
+    private modalService: NgbModal
     ) { }
 
   userInfo?: UserInfo;
@@ -81,5 +83,13 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   openPreview(e: Event) {
     // this.dialog.open(this.previewDialog);
+  }
+  
+  open(content: any) {
+    this.modalService.open(content).result.then((result) => {
+      // this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 }

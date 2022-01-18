@@ -50,7 +50,66 @@
 <ng-template #userPopover>
   <div class="d-flex flex-column">
   <div>Welcome {{userInfo?.userDetails}}!</div>
-    <button *ngIf="!userInfo" type="button" class="btn btn-primary my-2"><a class="text-light" href="/.auth/login/aad">Login</a></button>
+    <button *ngIf="!userInfo" type="button" class="btn btn-primary my-2"><a class="text-light" href="/.auth/login/aad">Login/Register</a></button>
     <button *ngIf="userInfo" type="button" class="btn btn-primary my-2"><a class="text-light" href="/.auth/logout">Logout</a></button>
+    <button type="button" class="btn btn-outline-primary my-2" (click)="open(privacy)">Privacy</button>
+  </div>
+</ng-template>
+
+<ng-template #privacy let-modal>
+  <div class="modal-header">
+    <h1 class="modal-title h3">Privacy</h1>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Your login information is only used for saving your patterns. We will never sell your data.
+  </div>
+</ng-template>
+
+<ng-template #instructions let-modal>
+  <div class="modal-header">
+    <h1 class="modal-title h3">Instructions</h1>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p><span class="h4">Pattern Name: </span>What you want your pattern to be saved as.</p>
+    <p><span class="h4">Shafts: </span>The number of shafts in your loom.</p>
+    <p><span class="h4">Treadles: </span>The number of treadles on your loom.</p>
+    <p><span class="h4">Threadcount: </span>The number of each thread color of a pattern in order.</p>
+    <p><span class="h4">Tromp as writ: </span>Threadcount is the same on warp and weft.</p>
+    <p><span class="h4">Half sett: </span>Threadcount of the pattern up to and including the pivot point. Typical of tartans.</p>
+    <p><span class="h4">SRT: </span><a href="https://www.tartanregister.gov.uk/index" target="blank" rel="noopener noreferrer">Scottish Register of Tartans</a>. You can request threadcounts for free but make sure you understand the design rights associated with the tartan.</p>
+    <p><span class="h4">Warp: </span>The threads passed across the front and back beams and through the heddles, shafts, and reed, making the vertical part of the pattern.</p>
+    <p><span class="h4">Pattern width: </span>The number of threads in the full threadcount.</p>
+    <p><span class="h4">Ends per inch: </span>aka "sett." The number of threads in one inch of fabric. Typically suggested by the thread manufacturer</p>
+    <p><span class="h4">Width in loom: </span>The number of inches wide your project will be in the loom.</p>
+    <p><span class="h4">Loom waste: </span>The thread that necessarily will be cut off from the front and back of the project. Typically the space between a beam and the shafts.</p>
+    <p><span class="h4">Edge - hem: </span></p>
+    <p><span class="h4">Edge - fringe: </span></p>
+    <p><span class="h4">Number of pieces: </span></p>
+    <p><span class="h4">Yarn type: </span></p>
+    <p><span class="h4">Draw in: </span></p>
+    <p><span class="h4">Shrinkage: </span></p>
+    <p><span class="h4">Pattern length: </span></p>
+    <p><span class="h4">Picks per inch: </span></p>
+    <p><span class="h4">Length in loom: </span></p>
+    <p><span class="h4">Selvage: </span></p>
+    <p><span class="h4">Yardage: </span></p>
+    <p><span class="h4">Finished width: </span></p>
+    <p><span class="h4">Finished length: </span></p>
+    <p><span class="h4">Width repeats: </span></p>
+    <p><span class="h4">Length repeats: </span></p>
+    <p><span class="h4">Palette: </span></p>
+    <p><span class="h4">Preview: </span></p>
+    <p><span class="h4">Threading: </span></p>
+    <p><span class="h4">Tie up: </span></p>
+    <p><span class="h4">Treadling: </span></p>
+    <p><span class="h4">Visualizer: </span></p>
+    
+
   </div>
 </ng-template>
