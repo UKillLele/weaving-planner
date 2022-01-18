@@ -94,7 +94,8 @@ export class DataCollectorComponent implements OnInit {
 
   getApiResponse() {
     this.apiService.getPatterns().subscribe(resp => {
-      this.apiResponse = resp.text;
+      console.log(resp)
+      this.apiResponse = resp[0]?.text;
     })
   }
 

@@ -11,9 +11,18 @@
       ]
     },
     {
+      "name": "res",
       "type": "http",
-      "direction": "out",
-      "name": "res"
+      "direction": "out"
+    },
+    {
+      "type": "cosmosDB",
+      "name": "patternData",
+      "databaseName": "weaving-planner-database",
+      "collectionName": "weaving-planner-container",
+      "connectionStringSetting": "CosmosConnectionString",
+      "sqlQuery": "SELECT * FROM c",
+      "direction": "in"
     }
   ],
   "scriptFile": "../dist/getPatterns/index.js"
