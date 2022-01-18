@@ -59,7 +59,7 @@ export class DataCollectorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.apiResponse = this.apiService.getPatterns();
+    this.getApiResponse();
     this.weavingService.shafts.subscribe((shafts: number) => {
       this.patternForm.controls['shafts'].setValue(shafts);
     });
@@ -90,6 +90,12 @@ export class DataCollectorComponent implements OnInit {
       this.threadingBoxes = threadingBoxes;
       this.calculateYarn();
     });
+  }
+
+  getApiResponse() {
+    this.apiService.getPatterns().subscribe(resp => {
+      this.apiResponse = resp.text;
+    })
   }
 
   onPatternSubmit() {

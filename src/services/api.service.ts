@@ -1,6 +1,7 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -9,10 +10,7 @@ import { Injectable } from '@angular/core';
 export class ApiService {
     constructor (private http: HttpClient) { }
 
-    getPatterns() {
-        let result = "";
-        this.http.get('/api/getPatterns')
-            .subscribe((resp: any) => result = resp.text);
-        return result;
+    getPatterns(): Observable<any> {
+        return this.http.get('/api/getPatterns');
     }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, TemplateRef } from '@angular/core';
 import { ScrollDispatcher, CdkScrollable } from '@angular/cdk/scrolling';
 import { WeavingService } from 'src/services/weaving.service';
+import { UserInfo } from 'src/models/user-info';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     private scrollDispatcher: ScrollDispatcher
     ) { }
 
-  ngOnInit(): void {
+  userInfo?: UserInfo;
+
+  async ngOnInit() {
+    this.userInfo = await this.getUserInfo();
     this.weavingService.changePreviewAvailable(true);
     this.weavingService.patternWidth.subscribe((patternWidth: number) => {
       this.patternWidth = patternWidth;
@@ -30,6 +34,18 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
     this.weavingService.treadles.subscribe((treadles: number) => {this.updateTreadles(treadles)});
     this.weavingService.internalWidth.subscribe((internalWidth: number) => {this.internalWidth = internalWidth});
+  }
+
+  async getUserInfo() {
+    try {
+      const response = await fetch('/.auth/me');
+      const payload = await response.json();
+      const { clientPrincipal } = payload;
+      return clientPrincipal;
+    } catch (error) {
+      console.error('No profile could be found');
+      return undefined;
+    }
   }
 
   ngAfterViewInit(): void {

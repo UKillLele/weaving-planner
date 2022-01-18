@@ -6,7 +6,7 @@
       </button>
     </div>
     <div class="m-2">
-      <button class="btn btn-outline-primary rounded-circle" type="button">
+      <button class="btn btn-outline-primary rounded-circle" type="button" [ngbPopover]="userPopover">
         <i class="fa fa-user fa-2x" aria-hidden="true"></i>
       </button>
     </div>
@@ -46,3 +46,11 @@
     <button div matDialogClose color="primary">Close</button>
   </div>
 </ng-template> -->
+
+<ng-template #userPopover>
+  <div class="d-flex flex-column">
+  <div>Welcome {{userInfo?.userDetails}}!</div>
+    <button *ngIf="!userInfo" type="button" class="btn btn-primary my-2"><a class="text-light" href="/.auth/login/aad">Login</a></button>
+    <button *ngIf="userInfo" type="button" class="btn btn-primary my-2"><a class="text-light" href="/.auth/logout">Logout</a></button>
+  </div>
+</ng-template>
