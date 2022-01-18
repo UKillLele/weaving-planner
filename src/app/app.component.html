@@ -1,18 +1,18 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-end">
     <div class="m-2">
-      <button class="btn btn-outline-primary rounded-circle" type="button">
+      <button class="btn btn-outline-primary rounded-circle" type="button" (click)="open(instructions)" aria-label="instructions">
         <i class="fa fa-info fa-2x" aria-hidden="true"></i>
       </button>
     </div>
     <div class="m-2">
-      <button class="btn btn-outline-primary rounded-circle" type="button" [ngbPopover]="userPopover">
+      <button class="btn btn-outline-primary rounded-circle" type="button" [ngbPopover]="userPopover" aria-label="user options">
         <i class="fa fa-user fa-2x" aria-hidden="true"></i>
       </button>
     </div>
   </div>
   <app-data-collector></app-data-collector>
-  <app-palette (previewEvent)="openPreview($event)"></app-palette>
+  <app-palette></app-palette>
   <div [style.display]="treadles ? 'flex' : 'none'">
     <app-threading-planner 
       [style.width]="leftCol + 'vw'" 
@@ -36,16 +36,6 @@
     ></app-treadling-planner>
   </div>
 </div>
-
-<!-- <ng-template #previewDialog>
-  <h2 matDialogTitle>Weaving Preview</h2>
-  <div>
-    <p>TODO</p>
-  </div>
-  <div align="end">
-    <button div matDialogClose color="primary">Close</button>
-  </div>
-</ng-template> -->
 
 <ng-template #userPopover>
   <div class="d-flex flex-column">
@@ -109,7 +99,5 @@
     <p><span class="h4">Tie up: </span></p>
     <p><span class="h4">Treadling: </span></p>
     <p><span class="h4">Visualizer: </span></p>
-    
-
   </div>
 </ng-template>

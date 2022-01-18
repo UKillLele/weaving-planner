@@ -80,10 +80,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.weavingService.changeInternalWidth(this.boxWidth * this.patternWidth);
     }
   }
-
-  openPreview(e: Event) {
-    // this.dialog.open(this.previewDialog);
-  }
   
   open(content: any) {
     this.modalService.open(content).result.then((result) => {

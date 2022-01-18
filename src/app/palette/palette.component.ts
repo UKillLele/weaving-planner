@@ -1,4 +1,5 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { WeavingService } from 'src/services/weaving.service';
 
 @Component({
@@ -13,9 +14,10 @@ export class PaletteComponent implements OnInit {
   edit: boolean = true;
   previewAvailable: boolean = false;
 
-  @Output() previewEvent = new EventEmitter<any>();
-
-  constructor(private weavingService: WeavingService) { }
+  constructor(
+    private weavingService: WeavingService,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit(): void {
     this.weavingService.previewAvailable.subscribe(previewAvailable => this.previewAvailable = previewAvailable);
@@ -50,8 +52,12 @@ export class PaletteComponent implements OnInit {
     this.selectedColor = this.colorPalette[this.selectedIndex];
     this.weavingService.changeSelectedColor(this.selectedColor);
   }
-
-  openPreview() {
-    this.previewEvent.emit();   
+  
+  open(content: any) {
+    this.modalService.open(content).result.then((result) => {
+      // this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 }
