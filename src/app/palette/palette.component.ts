@@ -28,8 +28,9 @@ export class PaletteComponent implements OnInit {
   selectOrDelete(index: number) {
     if (!this.edit) {
       this.colorPalette.splice(index, 1);
-      this.selectedColor = '';
-      this.selectedIndex = -1;
+      const newIndex = this.colorPalette.length > 0 ? this.colorPalette[index -1] ? index - 1 : index + 1 : -1;
+      this.selectedColor = this.colorPalette[newIndex];
+      this.selectedIndex = newIndex;
       if (this.colorPalette.length === 0) this.edit = true;
     } else {
       this.selectedColor = this.colorPalette[index];

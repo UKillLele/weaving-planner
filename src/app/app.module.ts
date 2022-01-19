@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgCeilPipeModule } from 'angular-pipes';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxColorsModule } from 'ngx-colors';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { HttpClientModule } from '@angular/common/http';
     ScrollingModule,
     NgCeilPipeModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxColorsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

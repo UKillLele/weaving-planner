@@ -16,7 +16,7 @@
                 >
                     <button *ngIf="i === selectedIndex && edit"
                         (change)="selectedColorChanged()" 
-                        ngx-colors-trigger="editable"
+                        ngx-colors-trigger="edit"
                         [(ngModel)]="colorPalette[i]"
                         class="btn"
                     >
@@ -36,7 +36,7 @@
     </div>
     <div class="col col-auto">
         <div class="form-switch form-floating">
-            <input [disabled]="!selectedColor" type="checkbox" class="form-check-input form-control" style="width: 7rem; height: 2rem;" role="switch" id="edit" [(ngModel)]="edit" />
+            <input [disabled]="colorPalette?.length === 0" type="checkbox" class="form-check-input form-control" style="width: 7rem; height: 2rem;" role="switch" id="edit" [(ngModel)]="edit" />
             <label for="edit" class="text-light" *ngIf="edit">edit</label>
             <label for="edit" class="right-0 text-light" style="left: auto;" *ngIf="!edit">remove</label>
         </div>

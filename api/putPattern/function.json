@@ -6,7 +6,7 @@
       "direction": "in",
       "name": "req",
       "methods": [
-        "get"
+        "put"
       ]
     },
     {
@@ -20,8 +20,7 @@
       "databaseName": "weaving-planner-database",
       "collectionName": "weaving-planner-container",
       "connectionStringSetting": "CosmosConnectionString",
-      "sqlQuery": "SELECT c.id, c.name FROM c WHERE c.userId = {for}",
-      "direction": "in"
+      "direction": "out"
     }
   ],
   "scriptFile": "../dist/getPatterns/index.js"

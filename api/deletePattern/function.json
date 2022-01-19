@@ -6,7 +6,8 @@
       "direction": "in",
       "name": "req",
       "methods": [
-        "get"
+        "get",
+        "post"
       ]
     },
     {
@@ -20,7 +21,7 @@
       "databaseName": "weaving-planner-database",
       "collectionName": "weaving-planner-container",
       "connectionStringSetting": "CosmosConnectionString",
-      "sqlQuery": "SELECT c.id, c.name FROM c WHERE c.userId = {for}",
+      "sqlQuery": "SELECT * FROM c",
       "direction": "in"
     }
   ],

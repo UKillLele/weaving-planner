@@ -8,9 +8,6 @@
         </ng-template>
         <ng-template ngbPanelContent>
             <form [formGroup]="patternForm" (ngSubmit)="onPatternSubmit()" class="container-fluid">
-                <div class="row">
-                    {{apiResponse}}
-                </div>
                 <div class="row row-col-auto">
                     <div class="col col-auto mb-3">
                         <div class="form-floating">
@@ -46,8 +43,17 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col col-auto my-auto">
+                    <div class="col col-auto my-auto me-auto">
                         <button class="btn btn-outline-primary mb-3" type="button" (click)="open(srtDialog)">SRT</button>
+                    </div>
+                    <div class="col col-auto my-auto" *ngIf="savedPatterns.length > 0">
+                        <select class="form-select mb-3">
+                            <option>saved patterns</option>
+                            <option *ngFor="let pattern of savedPatterns" (click)="getPattern(pattern.id)">{{pattern.name}}</option>
+                        </select>
+                    </div>
+                    <div class="col col-auto my-auto" *ngIf="userDetails">
+                        <button class="btn btn-primary mb-3" (click)="savePattern()">Save</button>
                     </div>
                 </div>
                 <section>
@@ -232,12 +238,12 @@
         </ng-template>
         <ng-template ngbPanelContent>
             <section class="row row-col-auto">
-                <div class="col col-auto">total yardage: {{totalIn / 36 | ceil }} yds</div>
-                <div class="col col-auto">total warp yardage: {{warpIn / 36 | ceil }} yds</div>
-                <div class="col col-auto">total weft yardage: {{weftIn / 36 | ceil }} yds</div>
+                <div class="col col-auto">total yardage: {{pattern.totalIn / 36 | ceil }} yds</div>
+                <div class="col col-auto">total warp yardage: {{pattern.warpIn / 36 | ceil }} yds</div>
+                <div class="col col-auto">total weft yardage: {{pattern.weftIn / 36 | ceil }} yds</div>
             </section>
             <section class="row row-col-auto">
-                <div class="col col-auto" *ngFor="let color of colors">
+                <div class="col col-auto" *ngFor="let color of pattern.colors">
                     <div class="align-middle">
                         <span style="width: 15px; height: 15px; display: inline-block; border: 1px solid black" [style.backgroundColor]="color.colorCode"></span>
                         : {{color.colorInches / 36 | ceil }} yds

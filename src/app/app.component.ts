@@ -3,6 +3,7 @@ import { ScrollDispatcher, CdkScrollable } from '@angular/cdk/scrolling';
 import { WeavingService } from 'src/services/weaving.service';
 import { UserInfo } from 'src/models/user-info';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ApiService } from 'src/services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -16,19 +17,19 @@ export class AppComponent implements OnInit, AfterViewInit {
   leftCol: number = 0;
   rightCol: number = 0;
   internalWidth: number = 0;
+  userDetails: string = this.apiService.userDetails;
 
   @ViewChild('previewDialog') previewDialog!: TemplateRef<any>;
 
   constructor(
     private weavingService: WeavingService,
     private scrollDispatcher: ScrollDispatcher,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private apiService: ApiService
     ) { }
 
-  userInfo?: UserInfo;
-
   async ngOnInit() {
-    this.userInfo = await this.getUserInfo();
+    this.apiService.getUserInfo();
     this.weavingService.changePreviewAvailable(true);
     this.weavingService.patternWidth.subscribe((patternWidth: number) => {
       this.patternWidth = patternWidth;
@@ -36,18 +37,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
     this.weavingService.treadles.subscribe((treadles: number) => {this.updateTreadles(treadles)});
     this.weavingService.internalWidth.subscribe((internalWidth: number) => {this.internalWidth = internalWidth});
-  }
-
-  async getUserInfo() {
-    try {
-      const response = await fetch('/.auth/me');
-      const payload = await response.json();
-      const { clientPrincipal } = payload;
-      return clientPrincipal;
-    } catch (error) {
-      console.error('No profile could be found');
-      return undefined;
-    }
   }
 
   ngAfterViewInit(): void {
@@ -81,11 +70,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
   
-  open(content: any) {
-    this.modalService.open(content).result.then((result) => {
+  open(content: any, options = {}) {
+    this.modalService.open(content, options).result.then((result) => {
       // this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  logout() {
+    localStorage.removeItem("auth@aad");
   }
 }

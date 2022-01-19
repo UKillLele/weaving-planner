@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-end">
     <div class="m-2">
-      <button class="btn btn-outline-primary rounded-circle" type="button" (click)="open(instructions)" aria-label="instructions">
+      <button class="btn btn-outline-primary rounded-circle" type="button" (click)="open(instructions, { size: 'lg', scrollable: true })" aria-label="instructions">
         <i class="fa fa-info fa-2x" aria-hidden="true"></i>
       </button>
     </div>
@@ -39,17 +39,17 @@
 
 <ng-template #userPopover>
   <div class="d-flex flex-column">
-  <div>Welcome {{userInfo?.userDetails}}!</div>
-    <button *ngIf="!userInfo" type="button" class="btn btn-primary my-2"><a class="text-light" href="/.auth/login/aad">Login/Register</a></button>
-    <button *ngIf="userInfo" type="button" class="btn btn-primary my-2"><a class="text-light" href="/.auth/logout">Logout</a></button>
+  <div>Welcome {{userDetails}}!</div>
+    <button *ngIf="!userDetails" type="button" class="btn btn-primary my-2"><a class="text-light" href="/.auth/login/aad">Login/Register</a></button>
+    <button *ngIf="userDetails" type="button" class="btn btn-primary my-2" (click)="logout()"><a class="text-light" href="/.auth/logout">Logout</a></button>
     <button type="button" class="btn btn-outline-primary my-2" (click)="open(privacy)">Privacy</button>
   </div>
 </ng-template>
 
 <ng-template #privacy let-modal>
   <div class="modal-header">
-    <h1 class="modal-title h3">Privacy</h1>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <h1 class="modal-title h3" ngbAutofocus>Privacy</h1>
+    <button type="button" class="btn btn-outline-primary" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -60,8 +60,8 @@
 
 <ng-template #instructions let-modal>
   <div class="modal-header">
-    <h1 class="modal-title h3">Instructions</h1>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <h1 class="modal-title h3" ngbAutofocus>Instructions</h1>
+    <button type="button" class="btn btn-outline-primary" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
