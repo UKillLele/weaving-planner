@@ -10,18 +10,20 @@
       ]
     },
     {
-      "name": "res",
       "type": "http",
-      "direction": "out"
+      "direction": "out",
+      "name": "res"
     },
     {
       "type": "cosmosDB",
-      "name": "patternData",
+      "direction": "out",
+      "name": "outputDocument",
       "databaseName": "weaving-planner-database",
       "collectionName": "weaving-planner-container",
       "connectionStringSetting": "CosmosConnectionString",
-      "direction": "out"
+      "createIfNotExists": true,
+      "partitionKey": "/id"
     }
   ],
-  "scriptFile": "../dist/getPatterns/index.js"
+  "scriptFile": "../dist/postPattern/index.js"
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { NgbAccordion, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UUID } from 'angular2-uuid';
 import { Box } from 'src/models/box.model';
 import { Pattern, Yarn, SRTColor } from 'src/models/pattern.model';
 import { ApiService } from 'src/services/api.service';
@@ -16,8 +17,12 @@ export class DataCollectorComponent implements OnInit {
   @ViewChild('acc') accordionComponent!: NgbAccordion;
   
   pattern = new Pattern();
+  savedPatterns: Pattern[] = [];
+  userDetails: string = this.apiService.userDetails;
+  selectedPatternId: any = this.pattern.id;
 
   patternForm = this.fb.group({
+    selectedPatternId: [ this.selectedPatternId ],
     name: [ this.pattern.name ],
     shafts: [ this.pattern.shafts ],
     treadles: [ this.pattern.treadles ],
@@ -46,10 +51,6 @@ export class DataCollectorComponent implements OnInit {
     srtThreadcount: [ this.pattern.srtThreadcount ],
     srtPalette: [ this.pattern.srtPalette ]
   });
-
-  savedPatterns: Pattern[] = [];
-
-  userDetails: string = this.apiService.userDetails;
   
   constructor(
     private weavingService: WeavingService,
@@ -94,16 +95,19 @@ export class DataCollectorComponent implements OnInit {
 
   getPatterns() {
     this.apiService.getPatterns().then(resp => {
-      console.log(resp)
       this.savedPatterns = resp;
     });
   }
 
-  getPattern(id: any) {
-    this.apiService.getPattern(id).then(resp => {
-      console.log(resp)
-      this.pattern = resp;
-    });
+  getPattern() {
+    const selectedPatternId = this.patternForm.controls['selectedPatternId'].value;
+    if (selectedPatternId) {
+      this.apiService.getPattern(selectedPatternId).then(resp => {
+        this.pattern = resp[0];
+        this.patternForm.reset();
+        this.patternForm.patchValue(this.pattern);
+      });
+    }
   }
 
   onPatternSubmit() {
@@ -116,14 +120,24 @@ export class DataCollectorComponent implements OnInit {
     this.weavingService.changeEpi(this.patternForm.controls['epi'].value ?? null);
     this.weavingService.changeWorkingWidth(this.patternForm.controls['workingWidth'].value ?? null);
     this.weavingService.changeColorBoxes(this.pattern.colorBoxes ?? null);
-    this.pattern.userId = localStorage.getItem('auth@aad') && JSON.parse(localStorage.getItem('auth@aad')!).userId;
+    this.pattern.userId = this.apiService.userId;
     this.accordionComponent.toggle('patternInfo');
   }
 
   savePattern() {
-    if (this.pattern.userId) {
-      this.apiService.putPattern(this.pattern).then(resp => {
-        console.log(resp)
+    if (this.apiService.userId) {
+      const pattern = {
+        id: this.pattern.id ?? UUID.UUID(),
+        userId: this.apiService.userId,
+        ...this.pattern,
+        ...this.patternForm.value,
+        selectedPatternId: null
+      }
+      this.apiService.putPattern(pattern).then(resp => {
+        this.apiService.getPatterns();
+        this.selectedPatternId = resp.id;
+        this.patternForm.reset();
+        this.pattern = resp;
       });
     }
   }

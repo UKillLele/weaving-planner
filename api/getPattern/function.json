@@ -20,7 +20,7 @@
       "databaseName": "weaving-planner-database",
       "collectionName": "weaving-planner-container",
       "connectionStringSetting": "CosmosConnectionString",
-      "sqlQuery": "SELECT * FROM c WHERE c.userId = {for} AND c.id = {id}",
+      "sqlQuery": "SELECT TOP 1 * FROM c WHERE c.userId = {for} AND c.id = {id}",
       "direction": "in"
     }
   ],

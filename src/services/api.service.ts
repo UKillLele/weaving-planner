@@ -10,7 +10,7 @@ import { Pattern } from "../models/pattern.model";
 export class ApiService {
     constructor (private http: HttpClient) { }
 
-    id = localStorage.getItem('auth@aad') ? JSON.parse(localStorage.getItem('auth@aad')!).userId : "";
+    userId = localStorage.getItem('auth@aad') && JSON.parse(localStorage.getItem('auth@aad')!).userId;
     userDetails: string = localStorage.getItem('auth@aad') && JSON.parse(localStorage.getItem('auth@aad')!).userDetails;
 
     async getUserInfo() {
@@ -22,15 +22,14 @@ export class ApiService {
     }
 
     getPatterns(): Promise<Pattern[]> {
-        return this.http.get<Pattern[]>(`/api/getPatterns?for=${this.id}`).toPromise();
+        return this.http.get<Pattern[]>(`/api/getPatterns?for=${this.userId}`).toPromise();
     }
 
-    async getPattern(id: any): Promise<Pattern> {
-        console.log(`/api/getPattern?for=${this.id}&id=${id}`)
-        return this.http.get<Pattern>(`/api/getPattern?for=${this.id}&id=${id}`).toPromise();
+    getPattern(id: any): Promise<Pattern[]> {
+        return this.http.get<Pattern[]>(`/api/getPattern?for=${this.userId}&id=${id}`).toPromise();
     }
 
-    putPattern(pattern: Pattern): Promise<Pattern> {
-        return this.http.put<Pattern>(`/api/putPattern?for=${this.id}`, JSON.stringify(pattern)).toPromise();
+    putPattern(pattern: Pattern): Promise<any> {
+        return this.http.put<any>(`/api/putPattern`, pattern).toPromise();
     }
 }

@@ -1,5 +1,5 @@
 import { Box } from "./box.model";
-import { Guid } from 'guid-typescript';
+import { UUID } from 'angular2-uuid';
 
 export class Yarn {
   colorName: string = "";
@@ -14,7 +14,7 @@ export class SRTColor {
 }
 
 export class Pattern {
-  id?: Guid;
+  id?: UUID;
   userId?: string;
   name: string = "";
   shafts: number = 0;

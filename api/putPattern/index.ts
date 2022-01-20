@@ -1,13 +1,12 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions"
 
-const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest, patternData: JSON): Promise<void> {
-    context.log('HTTP trigger function processed a request.');
+const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
+  context.bindings.outputDocument = req.body;
 
-    try {
-        context.res.status(200).json(patternData);
-      } catch (error) {
-        context.res.status(500).json(error);
-    }
+    context.res = {
+        // status: 200, /* Defaults to 200 */
+        body: context.bindings.outputDocument
+    };
 
 };
 
