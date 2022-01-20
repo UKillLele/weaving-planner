@@ -17,7 +17,7 @@
     {
       "type": "cosmosDB",
       "direction": "out",
-      "name": "outputDocument",
+      "name": "patternData",
       "databaseName": "weaving-planner-database",
       "collectionName": "weaving-planner-container",
       "connectionStringSetting": "CosmosConnectionString",
