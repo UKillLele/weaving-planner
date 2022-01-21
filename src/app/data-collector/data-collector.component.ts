@@ -19,10 +19,9 @@ export class DataCollectorComponent implements OnInit {
   pattern = new Pattern();
   savedPatterns: Pattern[] = [];
   userDetails: string = this.apiService.userDetails;
-  selectedPatternId: any = this.pattern.id;
 
   patternForm = this.fb.group({
-    selectedPatternId: [ this.selectedPatternId ],
+    id: [ this.pattern.id ],
     name: [ this.pattern.name ],
     shafts: [ this.pattern.shafts ],
     treadles: [ this.pattern.treadles ],
@@ -91,22 +90,30 @@ export class DataCollectorComponent implements OnInit {
       this.pattern.threadingBoxes = threadingBoxes;
       this.calculateYarn();
     });
+    this.weavingService.tieUpBoxes.subscribe((tieUpBoxes: Box[]) => {
+      this.pattern.tieUpBoxes = tieUpBoxes;
+    });
   }
 
   getPatterns() {
     this.apiService.getPatterns().then(resp => {
-      this.savedPatterns = resp;
-    });
+      if (resp.success) {
+        this.savedPatterns = resp.data;
+      }
+    }).catch(error => console.log(error));
   }
 
-  getPattern() {
-    const selectedPatternId = this.patternForm.controls['selectedPatternId'].value;
-    if (selectedPatternId) {
-      this.apiService.getPattern(selectedPatternId).then(resp => {
-        this.pattern = resp[0];
-        this.patternForm.reset();
-        this.patternForm.patchValue(this.pattern);
-      });
+  getPattern(patternId: UUID) {
+    if (patternId) {
+      this.apiService.getPattern(patternId).then(resp => {
+        if (resp.success) {
+          this.pattern = resp.data[0];
+          this.patternForm.reset();
+          this.patternForm.patchValue(this.pattern);
+          this.onPatternSubmit();
+          console.log(this.pattern)
+        }
+      }).catch(error => console.log(error));
     }
   }
 
@@ -120,25 +127,34 @@ export class DataCollectorComponent implements OnInit {
     this.weavingService.changeEpi(this.patternForm.controls['epi'].value ?? null);
     this.weavingService.changeWorkingWidth(this.patternForm.controls['workingWidth'].value ?? null);
     this.weavingService.changeColorBoxes(this.pattern.colorBoxes ?? null);
-    this.pattern.userId = this.apiService.userId;
-    this.accordionComponent.toggle('patternInfo');
+    this.weavingService.changeThreadingBoxes(this.pattern.threadingBoxes ?? null);
+    this.weavingService.changeTreadlingBoxes(this.pattern.treadlingBoxes ?? null);
+    this.weavingService.changeTieUpBoxes(this.pattern.tieUpBoxes ?? null);
+  }
+
+  clearForm() {
+    this.patternForm.reset();
+    this.onPatternSubmit();
   }
 
   savePattern() {
     if (this.apiService.userId) {
+      console.log(this.pattern.id)
       const pattern = {
         id: this.pattern.id ?? UUID.UUID(),
         userId: this.apiService.userId,
         ...this.pattern,
-        ...this.patternForm.value,
-        selectedPatternId: null
+        ...this.patternForm.value
       }
+      console.log(pattern.id)
       this.apiService.putPattern(pattern).then(resp => {
-        this.apiService.getPatterns();
-        this.selectedPatternId = resp.id;
-        this.patternForm.reset();
-        this.pattern = resp;
-      });
+        if (resp.success) {
+          this.apiService.getPatterns();
+          this.patternForm.reset();
+          this.pattern = resp.data;
+          this.onPatternSubmit();
+        }
+      }).catch(error => console.log(error));
     }
   }
 

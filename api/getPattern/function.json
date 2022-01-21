@@ -21,7 +21,8 @@
       "collectionName": "weaving-planner-container",
       "connectionStringSetting": "CosmosConnectionString",
       "sqlQuery": "SELECT TOP 1 * FROM c WHERE c.userId = {for} AND c.id = {id}",
-      "direction": "in"
+      "direction": "in",
+      "partitionKey": "/id"
     }
   ],
   "scriptFile": "../dist/getPatterns/index.js"

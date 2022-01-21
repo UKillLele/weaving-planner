@@ -43,6 +43,7 @@ export class Pattern {
   colorBoxes: Array<Array<Box>> = [];
   threadingBoxes: Array<Box> = [];
   treadlingBoxes: Array<Box> = [];
+  tieUpBoxes: Array<Box> = [];
   colors: Array<Yarn> = [];
   weftIn: number = 0;
   warpIn: number = 0;

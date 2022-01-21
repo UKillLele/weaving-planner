@@ -4,9 +4,9 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     context.log('HTTP trigger function processed a request.');
 
     try {
-        context.res.status(200).json(context.bindings.patternData);
+        context.res.status(200).json({ success: true, data: context.bindings.patternData});
       } catch (error) {
-        context.res.status(500).json(error);
+        context.res.status(500).json({ success: true, error: error});
     }
 
 };

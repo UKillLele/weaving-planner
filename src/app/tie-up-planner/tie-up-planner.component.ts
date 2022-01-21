@@ -32,7 +32,9 @@ export class TieUpPlannerComponent implements OnInit {
       this.boxWidth = boxWidth;
       this.updateTieUp();
     });
-    this.weavingService.tieUpBoxes.subscribe((tieUpBoxes: Box[]) => this.tieUpBoxes = tieUpBoxes);
+    this.weavingService.tieUpBoxes.subscribe((tieUpBoxes: Box[]) => {
+      this.tieUpBoxes = tieUpBoxes;
+    });
   }
 
   updateTieUp() {

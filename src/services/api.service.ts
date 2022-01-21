@@ -21,15 +21,21 @@ export class ApiService {
         }
     }
 
-    getPatterns(): Promise<Pattern[]> {
-        return this.http.get<Pattern[]>(`/api/getPatterns?for=${this.userId}`).toPromise();
+    getPatterns(): Promise<Response> {
+        return this.http.get<Response>(`/api/getPatterns?for=${this.userId}`).toPromise();
     }
 
-    getPattern(id: any): Promise<Pattern[]> {
-        return this.http.get<Pattern[]>(`/api/getPattern?for=${this.userId}&id=${id}`).toPromise();
+    getPattern(id: any): Promise<Response> {
+        return this.http.get<Response>(`/api/getPattern?for=${this.userId}&id=${id}`).toPromise();
     }
 
-    putPattern(pattern: Pattern): Promise<any> {
-        return this.http.put<any>(`/api/putPattern`, pattern).toPromise();
+    putPattern(pattern: Pattern): Promise<Response> {
+        return this.http.patch<Response>(`/api/putPattern`, pattern).toPromise();
     }
+}
+
+class Response {
+    success?: boolean;
+    data: any = null;
+    error?: string;
 }

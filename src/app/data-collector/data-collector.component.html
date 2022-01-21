@@ -3,7 +3,24 @@
         <ng-template ngbPanelHeader let-opened="opened">
             <div class="d-flex align-items-center justify-content-between">
               <h1 class="h2 m-0">Pattern Information</h1>
-              <button ngbPanelToggle class="btn btn-link p-0" type="button" aria-label="toggle instructions"><i [ngClass]="['fa', opened ? 'fa-angle-up' : 'fa-angle-down', 'fa-2x']" aria-hidden="true"></i></button>
+              <div>
+                <button type="button" class="btn btn-secondary me-3" *ngIf="pattern.id" (click)="clearForm()">Clear</button>
+                <div *ngIf="savedPatterns.length > 0" ngbDropdown class="d-inline-block me-3">
+                    <button class="btn btn-outline-primary" id="loadDropdown" ngbDropdownToggle><span class="me-2">Load</span></button>
+                    <div ngbDropdownMenu aria-labelledby="loadDropdown">
+                        <button 
+                            *ngFor="let pat of savedPatterns" 
+                            (click)="getPattern(pat.id!)" 
+                            ngbDropdownItem
+                            [ngClass]="['dropdown-item', pat.id === pattern.id ? 'active' : '']"
+                        >
+                            {{pat.name}}
+                        </button>
+                    </div>
+                  </div>
+                <button *ngIf="userDetails" class="btn btn-primary me-4" type="button" (click)="savePattern()">Save</button>
+                <button ngbPanelToggle class="btn btn-link p-0" type="button" aria-label="toggle instructions"><i [ngClass]="['fa', opened ? 'fa-angle-up' : 'fa-angle-down', 'fa-2x']" aria-hidden="true"></i></button>
+                </div>
             </div>
         </ng-template>
         <ng-template ngbPanelContent>
@@ -45,15 +62,6 @@
                     </div>
                     <div class="col col-auto my-auto me-auto">
                         <button class="btn btn-outline-primary mb-3" type="button" (click)="open(srtDialog)">SRT</button>
-                    </div>
-                    <div class="col col-auto my-auto" *ngIf="savedPatterns.length > 0">
-                        <select formControlName="selectedPatternId" class="form-select mb-3" (change)="getPattern()">
-                            <option value="null">saved patterns</option>
-                            <option *ngFor="let pattern of savedPatterns" [value]="pattern.id">{{pattern.name}}</option>
-                        </select>
-                    </div>
-                    <div class="col col-auto my-auto" *ngIf="userDetails">
-                        <button class="btn btn-primary mb-3" type="button" (click)="savePattern()">Save</button>
                     </div>
                 </div>
                 <section>
