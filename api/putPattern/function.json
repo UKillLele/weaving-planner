@@ -16,17 +16,6 @@
     },
     {
       "type": "cosmosDB",
-      "direction": "in",
-      "name": "patternDataIn",
-      "databaseName": "weaving-planner-database",
-      "collectionName": "weaving-planner-container",
-      "connectionStringSetting": "CosmosConnectionString",
-      "createIfNotExists": false,
-      "sqlQuery": "SELECT TOP 1 * FROM c WHERE c.id = {id}",
-      "partitionKey": "/id"
-    },
-    {
-      "type": "cosmosDB",
       "direction": "out",
       "name": "patternData",
       "databaseName": "weaving-planner-database",
