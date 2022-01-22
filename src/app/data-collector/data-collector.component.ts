@@ -111,7 +111,6 @@ export class DataCollectorComponent implements OnInit {
           this.patternForm.reset();
           this.patternForm.patchValue(this.pattern);
           this.onPatternSubmit();
-          console.log(this.pattern)
         }
       }).catch(error => console.log(error));
     }
@@ -134,19 +133,22 @@ export class DataCollectorComponent implements OnInit {
 
   clearForm() {
     this.patternForm.reset();
+    this.pattern.treadlingBoxes = [];
+    this.pattern.threadingBoxes = [];
+    this.pattern.tieUpBoxes = [];
+    this.pattern.colorBoxes = [];
     this.onPatternSubmit();
   }
 
   savePattern() {
     if (this.apiService.userId) {
-      console.log(this.pattern.id)
       const pattern = {
         id: this.pattern.id ?? UUID.UUID(),
         userId: this.apiService.userId,
         ...this.pattern,
-        ...this.patternForm.value
+        ...this.patternForm.value,
       }
-      console.log(pattern.id)
+      console.log(pattern)
       this.apiService.putPattern(pattern).then(resp => {
         if (resp.success) {
           this.apiService.getPatterns();

@@ -1,14 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions"
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-    const existingData = context.bindings.patternDataIn;
-    console.log("updated")
-    const updatedData = req.body;
-    const newData = {
-        ...existingData,
-        ...updatedData
-    }
-    context.bindings.patternData = newData;
+    context.bindings.patternData = req.body;
 
     try {
         context.res.status(200).json({ success: true, data: context.bindings.patternData});

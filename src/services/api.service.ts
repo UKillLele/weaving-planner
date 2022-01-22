@@ -30,7 +30,7 @@ export class ApiService {
     }
 
     putPattern(pattern: Pattern): Promise<Response> {
-        return this.http.put<Response>(`/api/putPattern`, pattern).toPromise();
+        return this.http.post<Response>(`/api/putPattern`, pattern).toPromise();
     }
 }
 
