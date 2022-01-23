@@ -19,7 +19,7 @@
                         </button>
                     </div>
                   </div>
-                <button *ngIf="userDetails" class="btn btn-primary me-4" type="button" (click)="savePattern()">Save</button>
+                <button *ngIf="user?.userDetails" class="btn btn-primary me-4" type="button" (click)="savePattern()">Save</button>
                 <button ngbPanelToggle class="btn btn-link p-0" type="button" aria-label="toggle instructions"><i [ngClass]="['fa', opened ? 'fa-angle-up' : 'fa-angle-down', 'fa-2x']" aria-hidden="true"></i></button>
                 </div>
             </div>

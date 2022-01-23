@@ -7,7 +7,6 @@ import { Box } from '../models/box.model';
 })
 
 export class WeavingService {    
-    constructor() { }
     
     private threadingBoxesSubject = new BehaviorSubject<any>(null);
     threadingBoxes = this.threadingBoxesSubject.asObservable();

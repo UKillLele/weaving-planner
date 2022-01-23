@@ -1,9 +1,9 @@
 import { Component, OnInit, AfterViewInit, ViewChild, TemplateRef } from '@angular/core';
 import { ScrollDispatcher, CdkScrollable } from '@angular/cdk/scrolling';
 import { WeavingService } from 'src/services/weaving.service';
-import { UserInfo } from 'src/models/user-info';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/services/api.service';
+import { ToastService } from 'src/services/toast.service';
 
 @Component({
   selector: 'app-root',
@@ -25,11 +25,12 @@ export class AppComponent implements OnInit, AfterViewInit {
     private weavingService: WeavingService,
     private scrollDispatcher: ScrollDispatcher,
     private modalService: NgbModal,
-    private apiService: ApiService
+    private apiService: ApiService,
+    public toastService: ToastService
     ) { }
 
   async ngOnInit() {
-    this.apiService.userDetails.subscribe(userDetails => this.userDetails = userDetails);
+    this.apiService.user.subscribe(user => this.userDetails = user?.userDetails ?? "");
     this.apiService.getUserInfo();
     this.weavingService.changePreviewAvailable(true);
     this.weavingService.patternWidth.subscribe((patternWidth: number) => {

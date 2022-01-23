@@ -2,6 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { UserInfo } from '../models/user-info.model';
 import { Pattern } from "../models/pattern.model";
 
 @Injectable({
@@ -11,29 +12,28 @@ import { Pattern } from "../models/pattern.model";
 export class ApiService {
     constructor (private http: HttpClient) { }
 
-    private userIdSubject = new BehaviorSubject<any>(null);
-    userId = this.userIdSubject.asObservable();
-    private userDetailsSubject = new BehaviorSubject<any>(null);
-    userDetails = this.userDetailsSubject.asObservable();
+    private userSubject = new BehaviorSubject<UserInfo>(new UserInfo());
+    user = this.userSubject.asObservable();
 
     async getUserInfo() {
         try {
             const response = await fetch('/.auth/me');
             const payload = await response.json();
             const { clientPrincipal } = payload;
-            this.userIdSubject.next(clientPrincipal.userId);
-            this.userDetailsSubject.next(clientPrincipal.userDetails);
+            this.userSubject.next(clientPrincipal);
         } catch (error) {
             console.error('No profile could be found');
         }
     }
 
     getPatterns(): Promise<Response> {
-        return this.http.get<Response>(`/api/getPatterns?for=${this.userIdSubject.value}`).toPromise();
+        const user = this.userSubject.getValue();
+        return this.http.get<Response>(`/api/getPatterns?for=${user.userId}`).toPromise();
     }
 
     getPattern(id: any): Promise<Response> {
-        return this.http.get<Response>(`/api/getPattern?for=${this.userIdSubject.value}&id=${id}`).toPromise();
+        const user = this.userSubject.getValue();
+        return this.http.get<Response>(`/api/getPattern?for=${user.userId}&id=${id}`).toPromise();
     }
 
     putPattern(pattern: Pattern): Promise<Response> {

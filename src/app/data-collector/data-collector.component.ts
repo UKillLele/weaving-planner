@@ -6,6 +6,8 @@ import { Box } from 'src/models/box.model';
 import { Pattern, Yarn, SRTColor } from 'src/models/pattern.model';
 import { ApiService } from 'src/services/api.service';
 import { WeavingService } from 'src/services/weaving.service';
+import { ToastService } from 'src/services/toast.service';
+
 declare let ntc: any;
 
 @Component({
@@ -18,7 +20,7 @@ export class DataCollectorComponent implements OnInit {
   
   pattern = new Pattern();
   savedPatterns: Pattern[] = [];
-  userDetails: string = "";
+  user: any;
   previewAvailable: boolean = false;
 
   patternForm = this.fb.group({
@@ -56,13 +58,14 @@ export class DataCollectorComponent implements OnInit {
     private weavingService: WeavingService,
     private apiService: ApiService,
     private fb: FormBuilder,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
-    this.apiService.userDetails.subscribe(userDetails => {
-      this.userDetails = userDetails;
-      this.getPatterns();
+    this.apiService.user.subscribe(user => {
+      this.user = user;
+      if (user) this.getPatterns();
     });
     this.weavingService.shafts.subscribe((shafts: number) => {
       this.pattern.shafts = shafts;
@@ -104,7 +107,9 @@ export class DataCollectorComponent implements OnInit {
       if (resp.success) {
         this.savedPatterns = resp.data;
       }
-    }).catch(error => console.log(error));
+    }).catch(error => {
+      this.toastService.show({header: "Error", body: error});
+    });
   }
 
   getPattern(patternId: UUID) {
@@ -116,7 +121,9 @@ export class DataCollectorComponent implements OnInit {
           this.patternForm.patchValue(this.pattern);
           this.onPatternSubmit();
         }
-      }).catch(error => console.log(error));
+      }).catch(error => {
+        this.toastService.show({header: "Error", body: error});
+      });
     }
   }
 
@@ -143,10 +150,10 @@ export class DataCollectorComponent implements OnInit {
   }
 
   savePattern() {
-    if (this.apiService.userId) {
+    if (this.user?.userId) {
       const pattern = {
         id: this.pattern.id ?? UUID.UUID(),
-        userId: this.apiService.userId,
+        userId: this.user.userId,
         ...this.pattern,
         ...this.patternForm.value,
       }
@@ -155,7 +162,11 @@ export class DataCollectorComponent implements OnInit {
           this.apiService.getPatterns();
           this.getPattern(pattern.id);
         }
-      }).catch(error => console.log(error));
+      }).catch(error => {
+        this.toastService.show({header: "Error", body: error});
+      });
+    } else {
+      this.toastService.show({header: "Error", body: "You must be logged in to save patterns."});
     }
   }
 
