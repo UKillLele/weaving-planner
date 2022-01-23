@@ -151,9 +151,9 @@ export class DataCollectorComponent implements OnInit {
 
   savePattern() {
     if (this.user?.userId) {
+      this.pattern.id = this.pattern.id ?? UUID.UUID();
+      this.pattern.userId = this.pattern.userId;
       const pattern = {
-        id: this.pattern.id ?? UUID.UUID(),
-        userId: this.user.userId,
         ...this.pattern,
         ...this.patternForm.value,
       }
