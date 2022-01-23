@@ -25,5 +25,5 @@
       "partitionKey": "/id"
     }
   ],
-  "scriptFile": "../dist/postPattern/index.js"
+  "scriptFile": "../dist/putPattern/index.js"
 }

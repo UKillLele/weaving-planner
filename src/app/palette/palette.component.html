@@ -41,25 +41,4 @@
             <label for="edit" class="right-0 text-light" style="left: auto;" *ngIf="!edit">remove</label>
         </div>
     </div>
-    <div class="col col-auto">
-        <button class="btn btn-outline-primary" [disabled]="!previewAvailable" (click)="open(preview)">Preview</button>
-    </div>
 </div>
-
-
-<ng-template #preview let-modal>
-    <div class="modal-header">
-      <h1 class="modal-title h3">Preview</h1>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div>
-        <p>TODO</p>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
-    </div>
-</ng-template>

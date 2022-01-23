@@ -15,7 +15,13 @@ export class ApiService {
 
     async getUserInfo() {
         try {
-            await fetch('/.auth/me');
+            const response = await fetch('/.auth/me');
+            const payload = await response.json();
+            const { clientPrincipal } = payload;
+            localStorage.setItem("auth@aad", clientPrincipal);
+            this.userId = clientPrincipal.userId;
+            this.userDetails = clientPrincipal.userDetails;
+
         } catch (error) {
             console.error('No profile could be found');
         }

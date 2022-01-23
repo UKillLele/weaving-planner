@@ -75,74 +75,46 @@ export class WeavingService {
             this.colorBoxesSubject.next(b);
         }
     }
-    changeShafts(b: number) {
-        if (b != null) {
+    changeShafts(b: number | null) {
             this.shaftsSubject.next(b);
-        }
     }
-    changeTreadles(b: number) {
-        if (b != null) {
+    changeTreadles(b: number | null) {
             this.treadlesSubject.next(b);
-        }
     }
-    changeWarp(b: number) {
-        if (b != null) {
+    changeWarp(b: number | null) {
             this.warpSubject.next(b);
-        }
     }
-    changeTromp(b: boolean) {
-        if (b != null) {
+    changeTromp(b: boolean | null) {
             this.trompAsWritSubject.next(b);
-        }
     }
-    changeHalfSett(b: boolean) {
-        if (b != null) {
+    changeHalfSett(b: boolean | null) {
             this.halfSettSubject.next(b);
-        }
     }
-    changePatternLength(b: number) {
-        if (b != null) {
+    changePatternLength(b: number | null) {
             this.patternLengthSubject.next(b);
-        }
     }
-    changePatternWidth(b: number) {
-        if (b != null) {
+    changePatternWidth(b: number | null) {
             this.patternWidthSubject.next(b);
-        }
     }
-    changeEpi(b: number) {
-        if (b != null) {
+    changeEpi(b: number | null) {
             this.epiSubject.next(b);
-        }
     }
-    changeWorkingWidth(b: number) {
-        if (b != null) {
+    changeWorkingWidth(b: number | null) {
             this.workingWidthSubject.next(b);
-        }
     }
-    changeBoxWidth(b: number) {
-        if (b != null) {
+    changeBoxWidth(b: number | null) {
             this.boxWidthSubject.next(b);
-        }
     }
-    changeInternalWidth(b: number) {
-        if (b != null) {
+    changeInternalWidth(b: number | null) {
             this.internalWidthSubject.next(b);
-        }
     }
-    changeSelectedColor(b: string) {
-        if (b != null) {
+    changeSelectedColor(b: string | null) {
             this.selectedColorSubject.next(b);
-        }
     }
-    changeColorPalette(b: string[]) {
-        if (b != null) {
+    changeColorPalette(b: string[] | null) {
             this.colorPaletteSubject.next(b);
-        }
     }
-    changePreviewAvailable(b: boolean) {
-        if (b != null) {
+    changePreviewAvailable(b: boolean | null) {
             this.previewAvailableSubject.next(b);
-        }
     }
 }

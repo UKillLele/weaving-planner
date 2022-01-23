@@ -12,7 +12,6 @@ export class PaletteComponent implements OnInit {
   selectedColor: string = '';
   selectedIndex: number = -1;
   edit: boolean = true;
-  previewAvailable: boolean = false;
 
   constructor(
     private weavingService: WeavingService,
@@ -20,7 +19,6 @@ export class PaletteComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.weavingService.previewAvailable.subscribe(previewAvailable => this.previewAvailable = previewAvailable);
     this.weavingService.colorPalette.subscribe(colorPalette => this.colorPalette = colorPalette);
     this.weavingService.selectedColor.subscribe(selectedColor => this.selectedColor = selectedColor);
   }

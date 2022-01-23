@@ -19,6 +19,7 @@ export class DataCollectorComponent implements OnInit {
   pattern = new Pattern();
   savedPatterns: Pattern[] = [];
   userDetails: string = this.apiService.userDetails;
+  previewAvailable: boolean = false;
 
   patternForm = this.fb.group({
     id: [ this.pattern.id ],
@@ -117,27 +118,25 @@ export class DataCollectorComponent implements OnInit {
   }
 
   onPatternSubmit() {
-    this.weavingService.changeShafts(this.patternForm.controls['shafts'].value ?? null);
-    this.weavingService.changeTreadles(this.patternForm.controls['treadles'].value ?? null);
+    this.weavingService.changeShafts(this.patternForm.controls['shafts'].value);
+    this.weavingService.changeTreadles(this.patternForm.controls['treadles'].value);
     this.weavingService.changeTromp(this.patternForm.controls['trompAsWrit'].value);
     this.weavingService.changeHalfSett(this.patternForm.controls['halfSett'].value);
-    this.weavingService.changePatternLength(this.patternForm.controls['patternLength'].value ?? null);
-    this.weavingService.changePatternWidth(this.patternForm.controls['patternWidth'].value ?? null);
-    this.weavingService.changeEpi(this.patternForm.controls['epi'].value ?? null);
-    this.weavingService.changeWorkingWidth(this.patternForm.controls['workingWidth'].value ?? null);
-    this.weavingService.changeColorBoxes(this.pattern.colorBoxes ?? null);
-    this.weavingService.changeThreadingBoxes(this.pattern.threadingBoxes ?? null);
-    this.weavingService.changeTreadlingBoxes(this.pattern.treadlingBoxes ?? null);
-    this.weavingService.changeTieUpBoxes(this.pattern.tieUpBoxes ?? null);
+    this.weavingService.changePatternLength(this.patternForm.controls['patternLength'].value);
+    this.weavingService.changePatternWidth(this.patternForm.controls['patternWidth'].value);
+    this.weavingService.changeEpi(this.patternForm.controls['epi'].value);
+    this.weavingService.changeWorkingWidth(this.patternForm.controls['workingWidth'].value);
+    this.weavingService.changeColorBoxes(this.pattern.colorBoxes);
+    this.weavingService.changeThreadingBoxes(this.pattern.threadingBoxes);
+    this.weavingService.changeTreadlingBoxes(this.pattern.treadlingBoxes);
+    this.weavingService.changeTieUpBoxes(this.pattern.tieUpBoxes);
   }
 
   clearForm() {
+    this.pattern = new Pattern();
     this.patternForm.reset();
-    this.pattern.treadlingBoxes = [];
-    this.pattern.threadingBoxes = [];
-    this.pattern.tieUpBoxes = [];
-    this.pattern.colorBoxes = [];
     this.onPatternSubmit();
+    this.weavingService.changeSelectedColor("");
   }
 
   savePattern() {
@@ -148,13 +147,10 @@ export class DataCollectorComponent implements OnInit {
         ...this.pattern,
         ...this.patternForm.value,
       }
-      console.log(pattern)
       this.apiService.putPattern(pattern).then(resp => {
         if (resp.success) {
           this.apiService.getPatterns();
-          this.patternForm.reset();
-          this.pattern = resp.data;
-          this.onPatternSubmit();
+          this.getPattern(pattern.id);
         }
       }).catch(error => console.log(error));
     }
