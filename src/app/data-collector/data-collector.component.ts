@@ -18,7 +18,7 @@ export class DataCollectorComponent implements OnInit {
   
   pattern = new Pattern();
   savedPatterns: Pattern[] = [];
-  userDetails: string = this.apiService.userDetails;
+  userDetails: string = "";
   previewAvailable: boolean = false;
 
   patternForm = this.fb.group({
@@ -60,7 +60,10 @@ export class DataCollectorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getPatterns();
+    this.apiService.userDetails.subscribe(userDetails => {
+      this.userDetails = userDetails;
+      this.getPatterns();
+    });
     this.weavingService.shafts.subscribe((shafts: number) => {
       this.pattern.shafts = shafts;
     });

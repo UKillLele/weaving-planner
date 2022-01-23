@@ -17,7 +17,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   leftCol: number = 0;
   rightCol: number = 0;
   internalWidth: number = 0;
-  userDetails: string = this.apiService.userDetails;
+  userDetails: string = "";
 
   @ViewChild('previewDialog') previewDialog!: TemplateRef<any>;
 
@@ -29,6 +29,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     ) { }
 
   async ngOnInit() {
+    this.apiService.userDetails.subscribe(userDetails => this.userDetails = userDetails);
     this.apiService.getUserInfo();
     this.weavingService.changePreviewAvailable(true);
     this.weavingService.patternWidth.subscribe((patternWidth: number) => {
