@@ -10,7 +10,7 @@ import { Pattern } from "../models/pattern.model";
 export class ApiService {
     constructor (private http: HttpClient) { }
 
-    userId = localStorage.getItem('auth@aad') && JSON.parse(localStorage.getItem('auth@aad')!).userId;
+    userId: string = localStorage.getItem('auth@aad') && JSON.parse(localStorage.getItem('auth@aad')!).userId;
     userDetails: string = localStorage.getItem('auth@aad') && JSON.parse(localStorage.getItem('auth@aad')!).userDetails;
 
     async getUserInfo() {
@@ -18,10 +18,9 @@ export class ApiService {
             const response = await fetch('/.auth/me');
             const payload = await response.json();
             const { clientPrincipal } = payload;
-            localStorage.setItem("auth@aad", clientPrincipal);
+            localStorage.setItem("auth@aad", JSON.stringify(clientPrincipal));
             this.userId = clientPrincipal.userId;
             this.userDetails = clientPrincipal.userDetails;
-
         } catch (error) {
             console.error('No profile could be found');
         }
