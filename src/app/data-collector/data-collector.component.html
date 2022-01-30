@@ -77,6 +77,15 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
+                                    <input class="form-control" type="number" placeholder="finished width" id="finishedWidth" formControlName="finishedWidth">
+                                    <label for="finishedWidth">finished width</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
                                     <input type="number" class="form-control" (change)="patternWidthChanged()" placeholder="patternWidth" id="patternWidth" formControlName="patternWidth">
                                     <label for="patternWidth">pattern width</label>
                                 </div>
@@ -92,15 +101,6 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" placeholder="working width" id="workingWidth" formControlName="workingWidth">
-                                    <label for="workingWidth">width in loom</label>
-                                </div>
-                                <span class="input-group-text">inches</span>
-                            </div>
-                        </div>
-                        <div class="col col-auto mb-3">
-                            <div class="input-group">
-                                <div class="form-floating">
                                     <input class="form-control" id="waste" placeholder="loom waste" type="number" formControlName="waste">
                                     <label for="waste">loom waste</label>
                                 </div>
@@ -110,17 +110,33 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating w-auto">
-                                    <select class="form-select" style="width: 7.5rem" id="edgeType" formControlName="edgeType">
+                                    <select class="form-select" style="width: 8.5rem" id="topEdgeType" formControlName="topEdgeType" (change)="edgeTypeChanged()">
                                         <option value="fringe">fringe</option>
                                         <option value="hem">hem</option>
                                     </select>
-                                    <label for="edgeType">edge type</label>
+                                    <label for="topEdgeType">top edge type</label>
                                 </div>
                                 <div class="form-floating">
-                                    <input class="form-control" id="edgeLength" placeholder="edge length" type="number" formControlName="edgeLength">
-                                    <label for="edgeLength">edge length</label>
+                                    <input class="form-control" id="topEdgeLength" placeholder="top edge length" type="number" formControlName="topEdgeLength" (change)="edgeChanged('warp')">
+                                    <label for="topEdgeLength">top edge length</label>
                                 </div>
-                                <span class="input-group-text">inches</span>
+                                <span class="input-group-text">ends</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating w-auto">
+                                    <select class="form-select" style="width: 10rem" id="bottomEdgeType" formControlName="bottomEdgeType" (change)="edgeTypeChanged()">
+                                        <option value="fringe">fringe</option>
+                                        <option value="hem">hem</option>
+                                    </select>
+                                    <label for="bottomEdgeType">bottom edge type</label>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="bottomEdgeLength" placeholder="bottom edge length" type="number" formControlName="bottomEdgeLength" (change)="edgeChanged('warp')">
+                                    <label for="bottomEdgeLength">bottom edge length</label>
+                                </div>
+                                <span class="input-group-text">ends</span>
                             </div>
                         </div>
                         <div class="col col-auto mb-3">
@@ -154,7 +170,16 @@
                                     <input class="form-control" type="number" id="warpShrinkage" placeholder="shrinkage" formControlName="warpShrinkage">
                                     <label for="warpShrinkage">shrinkage</label>
                                 </div>
-                                <span class="input-group-text" for="">%</span>
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="sampleLength" placeholder="sample length" formControlName="sampleLength">
+                                    <label for="sampleLength">sample length</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
                             </div>
                         </div>
                     </div>
@@ -162,6 +187,15 @@
                 <section>
                     <h2 class="h3">Weft</h2>
                     <div class="row row-col-auto">
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="finished-length" placeholder="finished length" formControlName="finishedLength">
+                                    <label for="finishedLength">finished length</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
@@ -180,19 +214,28 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" id="working-length" placeholder="length in loom" formControlName="workingLength">
-                                    <label for="workingLength">length in loom</label>
+                                    <input class="form-control" id="selvageWidth" placeholder="selvage" type="number" formControlName="selvageWidth"/>
+                                    <label for="selvageWidth">selvage</label>
                                 </div>
-                                <span class="input-group-text">inches</span>
+                                <span class="input-group-text">picks</span>
                             </div>
                         </div>
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" id="selvageWidth" placeholder="selvage" type="number" formControlName="selvageWidth"/>
-                                    <label for="selvageWidth">selvage</label>
+                                    <input class="form-control" type="number" id="weft-left-fringe" placeholder="left fringe" formControlName="weftLeftFringe" (change)="edgeChanged('weft')">
+                                    <label for="weftLeftFringe">left fringe</label>
                                 </div>
-                                <span class="input-group-text">inches</span>
+                                <span class="input-group-text">picks</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="weft-right-fringe" placeholder="right fringe" formControlName="weftRightFringe" (change)="edgeChanged('weft')">
+                                    <label for="weftRightFringe">right fringe</label>
+                                </div>
+                                <span class="input-group-text">picks</span>
                             </div>
                         </div>
                         <div class="col col-auto mb-3">
@@ -259,12 +302,12 @@
                 </div>
             </section>
             <section class="row row-col-auto">
-                <div class="col col-auto">finished width:</div>
-                <div class="col col-auto">finished length:</div>
+                <div class="col col-auto">width in reed:</div>
+                <div class="col col-auto">length on loom:</div>
             </section>
             <section class="row row-col-auto">
-                <div class="col col-auto">width repeats:</div>
-                <div class="col col-auto">length repeats:</div>
+                <div class="col col-auto">width pattern repeats:</div>
+                <div class="col col-auto">length pattern repeats (per piece):</div>
                 <!-- project preview -->
             </section>
         </ng-template>

@@ -36,8 +36,8 @@ export class WeavingService {
     patternWidth = this.patternWidthSubject.asObservable();
     private epiSubject = new BehaviorSubject<any>(null);
     epi = this.epiSubject.asObservable();
-    private workingWidthSubject = new BehaviorSubject<any>(null);
-    workingWidth = this.workingWidthSubject.asObservable();
+    private finishedWidthSubject = new BehaviorSubject<any>(null);
+    finishedWidth = this.finishedWidthSubject.asObservable();
     private boxWidthSubject = new BehaviorSubject<any>(null);
     boxWidth = this.boxWidthSubject.asObservable();
     private internalWidthSubject = new BehaviorSubject<any>(null);
@@ -98,8 +98,8 @@ export class WeavingService {
     changeEpi(b: number | null) {
             this.epiSubject.next(b);
     }
-    changeWorkingWidth(b: number | null) {
-            this.workingWidthSubject.next(b);
+    changefinishedWidth(b: number | null) {
+            this.finishedWidthSubject.next(b);
     }
     changeBoxWidth(b: number | null) {
             this.boxWidthSubject.next(b);

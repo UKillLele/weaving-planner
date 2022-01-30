@@ -30,24 +30,29 @@ export class DataCollectorComponent implements OnInit {
     treadles: [ this.pattern.treadles ],
     dpi: [ this.pattern.dpi ],
     epi: [ this.pattern.epi ],
-    workingWidth: [ this.pattern.workingWidth ],
+    finishedWidth: [ this.pattern.finishedWidth ],
     selvageWidth: [ this.pattern.selvageWidth ],
     waste: [ this.pattern.waste ],
     trompAsWrit: [ this.pattern.trompAsWrit],
     halfSett: [ this.pattern.halfSett ],
-    edgeType: [ this.pattern.edgeType ],
-    edgeLength: [ this.pattern.edgeLength ],
+    topEdgeType: [ this.pattern.topEdgeType ],
+    topEdgeLength: [ this.pattern.topEdgeLength ],
+    bottomEdgeType: [ this.pattern.bottomEdgeType ],
+    bottomEdgeLength: [ this.pattern.bottomEdgeLength ],
     pieces: [ this.pattern.pieces ],
     patternWidth: [ this.pattern.patternWidth ],
     warpMaterial: [ this.pattern.warpMaterial ],
     warpTakeUp: [ this.pattern.warpTakeUp ],
     warpShrinkage: [ this.pattern.warpShrinkage ],
     ppi: [ this.pattern.ppi ],
-    workingLength: [ this.pattern.workingLength ],
+    finishedLength: [ this.pattern.finishedLength ],
     patternLength: [ this.pattern.patternLength ],
     weftMaterial: [ this.pattern.weftMaterial ],
     weftTakeUp: [ this.pattern.weftTakeUp ],
-    weftShrinkage: [ this.pattern.weftShrinkage ]
+    weftShrinkage: [ this.pattern.weftShrinkage ],
+    weftLeftFringe: [ this.pattern.weftLeftFringe ],
+    weftRightFringe: [ this.pattern.weftRightFringe ],
+    sampleLength: [ this.pattern.sampleLength]
   });
     
   srtForm = this.fb.group({
@@ -125,8 +130,8 @@ export class DataCollectorComponent implements OnInit {
       this.pattern.epi = epi;
       this.calculateYarn();
     });
-    this.weavingService.workingWidth.subscribe((workingWidth: number) => {
-      this.pattern.workingWidth = workingWidth;
+    this.weavingService.finishedWidth.subscribe((finishedWidth: number) => {
+      this.pattern.finishedWidth = finishedWidth;
       this.calculateYarn();
     });
     this.weavingService.colorBoxes.subscribe((colorBoxes: Box[][]) => {
@@ -179,7 +184,7 @@ export class DataCollectorComponent implements OnInit {
     this.weavingService.changePatternLength(this.patternForm.controls['patternLength'].value);
     this.weavingService.changePatternWidth(this.patternForm.controls['patternWidth'].value);
     this.weavingService.changeEpi(this.patternForm.controls['epi'].value);
-    this.weavingService.changeWorkingWidth(this.patternForm.controls['workingWidth'].value);
+    this.weavingService.changefinishedWidth(this.patternForm.controls['finishedWidth'].value);
     this.weavingService.changeColorBoxes(this.pattern.colorBoxes);
     this.weavingService.changeThreadingBoxes(this.pattern.threadingBoxes);
     this.weavingService.changeTreadlingBoxes(this.pattern.treadlingBoxes);
@@ -286,6 +291,30 @@ export class DataCollectorComponent implements OnInit {
     }
   }
 
+  edgeTypeChanged() {
+    if (!this.patternForm.controls['bottomEdgeType'].value) {
+      this.patternForm.controls['bottomEdgeType'].setValue(this.patternForm.controls['topEdgeType'].value);
+    } else if (!this.patternForm.controls['topEdgeType'].value) {
+      this.patternForm.controls['topEdgeType'].setValue(this.patternForm.controls['bottomEdgeType'].value)
+    }
+  }
+
+  edgeChanged(side: string) {
+    if (side === "warp") {
+      if(this.patternForm.controls['bottomEdgeLength'].value < 1) {
+        this.patternForm.controls['bottomEdgeLength'].setValue(this.patternForm.controls['topEdgeLength'].value);
+      } else if (this.patternForm.controls['topEdgeLength'].value < 1) {
+        this.patternForm.controls['topEdgeLength'].setValue(this.patternForm.controls['bottomEdgeLength'].value);
+      }
+    } else {
+      if(this.patternForm.controls['weftLeftFringe'].value < 1) {
+        this.patternForm.controls['weftLeftFringe'].setValue(this.patternForm.controls['weftRightFringe'].value);
+      } else if (this.patternForm.controls['weftRightFringe'].value < 1) {
+        this.patternForm.controls['weftRightFringe'].setValue(this.patternForm.controls['weftLeftFringe'].value);
+      }
+    }
+  }
+
   calculateSleyOrder() {
     // WIP
     const ends = this.patternForm.controls['epi'].value;
@@ -358,7 +387,7 @@ export class DataCollectorComponent implements OnInit {
   }
 
   calculateYarn() {
-    if (this.pattern.colorBoxes && this.pattern.threadingBoxes && this.pattern.treadlingBoxes && this.patternForm.controls['workingWidth'].value > 0 && this.patternForm.controls['workingLength'].value > 0) {
+    if (this.pattern.colorBoxes && this.pattern.threadingBoxes && this.pattern.treadlingBoxes && this.patternForm.controls['finishedWidth'].value > 0 && this.patternForm.controls['finishedLength'].value > 0) {
       this.pattern.colors = new Array();
       this.pattern.weftIn = 0;
       this.pattern.warpIn = 0;
@@ -385,7 +414,7 @@ export class DataCollectorComponent implements OnInit {
         const color = this.pattern.colors.find(x => x.colorCode === colorBox?.color)
         if (color) {
           let inches = 0;
-          inches= (this.patternForm.controls['workingWidth'].value * this.patternForm.controls['ppi'].value) ?? 0;
+          inches= (this.patternForm.controls['finishedWidth'].value * this.patternForm.controls['ppi'].value) ?? 0;
           color.colorInches += inches;
           this.pattern.weftIn += inches;
         }
@@ -397,7 +426,7 @@ export class DataCollectorComponent implements OnInit {
         const color = this.pattern.colors.find(x => x.colorCode == colorBox?.color)
         if (color) {
           let inches = 0;
-          inches += (this.patternForm.controls['workingLength'].value * this.patternForm.controls['epi'].value) ?? 0;
+          inches += (this.patternForm.controls['finishedLength'].value * this.patternForm.controls['epi'].value) ?? 0;
           inches += this.patternForm.controls['waste'].value ?? 0;
           inches += (this.patternForm.controls['selvageWidth'].value * 2) ?? 0;
           inches += (this.patternForm.controls['edgeLength'].value * 2 * this.patternForm.controls['pieces'].value) ?? 0;
