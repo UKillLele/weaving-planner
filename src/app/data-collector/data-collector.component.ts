@@ -28,6 +28,7 @@ export class DataCollectorComponent implements OnInit {
     name: [ this.pattern.name ],
     shafts: [ this.pattern.shafts ],
     treadles: [ this.pattern.treadles ],
+    dpi: [ this.pattern.dpi ],
     epi: [ this.pattern.epi ],
     workingWidth: [ this.pattern.workingWidth ],
     selvageWidth: [ this.pattern.selvageWidth ],
@@ -39,13 +40,13 @@ export class DataCollectorComponent implements OnInit {
     pieces: [ this.pattern.pieces ],
     patternWidth: [ this.pattern.patternWidth ],
     warpMaterial: [ this.pattern.warpMaterial ],
-    warpDrawIn: [ this.pattern.warpDrawIn ],
+    warpTakeUp: [ this.pattern.warpTakeUp ],
     warpShrinkage: [ this.pattern.warpShrinkage ],
     ppi: [ this.pattern.ppi ],
     workingLength: [ this.pattern.workingLength ],
     patternLength: [ this.pattern.patternLength ],
     weftMaterial: [ this.pattern.weftMaterial ],
-    weftDrawIn: [ this.pattern.weftDrawIn ],
+    weftTakeUp: [ this.pattern.weftTakeUp ],
     weftShrinkage: [ this.pattern.weftShrinkage ]
   });
     
@@ -53,6 +54,49 @@ export class DataCollectorComponent implements OnInit {
     srtThreadcount: [ this.pattern.srtThreadcount ],
     srtPalette: [ this.pattern.srtPalette ]
   });
+  
+  YarnTypes = [
+    {
+      name: "cellulose",
+      takeUp: 0,
+      shrinkage: 10
+    },
+    {
+      name: "cotton",
+      takeUp: 10,
+      shrinkage: 10
+    },
+    {
+      name: "elastics",
+      takeUp: 20,
+      shrinkage: 0
+    },
+    {
+      name: "linen",
+      takeUp: 10,
+      shrinkage: 10
+    },
+    {
+      name: "other",
+      takeUp: 0,
+      shrinkage: 0
+    },
+    {
+      name: "silk",
+      takeUp: 0,
+      shrinkage: 7
+    },
+    {
+      name: "synthetic",
+      takeUp: 10,
+      shrinkage: 0
+    },
+    {
+      name: "wool",
+      takeUp: 15,
+      shrinkage: 15
+    }
+  ]
   
   constructor(
     private weavingService: WeavingService,
@@ -151,7 +195,7 @@ export class DataCollectorComponent implements OnInit {
 
   savePattern() {
     if (this.user?.userId) {
-      this.pattern.id = this.pattern.id ?? UUID.UUID();
+      this.pattern.id = this.pattern.id && this.pattern.name == this.patternForm.controls['name'].value ? this.pattern.id : UUID.UUID();
       this.pattern.userId = this.pattern.userId;
       const pattern = {
         ...this.pattern,
@@ -227,10 +271,52 @@ export class DataCollectorComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
+  dpichanged() {
+    if (this.patternForm.controls['epi'].value !== null) {
+      this.calculateSleyOrder();
+    }
+  }
+
   epiChanged() {
     if (this.patternForm.controls['trompAsWrit'].value === true) {
       this.patternForm.controls['ppi'].setValue(this.patternForm.controls['epi'].value);
     }
+    if (this.patternForm.controls['dpi'].value !== null) {
+      this.calculateSleyOrder();
+    }
+  }
+
+  calculateSleyOrder() {
+    // WIP
+    const ends = this.patternForm.controls['epi'].value;
+    const dents = this.patternForm.controls['dpi'].value;
+    const base = Math.floor(ends / dents);
+    const remainder = ends % dents;
+    const repeats = dents - remainder;
+    let distribution = Math.floor(remainder / repeats) + 1;
+    const sleyOrder = [];
+    if (distribution === 1 && remainder % repeats !== 0) {
+      distribution = Math.floor(repeats / remainder) + 1;
+      for (let i = 1; i <= distribution; i++) {
+        if (i % distribution === 0) sleyOrder.push(base + 1);
+        else sleyOrder.push(base);
+      }
+      let threads = 0;
+      sleyOrder.forEach(dent => threads += dent);
+      const dentRepeats = Math.floor(ends / threads);
+      const endsRemainder = ends - (dentRepeats * threads);
+      const x = Math.floor(endsRemainder / (base));
+    } else {
+      for (let i = 1; i <= distribution; i++) {
+        if (i % distribution === 0) sleyOrder.push(base);
+        else sleyOrder.push(base + 1);
+      }
+    }
+    this.pattern.sleyOrder = sleyOrder;
+    let sleyTotal = 0;
+    sleyOrder.forEach(sley => sleyTotal += sley);
+    const sleyEpi = Math.floor(dents * (sleyTotal / sleyOrder.length));
+    this.pattern.sleyEpi = sleyEpi !== ends ? `(${sleyEpi} epi)` : "";
   }
 
   trompChanged() {
@@ -256,6 +342,18 @@ export class DataCollectorComponent implements OnInit {
   patternWidthChanged() {
     if (this.patternForm.controls['trompAsWrit'].value === true) {
       this.patternForm.controls['patternLength'].setValue(this.patternForm.controls['patternWidth'].value);
+    }
+  }
+
+  yarnChanged(place: string) {
+    if (place === "warp") {
+      const type = this.YarnTypes.find(yarn => yarn.name === this.patternForm.controls['warpMaterial'].value);
+      this.patternForm.controls['warpTakeUp'].setValue(type?.takeUp ?? 0);
+      this.patternForm.controls['warpShrinkage'].setValue(type?.shrinkage ?? 0);
+    } else {
+      const type = this.YarnTypes.find(yarn => yarn.name === this.patternForm.controls['weftMaterial'].value);
+      this.patternForm.controls['weftTakeUp'].setValue(type?.takeUp ?? 0);
+      this.patternForm.controls['weftShrinkage'].setValue(type?.shrinkage ?? 0);
     }
   }
 
@@ -320,3 +418,4 @@ export class DataCollectorComponent implements OnInit {
     });
   }
 }
+

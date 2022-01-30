@@ -45,6 +45,12 @@
                             <label for="treadles">treadles</label>
                         </div>
                     </div>
+                    <div class="col col-auto mb-3">
+                        <div class="form-floating">
+                            <input class="form-control" type="number" placeholder="dpi" id="dpi" formControlName="dpi">
+                            <label for="dpi">dents per inch</label>
+                        </div>
+                    </div>
                     <div class="col col-auto my-auto">
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" formControlName="trompAsWrit" (change)="trompChanged()" id="trompAsWrit">
@@ -127,15 +133,8 @@
                         </div>
                         <div class="col col-auto mb-3">
                             <div class="form-floating">
-                                <select class="form-select" id="warpMaterial" formControlName="warpMaterial">
-                                    <option value="bamboo">bamboo</option>
-                                    <option value="cottolin">cottolin</option>
-                                    <option value="cotton">cotton</option>
-                                    <option value="hemp">hemp</option>
-                                    <option value="silk">silk</option>
-                                    <option value="tensel">tensel</option>
-                                    <option value="wool">wool</option>
-                                    <option value="wool/silk">wool/silk</option>
+                                <select class="form-select" id="warpMaterial" formControlName="warpMaterial" (change)="yarnChanged('warp')">
+                                    <option *ngFor="let yarn of YarnTypes" [value]="yarn.name">{{yarn.name}}</option>
                                 </select>
                                 <label for="warpMaterial">yarn type</label>
                             </div>
@@ -143,8 +142,8 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" id="warpDrawIn" placeholder="draw-in" formControlName="warpDrawIn">
-                                    <label for="warpDrawIn">draw-in</label>
+                                    <input class="form-control" type="number" id="warpTakeUp" placeholder="take up" formControlName="warpTakeUp">
+                                    <label for="warpTakeUp">take up</label>
                                 </div>
                                 <span class="input-group-text">%</span>
                             </div>
@@ -198,15 +197,8 @@
                         </div>
                         <div class="col col-auto mb-3">
                             <div class="form-floating">
-                                <select class="form-select" id="weftMaterial" formControlName="weftMaterial">
-                                    <option value="bamboo">bamboo</option>
-                                    <option value="cottolin">cottolin</option>
-                                    <option value="cotton">cotton</option>
-                                    <option value="hemp">hemp</option>
-                                    <option value="silk">silk</option>
-                                    <option value="tensel">tensel</option>
-                                    <option value="wool">wool</option>
-                                    <option value="wool/silk">wool/silk</option>
+                                <select class="form-select" id="weftMaterial" formControlName="weftMaterial" (change)="yarnChanged('weft')">
+                                    <option *ngFor="let yarn of YarnTypes" [value]="yarn.name">{{yarn.name}}</option>
                                 </select>
                                 <label for="weftMaterial">yarn type</label>
                             </div>
@@ -214,8 +206,8 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" id="weftDrawIn" placeholder="draw-in" formControlName="weftDrawIn">
-                                    <label for="weftDrawIn">draw-in</label>
+                                    <input class="form-control" type="number" id="weftTakeUp" placeholder="take up" formControlName="weftTakeUp">
+                                    <label for="weftTakeUp">take up</label>
                                 </div>
                                 <span class="input-group-text">%</span>
                             </div>
@@ -246,6 +238,13 @@
             </div>
         </ng-template>
         <ng-template ngbPanelContent>
+            <section class="row row-col-auto">
+                <div class="col col-auto">
+                    sley order: | 
+                    <span *ngFor="let count of pattern.sleyOrder"> {{count}} | </span> 
+                    {{pattern.sleyEpi}}
+                </div>
+            </section>
             <section class="row row-col-auto">
                 <div class="col col-auto">total yardage: {{pattern.totalIn / 36 | ceil }} yds</div>
                 <div class="col col-auto">total warp yardage: {{pattern.warpIn / 36 | ceil }} yds</div>

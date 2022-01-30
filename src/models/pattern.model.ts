@@ -19,6 +19,7 @@ export class Pattern {
   name: string = "";
   shafts: number | null = null;
   treadles: number | null = null;
+  dpi: number | null = null;
   epi: number | null = null;
   workingWidth: number | null = null;
   selvageWidth: number | null = null;
@@ -30,13 +31,13 @@ export class Pattern {
   pieces: number | null = null;
   patternWidth: number | null = null;
   warpMaterial: string = "";
-  warpDrawIn: number | null = null;
+  warpTakeUp: number | null = null;
   warpShrinkage: number | null = null;
   ppi: number | null = null;
   workingLength: number | null = null;
   patternLength: number | null = null;
   weftMaterial: string = "";
-  weftDrawIn: number | null = null;
+  weftTakeUp: number | null = null;
   weftShrinkage: number | null = null;
   srtThreadcount: string = "";
   srtPalette: string = "";
@@ -45,6 +46,8 @@ export class Pattern {
   treadlingBoxes: Array<Box> = [];
   tieUpBoxes: Array<Box> = [];
   colors: Array<Yarn> = [];
+  sleyOrder: Array<number> = [];
+  sleyEpi: string = "";
   weftIn: number = 0;
   warpIn: number = 0;
   totalIn: number = 0;
