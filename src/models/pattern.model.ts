@@ -56,4 +56,8 @@ export class Pattern {
   warpIn: number = 0;
   totalIn: number = 0;
   sampleLength: number | null = null;
+  lpr: number | null = null;
+  wpr: number | null = null;
+  widthInReed: number | null = null;
+  lengthOnLoom: number | null = null;
 };

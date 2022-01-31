@@ -22,6 +22,8 @@ export class DataCollectorComponent implements OnInit {
   savedPatterns: Pattern[] = [];
   user: any;
   previewAvailable: boolean = false;
+  editing: string = "";
+  ashenhurst: number = 0;
 
   patternForm = this.fb.group({
     id: [ this.pattern.id ],
@@ -29,7 +31,6 @@ export class DataCollectorComponent implements OnInit {
     shafts: [ this.pattern.shafts ],
     treadles: [ this.pattern.treadles ],
     dpi: [ this.pattern.dpi ],
-    epi: [ this.pattern.epi ],
     finishedWidth: [ this.pattern.finishedWidth ],
     selvageWidth: [ this.pattern.selvageWidth ],
     waste: [ this.pattern.waste ],
@@ -44,7 +45,6 @@ export class DataCollectorComponent implements OnInit {
     warpMaterial: [ this.pattern.warpMaterial ],
     warpTakeUp: [ this.pattern.warpTakeUp ],
     warpShrinkage: [ this.pattern.warpShrinkage ],
-    ppi: [ this.pattern.ppi ],
     finishedLength: [ this.pattern.finishedLength ],
     patternLength: [ this.pattern.patternLength ],
     weftMaterial: [ this.pattern.weftMaterial ],
@@ -52,12 +52,19 @@ export class DataCollectorComponent implements OnInit {
     weftShrinkage: [ this.pattern.weftShrinkage ],
     weftLeftFringe: [ this.pattern.weftLeftFringe ],
     weftRightFringe: [ this.pattern.weftRightFringe ],
-    sampleLength: [ this.pattern.sampleLength]
+    sampleLength: [ this.pattern.sampleLength ]
   });
     
   srtForm = this.fb.group({
     srtThreadcount: [ this.pattern.srtThreadcount ],
     srtPalette: [ this.pattern.srtPalette ]
+  });
+
+  settForm = this.fb.group({
+    ypp: [],
+    yarnType: [],
+    density: [{ value: null, disabled: true}],
+    sett: []
   });
   
   YarnTypes = [
@@ -101,6 +108,63 @@ export class DataCollectorComponent implements OnInit {
       takeUp: 15,
       shrinkage: 15
     }
+  ]
+
+  densities = [
+    {
+      percent: "100%",
+      weave: "plain weave",
+      example: "- maximum",
+      calc: .5
+    },
+    {
+      percent: "90%",
+      weave: "plain weave",
+      example: "- firm (upholstery)",
+      calc: .45
+    },
+    {
+      percent: "80%",
+      weave: "plain weave",
+      example: "- production",
+      calc: .4
+    },
+    {
+      percent: "70%",
+      weave: "plain weave",
+      example: "- clothing",
+      calc: .35
+    },
+    {
+      percent: "65%",
+      weave: "plain weave",
+      example: "- woolens",
+      calc: .325
+    },
+    {
+      percent: "60%",
+      weave: "plain weave",
+      example: "- clothing",
+      calc: .3
+    },
+    {
+      percent: "50%",
+      weave: "plain weave",
+      example: "- delicate",
+      calc: .25
+    },
+    {
+      percent: null,
+      weave: "twill",
+      example: null,
+      calc: .67
+    },
+    {
+      percent: null,
+      weave: "satin",
+      example: null,
+      calc: .71
+    },
   ]
   
   constructor(
@@ -399,37 +463,83 @@ export class DataCollectorComponent implements OnInit {
             const color: Yarn = new Yarn();
             color.colorCode = colorBox.color;
             color.colorName = namedColor[1];
-            color.perfectMatch = namedColor[2];
             if (color && !this.pattern.colors.map(x => x.colorName).includes(color.colorName)) {
               this.pattern.colors.push(color);
             }
           }
         });
       });
-      // calculate number of weft and warp threads of color times width and length
       // TODO: account for half sett
+      this.pattern.lengthOnLoom = 
+        (
+          (
+            ( // lengths that get multplied by pieces
+              this.patternForm.controls['finishedLength'].value // required
+              + this.patternForm.controls['topEdgeLength'].value ?? 0
+              + this.patternForm.controls['bottomEdgeLength'].value ?? 0
+            ) 
+            * this.patternForm.controls['pieces'].value ?? 1
+          ) // used once but still shrinks
+          + this.patternForm.controls['sampleLength'].value ?? 0
+        ) * ( //1.xx%, to accomodate shrinkage and take-up
+          1 + 
+          (
+            (
+              this.patternForm.controls['warpTakeUp'].value ?? 0
+              + this.patternForm.controls['warpShrinkage'].value ?? 0
+            )
+            /100
+          )
+        ) // used once and doesn't shrink
+        + this.patternForm.controls['waste'].value ?? 0;
+
+      this.pattern.widthInReed = 
+        (
+          this.patternForm.controls['finishedWidth'].value // required
+          + this.patternForm.controls['weftLeftFringe'].value ?? 0
+          + this.patternForm.controls['weftRightFringe'].value ?? 0
+        ) * (
+          1 +
+          (
+            (
+              this.patternForm.controls['weftTakeUp'].value ?? 0
+              + this.patternForm.controls['weftShrinkage'].value ?? 0
+            )
+            /100
+          )
+        );
+
+      // length pattern repeats
+      this.pattern.lpr = 1;
+      if (this.patternForm.controls['patternLength'].value > 0) {
+        // (length * ppi) / pattern length
+        this.pattern.lpr = (this.pattern.lengthOnLoom! * this.patternForm.controls['ppi'].value) / this.patternForm.controls['patternLength'].value;
+      }
       // weft threads
       this.pattern.treadlingBoxes.forEach(weft => {
         const colorBox = this.pattern.colorBoxes[1].find(x => x.y == weft.y);
         const color = this.pattern.colors.find(x => x.colorCode === colorBox?.color)
         if (color) {
-          let inches = 0;
-          inches= (this.patternForm.controls['finishedWidth'].value * this.patternForm.controls['ppi'].value) ?? 0;
+          // width * # of pieces * lpr
+          const inches = (this.pattern.widthInReed! * this.patternForm.controls['pieces'].value * this.pattern.lpr!) ?? 0;
           color.colorInches += inches;
           this.pattern.weftIn += inches;
         }
       });
 
+      // width pattern repeats
+      this.pattern.wpr = 1;
+      if (this.patternForm.controls['patternWidth'].value > 0) {
+        // (width * epi) / pattern width
+        this.pattern.wpr = (this.pattern.widthInReed * this.patternForm.controls['epi'].value) / this.patternForm.controls['patternWidth'].value;
+      }
       // warp threads
       this.pattern.threadingBoxes.forEach(warp => {
         const colorBox = this.pattern.colorBoxes[0].find(x => x.x == warp.x);
         const color = this.pattern.colors.find(x => x.colorCode == colorBox?.color)
         if (color) {
-          let inches = 0;
-          inches += (this.patternForm.controls['finishedLength'].value * this.patternForm.controls['epi'].value) ?? 0;
-          inches += this.patternForm.controls['waste'].value ?? 0;
-          inches += (this.patternForm.controls['selvageWidth'].value * 2) ?? 0;
-          inches += (this.patternForm.controls['edgeLength'].value * 2 * this.patternForm.controls['pieces'].value) ?? 0;
+          // length * wpr
+          const inches = (this.pattern.lengthOnLoom! * this.pattern.wpr!) ?? 0;
           color.colorInches += inches;
           this.pattern.warpIn += inches;
         }
@@ -438,12 +548,44 @@ export class DataCollectorComponent implements OnInit {
       this.pattern.totalIn = this.pattern.warpIn + this.pattern.weftIn;
     }
   }
+
+  settCalcUpdated() {
+    if (this.settForm.controls['ypp'].value > 0 && this.settForm.controls['yarnType'].value !== null) {
+      const multiplier = this.settForm.controls['yarnType'].value === "firm" ? .9 : .84;
+      this.ashenhurst = Math.sqrt(this.settForm.controls['ypp'].value) * multiplier;
+      this.settForm.controls['density'].enable();
+      if (this.settForm.controls['density'].value > 0) {
+        this.settSelected();
+      }
+    }
+  }
+
+  settSelected() {
+    this.settForm.controls['sett'].setValue(Math.round(this.settForm.controls['density'].value * this.ashenhurst));
+  }
+
+  onSettSubmit() {
+    if (this.editing === "ends per inch") {
+      this.pattern.epi = this.settForm.controls['sett'].value;
+      this.epiChanged();
+    } else {
+      this.pattern.ppi = this.settForm.controls['sett'].value;
+    }
+    this.modalService.dismissAll();
+  }
   
-  open(content: any) {
+  open(content: any, editing: string = "") {
+    this.editing = editing;
     this.modalService.open(content).result.then((result) => {
-      // this.closeResult = `Closed with: ${result}`;
+      if (editing != "") {
+        this.editing = "";
+        this.settForm.reset();
+      }
     }, (reason) => {
-      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      if (editing != "") {
+        this.editing = "";
+        this.settForm.reset();
+      }
     });
   }
 }
