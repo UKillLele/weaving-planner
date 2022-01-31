@@ -120,13 +120,13 @@ export class DataCollectorComponent implements OnInit {
     {
       percent: "90%",
       weave: "plain weave",
-      example: "- firm (upholstery)",
+      example: null,
       calc: .45
     },
     {
       percent: "80%",
       weave: "plain weave",
-      example: "- production",
+      example: null,
       calc: .4
     },
     {
@@ -138,19 +138,19 @@ export class DataCollectorComponent implements OnInit {
     {
       percent: "65%",
       weave: "plain weave",
-      example: "- woolens",
+      example: null,
       calc: .325
     },
     {
       percent: "60%",
       weave: "plain weave",
-      example: "- clothing",
+      example: null,
       calc: .3
     },
     {
       percent: "50%",
       weave: "plain weave",
-      example: "- delicate",
+      example: "- lace",
       calc: .25
     },
     {
