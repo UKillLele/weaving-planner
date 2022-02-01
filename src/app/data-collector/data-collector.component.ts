@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { NgbAccordion, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
 import { Box } from 'src/models/box.model';
@@ -52,7 +52,11 @@ export class DataCollectorComponent implements OnInit {
     weftShrinkage: [ this.pattern.weftShrinkage ],
     weftLeftFringe: [ this.pattern.weftLeftFringe ],
     weftRightFringe: [ this.pattern.weftRightFringe ],
-    sampleLength: [ this.pattern.sampleLength ]
+    sampleLength: [ this.pattern.sampleLength ],
+    sampleOffLoomLength: [ this.pattern.sampleOffLoomLength ],
+    sampleAfterWashLength: [ this.pattern.sampleAfterWashLength ],
+    sampleOffLoomWidth: [ this.pattern.sampleOffLoomWidth ],
+    sampleAfterWashWidth: [ this.pattern.sampleAfterWashWidth ],
   });
     
   srtForm = this.fb.group({
@@ -180,24 +184,6 @@ export class DataCollectorComponent implements OnInit {
       this.user = user;
       if (user) this.getPatterns();
     });
-    this.weavingService.shafts.subscribe((shafts: number) => {
-      this.pattern.shafts = shafts;
-    });
-    this.weavingService.treadles.subscribe((treadles: number) => {
-      this.pattern.treadles = treadles
-    });
-    this.weavingService.patternLength.subscribe((patternLength: number) => {
-      this.pattern.patternLength = patternLength;
-      this.calculateYarn();
-    });
-    this.weavingService.epi.subscribe((epi: number) => {
-      this.pattern.epi = epi;
-      this.calculateYarn();
-    });
-    this.weavingService.finishedWidth.subscribe((finishedWidth: number) => {
-      this.pattern.finishedWidth = finishedWidth;
-      this.calculateYarn();
-    });
     this.weavingService.colorBoxes.subscribe((colorBoxes: Box[][]) => {
       this.pattern.colorBoxes = colorBoxes;
       this.calculateYarn();
@@ -241,13 +227,14 @@ export class DataCollectorComponent implements OnInit {
   }
 
   onPatternSubmit() {
+    this.calculateYarn();
     this.weavingService.changeShafts(this.patternForm.controls['shafts'].value);
     this.weavingService.changeTreadles(this.patternForm.controls['treadles'].value);
     this.weavingService.changeTromp(this.patternForm.controls['trompAsWrit'].value);
     this.weavingService.changeHalfSett(this.patternForm.controls['halfSett'].value);
-    this.weavingService.changePatternLength(this.patternForm.controls['patternLength'].value);
-    this.weavingService.changePatternWidth(this.patternForm.controls['patternWidth'].value);
-    this.weavingService.changeEpi(this.patternForm.controls['epi'].value);
+    this.weavingService.changePatternLength(this.pattern.patternLength);
+    this.weavingService.changePatternWidth(this.pattern.patternWidth);
+    this.weavingService.changeEpi(this.pattern.epi);
     this.weavingService.changefinishedWidth(this.patternForm.controls['finishedWidth'].value);
     this.weavingService.changeColorBoxes(this.pattern.colorBoxes);
     this.weavingService.changeThreadingBoxes(this.pattern.threadingBoxes);
@@ -302,7 +289,7 @@ export class DataCollectorComponent implements OnInit {
     // parse each set of numbers from threadcount
     const sections = this.srtForm.controls['srtThreadcount'].value.split(/([A-Z]+\d+)/);
     sections.forEach((group: string) => {
-      if (group != '') {
+      if (group !== '') {
         const count = Number(group.replace(/(\D+)/, ""));
         const color = group.replace(/(\d+)/, "");
         // set colorBoxes
@@ -340,15 +327,15 @@ export class DataCollectorComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
-  dpichanged() {
-    if (this.patternForm.controls['epi'].value !== null) {
+  dpiChanged() {
+    if (this.pattern.epi !== null) {
       this.calculateSleyOrder();
     }
   }
 
   epiChanged() {
     if (this.patternForm.controls['trompAsWrit'].value === true) {
-      this.patternForm.controls['ppi'].setValue(this.patternForm.controls['epi'].value);
+      this.pattern.ppi = this.pattern.epi;
     }
     if (this.patternForm.controls['dpi'].value !== null) {
       this.calculateSleyOrder();
@@ -381,7 +368,7 @@ export class DataCollectorComponent implements OnInit {
 
   calculateSleyOrder() {
     // WIP
-    const ends = this.patternForm.controls['epi'].value;
+    const ends = this.pattern.epi!;
     const dents = this.patternForm.controls['dpi'].value;
     const base = Math.floor(ends / dents);
     const remainder = ends % dents;
@@ -414,15 +401,12 @@ export class DataCollectorComponent implements OnInit {
 
   trompChanged() {
     const patternLength = this.patternForm.controls['patternLength'];
-    const ppi = this.patternForm.controls['ppi'];
     if (this.patternForm.controls['trompAsWrit'].value === true) {
       patternLength.setValue(this.patternForm.controls['patternWidth'].value);
       patternLength.disable();
-      ppi.setValue(this.patternForm.controls['epi'].value);
-      ppi.disable();
+      this.pattern.ppi = this.pattern.epi;
     } else {
       patternLength.enable();
-      ppi.enable();
     }
   }
 
@@ -451,12 +435,11 @@ export class DataCollectorComponent implements OnInit {
   }
 
   calculateYarn() {
-    if (this.pattern.colorBoxes && this.pattern.threadingBoxes && this.pattern.treadlingBoxes && this.patternForm.controls['finishedWidth'].value > 0 && this.patternForm.controls['finishedLength'].value > 0) {
+    if (this.patternForm.controls['finishedWidth'].value > 0 && this.patternForm.controls['finishedLength'].value > 0) {
       this.pattern.colors = new Array();
-      this.pattern.weftIn = 0;
-      this.pattern.warpIn = 0;
-      this.pattern.totalIn = 0;
-      this.pattern.colorBoxes.forEach(section => {
+      let weftIn = 0;
+      let warpIn = 0;
+      this.pattern.colorBoxes?.forEach(section => {
         section.forEach(colorBox => {
           const namedColor = ntc.name(colorBox.color);
           if (!namedColor[1].toLowerCase().includes("invalid")) {
@@ -475,35 +458,34 @@ export class DataCollectorComponent implements OnInit {
           (
             ( // lengths that get multplied by pieces
               this.patternForm.controls['finishedLength'].value // required
-              + this.patternForm.controls['topEdgeLength'].value ?? 0
-              + this.patternForm.controls['bottomEdgeLength'].value ?? 0
+              + (this.patternForm.controls['topEdgeLength'].value ?? 0)
+              + (this.patternForm.controls['bottomEdgeLength'].value ?? 0)
             ) 
-            * this.patternForm.controls['pieces'].value ?? 1
+            * (this.patternForm.controls['pieces'].value ?? 1)
           ) // used once but still shrinks
-          + this.patternForm.controls['sampleLength'].value ?? 0
+          + (this.patternForm.controls['sampleLength'].value ?? 0)
         ) * ( //1.xx%, to accomodate shrinkage and take-up
           1 + 
           (
             (
-              this.patternForm.controls['warpTakeUp'].value ?? 0
-              + this.patternForm.controls['warpShrinkage'].value ?? 0
+              (this.patternForm.controls['warpTakeUp'].value ?? 0)
+              + (this.patternForm.controls['warpShrinkage'].value ?? 0)
             )
             /100
           )
         ) // used once and doesn't shrink
-        + this.patternForm.controls['waste'].value ?? 0;
-
+        + (this.patternForm.controls['waste'].value ?? 0);
       this.pattern.widthInReed = 
         (
           this.patternForm.controls['finishedWidth'].value // required
-          + this.patternForm.controls['weftLeftFringe'].value ?? 0
-          + this.patternForm.controls['weftRightFringe'].value ?? 0
+          + (this.patternForm.controls['weftLeftFringe'].value ?? 0)
+          + (this.patternForm.controls['weftRightFringe'].value ?? 0)
         ) * (
           1 +
           (
             (
-              this.patternForm.controls['weftTakeUp'].value ?? 0
-              + this.patternForm.controls['weftShrinkage'].value ?? 0
+              (this.patternForm.controls['weftTakeUp'].value ?? 0)
+              + (this.patternForm.controls['weftShrinkage'].value ?? 0)
             )
             /100
           )
@@ -513,17 +495,19 @@ export class DataCollectorComponent implements OnInit {
       this.pattern.lpr = 1;
       if (this.patternForm.controls['patternLength'].value > 0) {
         // (length * ppi) / pattern length
-        this.pattern.lpr = (this.pattern.lengthOnLoom! * this.patternForm.controls['ppi'].value) / this.patternForm.controls['patternLength'].value;
+        this.pattern.lpr = (this.pattern.lengthOnLoom * this.pattern.ppi!) / this.patternForm.controls['patternLength'].value;
+      } else {
+        this.pattern.patternLength = Math.round(this.pattern.lengthOnLoom * this.pattern.ppi!);
       }
       // weft threads
-      this.pattern.treadlingBoxes.forEach(weft => {
-        const colorBox = this.pattern.colorBoxes[1].find(x => x.y == weft.y);
-        const color = this.pattern.colors.find(x => x.colorCode === colorBox?.color)
+      this.pattern.treadlingBoxes?.forEach(weft => {
+        const colorBox = this.pattern.colorBoxes[1]?.find(x => x.y == weft.y);
+        const color = this.pattern.colors?.find(x => x.colorCode === colorBox?.color)
         if (color) {
           // width * # of pieces * lpr
-          const inches = (this.pattern.widthInReed! * this.patternForm.controls['pieces'].value * this.pattern.lpr!) ?? 0;
+          const inches = (this.pattern.widthInReed * (this.patternForm.controls['pieces'].value ?? 1) * this.pattern.lpr) ?? 0;
           color.colorInches += inches;
-          this.pattern.weftIn += inches;
+          weftIn += inches;
         }
       });
 
@@ -531,21 +515,28 @@ export class DataCollectorComponent implements OnInit {
       this.pattern.wpr = 1;
       if (this.patternForm.controls['patternWidth'].value > 0) {
         // (width * epi) / pattern width
-        this.pattern.wpr = (this.pattern.widthInReed * this.patternForm.controls['epi'].value) / this.patternForm.controls['patternWidth'].value;
+        this.pattern.wpr = (this.pattern.widthInReed * this.pattern.epi!) / this.patternForm.controls['patternWidth'].value;
+      } else {
+        this.pattern.patternWidth = Math.round(this.pattern.widthInReed * this.pattern.epi!);
       }
       // warp threads
-      this.pattern.threadingBoxes.forEach(warp => {
-        const colorBox = this.pattern.colorBoxes[0].find(x => x.x == warp.x);
-        const color = this.pattern.colors.find(x => x.colorCode == colorBox?.color)
+      this.pattern.threadingBoxes?.forEach(warp => {
+        const colorBox = this.pattern.colorBoxes[0]?.find(x => x.x == warp.x);
+        const color = this.pattern.colors?.find(x => x.colorCode == colorBox?.color)
         if (color) {
           // length * wpr
-          const inches = (this.pattern.lengthOnLoom! * this.pattern.wpr!) ?? 0;
+          const inches = (this.pattern.lengthOnLoom * this.pattern.wpr) ?? 0;
           color.colorInches += inches;
-          this.pattern.warpIn += inches;
+          warpIn += inches;
         }
       });
-
-      this.pattern.totalIn = this.pattern.warpIn + this.pattern.weftIn;
+      // make sure all yardage matches up
+      this.pattern.colors?.forEach(color => {
+        color.colorYds = Math.ceil(color.colorInches / 36);
+      })
+      this.pattern.warpYds = Math.ceil(warpIn / 36);
+      this.pattern.weftYds = Math.ceil(weftIn / 36);
+      this.pattern.totalYds = this.pattern.warpYds + this.pattern.weftYds;
     }
   }
 
@@ -573,16 +564,44 @@ export class DataCollectorComponent implements OnInit {
     }
     this.modalService.dismissAll();
   }
+
+  updateFromSample(direction: string, percentage: string) {
+    const takeUpWidth = this.patternForm.controls['sampleOffLoomWidth'].value;
+    const shrinkageWidth = this.patternForm.controls['sampleAfterWashWidth'].value;
+    const widthInReed = this.pattern.widthInReed;
+    const takeUpLength = this.patternForm.controls['sampleOffLoomLength'].value;
+    const shrinkageLength = this.patternForm.controls['sampleAfterWashLength'].value;
+    const sampleLength = this.patternForm.controls['sampleLength'].value;
+    const finishedLength = this.patternForm.controls['finishedLength'].value;
+    const finishedWidth = this.patternForm.controls['finishedWidth'].value;
+    const warpTakeUp = this.patternForm.controls['warpTakeUp'].value;
+    const weftTakeUp = this.patternForm.controls['weftTakeUp'].value;
+    if (direction === "warp") {
+      if (percentage === "take-up") {
+        this.patternForm.controls['warpTakeUp'].setValue(Math.round((sampleLength - takeUpLength)*100)/finishedLength);
+      } else {
+        this.patternForm.controls['warpShrinkage'].setValue(Math.round((takeUpLength - shrinkageLength)*100)/finishedLength);
+      }
+    } else {
+      if (percentage === "take-up") {
+        console.log(`((${widthInReed} - ${takeUpWidth}) * 100) / ${finishedWidth}`)
+        this.patternForm.controls['weftTakeUp'].setValue(Math.round((widthInReed - takeUpWidth)*100)/finishedWidth);
+      } else {
+        console.log(`((${takeUpWidth} - ${shrinkageWidth}) * 100) / ${finishedWidth}`)
+        this.patternForm.controls['weftShrinkage'].setValue(Math.round((takeUpWidth - shrinkageWidth)*100)/finishedWidth);
+      }
+    }
+  }
   
   open(content: any, editing: string = "") {
     this.editing = editing;
     this.modalService.open(content).result.then((result) => {
-      if (editing != "") {
+      if (editing !== "") {
         this.editing = "";
         this.settForm.reset();
       }
     }, (reason) => {
-      if (editing != "") {
+      if (editing !== "") {
         this.editing = "";
         this.settForm.reset();
       }

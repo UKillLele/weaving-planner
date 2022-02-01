@@ -212,6 +212,7 @@ export class ThreadingPlannerComponent implements OnInit {
         }
         column ++;
       });
+      this.weavingService.changeThreadingBoxes(this.threadingBoxes);
     }
   }
 

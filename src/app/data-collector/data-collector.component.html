@@ -47,7 +47,7 @@
                     </div>
                     <div class="col col-auto mb-3">
                         <div class="form-floating">
-                            <input class="form-control" type="number" placeholder="dpi" id="dpi" formControlName="dpi">
+                            <input class="form-control" type="number" placeholder="dpi" id="dpi" formControlName="dpi" (change)="dpiChanged()">
                             <label for="dpi">dents per inch</label>
                         </div>
                     </div>
@@ -94,6 +94,15 @@
                         </div>
                         <div class="col col-auto mb-3">
                             <button type="button" class="btn btn-outline-secondary h-100" (click)="open(settCalculator, 'ends per inch')">{{pattern.epi}} ends per inch</button>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" id="selvageWidth" placeholder="selvage" type="number" formControlName="selvageWidth"/>
+                                    <label for="selvageWidth">selvage</label>
+                                </div>
+                                <span class="input-group-text">ends</span>
+                            </div>
                         </div>
                         <div class="col col-auto mb-3">
                             <div class="input-group">
@@ -170,15 +179,6 @@
                                 <span class="input-group-text">%</span>
                             </div>
                         </div>
-                        <div class="col col-auto mb-3">
-                            <div class="input-group">
-                                <div class="form-floating">
-                                    <input class="form-control" type="number" id="sampleLength" placeholder="sample length" formControlName="sampleLength">
-                                    <label for="sampleLength">sample length</label>
-                                </div>
-                                <span class="input-group-text">inches</span>
-                            </div>
-                        </div>
                     </div>
                 </section>
                 <section>
@@ -203,16 +203,7 @@
                             </div>
                         </div>
                         <div class="col col-auto mb-3">
-                            <button type="button" class="btn btn-outline-secondary h-100" (click)="open(settCalculator, 'picks per inch')">{{pattern.ppi}} picks per inch</button>
-                        </div>
-                        <div class="col col-auto mb-3">
-                            <div class="input-group">
-                                <div class="form-floating">
-                                    <input class="form-control" id="selvageWidth" placeholder="selvage" type="number" formControlName="selvageWidth"/>
-                                    <label for="selvageWidth">selvage</label>
-                                </div>
-                                <span class="input-group-text">picks</span>
-                            </div>
+                            <button type="button" class="btn btn-outline-secondary h-100" [disabled]="patternForm.controls['trompAsWrit'].value" (click)="open(settCalculator, 'picks per inch')">{{pattern.ppi}} picks per inch</button>
                         </div>
                         <div class="col col-auto mb-3">
                             <div class="input-group">
@@ -260,6 +251,56 @@
                         </div>
                     </div>
                 </section>
+                <section>
+                    <h2 class="h3">Sample</h2>
+                    <div class="row row-col-auto">
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="sampleLength" placeholder="sample length" formControlName="sampleLength">
+                                    <label for="sampleLength">sample length</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="sampleOffLoomLength" placeholder="sample length off loom" formControlName="sampleOffLoomLength" (change)="updateFromSample('warp', 'take-up')">
+                                    <label for="sampleOffLoomLength">sample length off loom</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="sampleOffLoomWidth" placeholder="sample width off loom" formControlName="sampleOffLoomWidth" (change)="updateFromSample('weft', 'take-up')">
+                                    <label for="sampleOffLoomWidth">sample width off loom</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="sampleAfterWashLength" placeholder="sample length after wash" formControlName="sampleAfterWashLength" (change)="updateFromSample('warp', 'shrinkage')">
+                                    <label for="sampleAfterWashLength">sample length after wash</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="sampleAfterWashWidth" placeholder="sample width after wash" formControlName="sampleAfterWashWidth" (change)="updateFromSample('weft', 'shrinkage')">
+                                    <label for="sampleAfterWashWidth">sample width after wash</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
                 <section align="end">
                     <button class="btn btn-primary">Update</button>
                 </section>
@@ -283,25 +324,25 @@
                 </div>
             </section>
             <section class="row row-col-auto">
-                <div class="col col-auto">total yardage: {{pattern.totalIn / 36 | ceil }} yds</div>
-                <div class="col col-auto">total warp yardage: {{pattern.warpIn / 36 | ceil }} yds</div>
-                <div class="col col-auto">total weft yardage: {{pattern.weftIn / 36 | ceil }} yds</div>
+                <div class="col col-auto">total yardage: {{pattern.totalYds }} yds</div>
+                <div class="col col-auto">total warp yardage: {{pattern.warpYds }} yds</div>
+                <div class="col col-auto">total weft yardage: {{pattern.weftYds }} yds</div>
             </section>
             <section class="row row-col-auto">
                 <div class="col col-auto" *ngFor="let color of pattern.colors">
                     <div class="align-middle">
                         <span style="width: 15px; height: 15px; display: inline-block; border: 1px solid black" [style.backgroundColor]="color.colorCode"></span>
-                        : {{color.colorInches / 36 | ceil }} yds
+                        : {{color.colorYds}} yds
                     </div>
                 </div>
             </section>
             <section class="row row-col-auto">
-                <div class="col col-auto">width in reed: {{pattern.widthInReed}}</div>
-                <div class="col col-auto">length on loom: {{pattern.lengthOnLoom}}</div>
+                <div class="col col-auto">width in reed: {{pattern.widthInReed > 36 ? pattern.widthInReed / 36 : pattern.widthInReed | number}} {{pattern.widthInReed > 36 ? 'yds' : 'in'}}</div>
+                <div class="col col-auto">length on loom: {{pattern.lengthOnLoom > 36 ? pattern.lengthOnLoom / 36 : pattern.lengthOnLoom | number}} {{pattern.lengthOnLoom > 36 ? 'yds' : 'in'}}</div>
             </section>
             <section class="row row-col-auto">
-                <div class="col col-auto">width pattern repeats: {{pattern.wpr}}</div>
-                <div class="col col-auto">length pattern repeats (per piece): {{pattern.lpr}}</div>
+                <div class="col col-auto">width pattern repeats: {{pattern.wpr | number}}</div>
+                <div class="col col-auto">length pattern repeats (per piece): {{pattern.lpr | number}}</div>
                 <!-- project preview -->
             </section>
         </ng-template>

@@ -5,6 +5,7 @@ export class Yarn {
   colorName: string = "";
   colorCode: string = "";
   colorInches: number = 0;
+  colorYds: number = 0;
   perfectMatch: boolean = false;
 }
 
@@ -52,12 +53,16 @@ export class Pattern {
   colors: Array<Yarn> = [];
   sleyOrder: Array<number> = [];
   sleyEpi: string = "";
-  weftIn: number = 0;
-  warpIn: number = 0;
-  totalIn: number = 0;
+  weftYds: number = 0;
+  warpYds: number = 0;
+  totalYds: number = 0;
   sampleLength: number | null = null;
-  lpr: number | null = null;
-  wpr: number | null = null;
-  widthInReed: number | null = null;
-  lengthOnLoom: number | null = null;
+  sampleOffLoomLength: number | null = null;
+  sampleAfterWashLength: number | null = null;
+  sampleOffLoomWidth: number | null = null;
+  sampleAfterWashWidth: number | null = null;
+  lpr: number = 1;
+  wpr: number = 1;
+  widthInReed: number = 0;
+  lengthOnLoom: number = 0;
 };

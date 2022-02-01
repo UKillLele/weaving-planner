@@ -50,8 +50,6 @@ export class TreadlingPlannerComponent implements OnInit {
     });
   }
 
-  // add support for repeats
-
   setWidths() {
     this.width = this.boxWidth * this.treadles;
   }
@@ -168,7 +166,7 @@ export class TreadlingPlannerComponent implements OnInit {
       if (this.multiSelect.length == 0) this.multiSelect = [newArea];
       else this.multiSelect.push(newArea);
 
-      if ((!event.ctrlKey)) {
+      if (!event.ctrlKey) {
         if (y === this.startSecondSelect) {
           this.cancel();
         } else {
@@ -220,6 +218,7 @@ export class TreadlingPlannerComponent implements OnInit {
           box.selected = mBox.selected;
         }
       });
+      this.weavingService.changeTreadlingBoxes(this.treadlingBoxes);
     }
   }
 
