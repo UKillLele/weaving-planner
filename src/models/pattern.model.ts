@@ -6,7 +6,10 @@ export class Yarn {
   colorCode: string = "";
   colorInches: number = 0;
   colorYds: number = 0;
-  perfectMatch: boolean = false;
+  colorPricePerUnit: number | null = null;
+  colorUnitYds: number | null = null;
+  colorUnitsNeeded: number | null = null;
+  colorTotalPrice: number | null = null;
 }
 
 export class SRTColor {
@@ -64,5 +67,7 @@ export class Pattern {
   lpr: number = 1;
   wpr: number = 1;
   widthInReed: number = 0;
+  widthInReedNoFringe: number = 0;
   lengthOnLoom: number = 0;
+  totalPrice: number = 0;
 };

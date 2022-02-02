@@ -67,7 +67,7 @@ export class DataCollectorComponent implements OnInit {
   settForm = this.fb.group({
     ypp: [],
     yarnType: [],
-    density: [{ value: null, disabled: true}],
+    density: [],
     sett: []
   });
   
@@ -181,8 +181,8 @@ export class DataCollectorComponent implements OnInit {
 
   ngOnInit(): void {
     this.apiService.user.subscribe(user => {
+      if (user.userId && this.user !== user) this.getPatterns();
       this.user = user;
-      if (user) this.getPatterns();
     });
     this.weavingService.colorBoxes.subscribe((colorBoxes: Box[][]) => {
       this.pattern.colorBoxes = colorBoxes;
@@ -240,6 +240,7 @@ export class DataCollectorComponent implements OnInit {
     this.weavingService.changeThreadingBoxes(this.pattern.threadingBoxes);
     this.weavingService.changeTreadlingBoxes(this.pattern.treadlingBoxes);
     this.weavingService.changeTieUpBoxes(this.pattern.tieUpBoxes);
+    this.weavingService.changeColorPalette(this.pattern.colors.map(x => x.colorCode));
   }
 
   clearForm() {
@@ -251,12 +252,12 @@ export class DataCollectorComponent implements OnInit {
 
   savePattern() {
     if (this.user?.userId) {
-      this.pattern.id = this.pattern.id && this.pattern.name == this.patternForm.controls['name'].value ? this.pattern.id : UUID.UUID();
-      this.pattern.userId = this.pattern.userId;
+      this.pattern.userId = this.user.userId;
       const pattern = {
         ...this.pattern,
         ...this.patternForm.value,
       }
+      if (!this.pattern.id || this.pattern.name !== this.patternForm.controls['name'].value) pattern.id = UUID.UUID();
       this.apiService.putPattern(pattern).then(resp => {
         if (resp.success) {
           this.apiService.getPatterns();
@@ -434,9 +435,22 @@ export class DataCollectorComponent implements OnInit {
     }
   }
 
+  calculatePrice(colorCode: string) {
+    const color = this.pattern.colors.find(x => x.colorCode === colorCode);
+    if (color && color.colorUnitYds && color.colorPricePerUnit) {
+      color.colorUnitsNeeded = Math.ceil(color.colorYds / color.colorUnitYds);
+      color.colorTotalPrice = color.colorPricePerUnit * color.colorUnitsNeeded;
+      let price = 0;
+      this.pattern.colors.forEach(col => {
+        price += col.colorTotalPrice ?? 0;
+      });
+      this.pattern.totalPrice = price;
+    }
+  }
+
   calculateYarn() {
     if (this.patternForm.controls['finishedWidth'].value > 0 && this.patternForm.controls['finishedLength'].value > 0) {
-      this.pattern.colors = new Array();
+      let colors = new Array();
       let weftIn = 0;
       let warpIn = 0;
       this.pattern.colorBoxes?.forEach(section => {
@@ -446,8 +460,8 @@ export class DataCollectorComponent implements OnInit {
             const color: Yarn = new Yarn();
             color.colorCode = colorBox.color;
             color.colorName = namedColor[1];
-            if (color && !this.pattern.colors.map(x => x.colorName).includes(color.colorName)) {
-              this.pattern.colors.push(color);
+            if (color && !colors.map(x => x.colorName).includes(color.colorName)) {
+              colors.push(color);
             }
           }
         });
@@ -490,6 +504,19 @@ export class DataCollectorComponent implements OnInit {
             /100
           )
         );
+        this.pattern.widthInReedNoFringe = 
+          (
+            this.patternForm.controls['finishedWidth'].value // required
+          ) * (
+            1 +
+            (
+              (
+                (this.patternForm.controls['weftTakeUp'].value ?? 0)
+                + (this.patternForm.controls['weftShrinkage'].value ?? 0)
+              )
+              /100
+            )
+          );
 
       // length pattern repeats
       this.pattern.lpr = 1;
@@ -502,7 +529,7 @@ export class DataCollectorComponent implements OnInit {
       // weft threads
       this.pattern.treadlingBoxes?.forEach(weft => {
         const colorBox = this.pattern.colorBoxes[1]?.find(x => x.y == weft.y);
-        const color = this.pattern.colors?.find(x => x.colorCode === colorBox?.color)
+        const color = colors?.find(x => x.colorCode === colorBox?.color)
         if (color) {
           // width * # of pieces * lpr
           const inches = (this.pattern.widthInReed * (this.patternForm.controls['pieces'].value ?? 1) * this.pattern.lpr) ?? 0;
@@ -522,7 +549,7 @@ export class DataCollectorComponent implements OnInit {
       // warp threads
       this.pattern.threadingBoxes?.forEach(warp => {
         const colorBox = this.pattern.colorBoxes[0]?.find(x => x.x == warp.x);
-        const color = this.pattern.colors?.find(x => x.colorCode == colorBox?.color)
+        const color = colors?.find(x => x.colorCode == colorBox?.color)
         if (color) {
           // length * wpr
           const inches = (this.pattern.lengthOnLoom * this.pattern.wpr) ?? 0;
@@ -531,8 +558,13 @@ export class DataCollectorComponent implements OnInit {
         }
       });
       // make sure all yardage matches up
-      this.pattern.colors?.forEach(color => {
+      colors?.forEach(color => {
         color.colorYds = Math.ceil(color.colorInches / 36);
+      });
+      this.pattern.colors.forEach(color => {
+        const col = colors.find(x => x.colorCode === color.colorCode);
+        color.colorYds = col.colorYds;
+        color.colorInches = col.colorInches;
       })
       this.pattern.warpYds = Math.ceil(warpIn / 36);
       this.pattern.weftYds = Math.ceil(weftIn / 36);
@@ -544,7 +576,6 @@ export class DataCollectorComponent implements OnInit {
     if (this.settForm.controls['ypp'].value > 0 && this.settForm.controls['yarnType'].value !== null) {
       const multiplier = this.settForm.controls['yarnType'].value === "firm" ? .9 : .84;
       this.ashenhurst = Math.sqrt(this.settForm.controls['ypp'].value) * multiplier;
-      this.settForm.controls['density'].enable();
       if (this.settForm.controls['density'].value > 0) {
         this.settSelected();
       }
@@ -568,14 +599,12 @@ export class DataCollectorComponent implements OnInit {
   updateFromSample(direction: string, percentage: string) {
     const takeUpWidth = this.patternForm.controls['sampleOffLoomWidth'].value;
     const shrinkageWidth = this.patternForm.controls['sampleAfterWashWidth'].value;
-    const widthInReed = this.pattern.widthInReed;
+    const widthInReedNoFringe = this.pattern.widthInReedNoFringe;
     const takeUpLength = this.patternForm.controls['sampleOffLoomLength'].value;
     const shrinkageLength = this.patternForm.controls['sampleAfterWashLength'].value;
     const sampleLength = this.patternForm.controls['sampleLength'].value;
     const finishedLength = this.patternForm.controls['finishedLength'].value;
     const finishedWidth = this.patternForm.controls['finishedWidth'].value;
-    const warpTakeUp = this.patternForm.controls['warpTakeUp'].value;
-    const weftTakeUp = this.patternForm.controls['weftTakeUp'].value;
     if (direction === "warp") {
       if (percentage === "take-up") {
         this.patternForm.controls['warpTakeUp'].setValue(Math.round((sampleLength - takeUpLength)*100)/finishedLength);
@@ -584,10 +613,8 @@ export class DataCollectorComponent implements OnInit {
       }
     } else {
       if (percentage === "take-up") {
-        console.log(`((${widthInReed} - ${takeUpWidth}) * 100) / ${finishedWidth}`)
-        this.patternForm.controls['weftTakeUp'].setValue(Math.round((widthInReed - takeUpWidth)*100)/finishedWidth);
+        this.patternForm.controls['weftTakeUp'].setValue(Math.round((widthInReedNoFringe - takeUpWidth)*100)/finishedWidth);
       } else {
-        console.log(`((${takeUpWidth} - ${shrinkageWidth}) * 100) / ${finishedWidth}`)
         this.patternForm.controls['weftShrinkage'].setValue(Math.round((takeUpWidth - shrinkageWidth)*100)/finishedWidth);
       }
     }
@@ -595,6 +622,11 @@ export class DataCollectorComponent implements OnInit {
   
   open(content: any, editing: string = "") {
     this.editing = editing;
+    if (editing === "ends per inch") {
+      this.settForm.controls['sett'].setValue(this.pattern.epi ?? null);
+    } else if (editing === "picks per inch") {
+      this.settForm.controls['sett'].setValue(this.pattern.ppi ?? null);
+    }
     this.modalService.open(content).result.then((result) => {
       if (editing !== "") {
         this.editing = "";

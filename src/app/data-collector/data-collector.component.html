@@ -29,133 +29,107 @@
                 <div class="row row-col-auto">
                     <div class="col col-auto mb-3">
                         <div class="form-floating">
-                            <input class="form-control" type="text" placeholder="pattern name" formControlName="name" id="name">
+                            <input class="form-control" type="text" placeholder="pattern name" formControlName="name" id="name" title="If you'd like to save your pattern, give it a name">
                             <label for="name">pattern name</label>
                         </div>
                     </div>
+                </div>
+                <div class="row row-col-auto">
                     <div class="col col-auto mb-3">
                         <div class="form-floating">
-                            <input class="form-control" type="number" placeholder="shafts" id="shafts" formControlName="shafts">
+                            <input class="form-control" type="number" placeholder="shafts" id="shafts" formControlName="shafts" title="How many shafts will you be using?">
                             <label for="shafts">shafts</label>
                         </div>
                     </div>
                     <div class="col col-auto mb-3">
                         <div class="form-floating">
-                            <input class="form-control" type="number" placeholder="treadles" id="treadles" formControlName="treadles">
+                            <input class="form-control" type="number" placeholder="treadles" id="treadles" formControlName="treadles" title="How many treadles will you be using?">
                             <label for="treadles">treadles</label>
                         </div>
                     </div>
                     <div class="col col-auto mb-3">
                         <div class="form-floating">
-                            <input class="form-control" type="number" placeholder="dpi" id="dpi" formControlName="dpi" (change)="dpiChanged()">
+                            <input class="form-control" type="number" placeholder="dpi" id="dpi" formControlName="dpi" (change)="dpiChanged()" title="How many spaces per inch are in your reed?">
                             <label for="dpi">dents per inch</label>
                         </div>
                     </div>
-                    <div class="col col-auto my-auto">
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" formControlName="trompAsWrit" (change)="trompChanged()" id="trompAsWrit">
-                            <label class="form-check-label" for="trompAsWrit">
-                                tromp as writ
-                            </label>
+                    <div class="col col-auto mb-3">
+                        <div class="input-group">
+                            <div class="form-floating">
+                                <input class="form-control" id="waste" placeholder="loom waste" type="number" formControlName="waste" title="How much warp is required to hold your project on your loom? Include any spaces between pieces and sample">
+                                <label for="waste">loom waste</label>
+                            </div>
+                            <span class="input-group-text">inches</span>
                         </div>
                     </div>
-                    <div class="col col-auto my-auto">
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" formControlName="halfSett" (change)="settChanged()" id="halfSett">
-                            <label class="form-check-label" for="halfSett">
-                                half sett
-                            </label>
+                </div>
+                <div class="row row-col-auto">
+                    <div class="col col-auto mb-3">
+                        <div class="input-group">
+                            <div class="form-floating">
+                                <input class="form-control" type="number" placeholder="finished width" id="finishedWidth" formControlName="finishedWidth" title="How wide do you want your project to be when finished?">
+                                <label for="finishedWidth">finished width</label>
+                            </div>
+                            <span class="input-group-text">inches</span>
                         </div>
                     </div>
-                    <div class="col col-auto my-auto me-auto">
-                        <button class="btn btn-outline-primary mb-3" type="button" (click)="open(srtDialog)">SRT</button>
+                    <div class="col col-auto mb-3">
+                        <div class="input-group">
+                            <div class="form-floating">
+                                <input class="form-control" type="number" id="finished-length" placeholder="finished length" formControlName="finishedLength" title="How long do you want each piece in your project to be when finished?">
+                                <label for="finishedLength">finished length</label>
+                            </div>
+                            <span class="input-group-text">inches</span>
+                        </div>
+                    </div>
+                    <div class="col col-auto mb-3">
+                        <div class="input-group">
+                            <div class="form-floating">
+                                <input class="form-control" type="number" id="pieces" placeholder="pieces" formControlName="pieces" title="How many pieces do you want to create on one warp? Don't include sample">
+                                <label for="pieces"># of pieces</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <section>
                     <h2 class="h3">Warp</h2>
                     <div class="row row-col-auto">
-                        <div class="col col-auto mb-3">
-                            <div class="input-group">
-                                <div class="form-floating">
-                                    <input class="form-control" type="number" placeholder="finished width" id="finishedWidth" formControlName="finishedWidth">
-                                    <label for="finishedWidth">finished width</label>
-                                </div>
-                                <span class="input-group-text">inches</span>
+                        <div class="col col-auto my-auto">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" formControlName="trompAsWrit" (change)="trompChanged()" id="trompAsWrit" title="Will colors and pattern lengths be the same for warp and weft?">
+                                <label class="form-check-label" for="trompAsWrit">
+                                    tromp as writ
+                                </label>
                             </div>
                         </div>
+                        <div class="col col-auto my-auto">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" formControlName="halfSett" (change)="settChanged()" id="halfSett" title="Will your pattern pivot repeat in reverse? Note: the center thread (leftmost in the visualizer) will not repeat">
+                                <label class="form-check-label" for="halfSett">
+                                    half sett
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col col-auto my-auto me-auto">
+                            <button class="btn btn-secondary mb-3" type="button" (click)="open(srtDialog)" title="Scottish Register of Tartans">SRT</button>
+                        </div>
+                    </div>
+                    <div class="row row-col-auto">
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" (change)="patternWidthChanged()" placeholder="patternWidth" id="patternWidth" formControlName="patternWidth">
+                                    <input type="number" class="form-control" (change)="patternWidthChanged()" placeholder="patternWidth" id="patternWidth" formControlName="patternWidth" title="How many ends will there be in your pattern? Optional">
                                     <label for="patternWidth">pattern width</label>
                                 </div>
                                 <span class="input-group-text">ends</span>
                             </div>
                         </div>
                         <div class="col col-auto mb-3">
-                            <button type="button" class="btn btn-outline-secondary h-100" (click)="open(settCalculator, 'ends per inch')">{{pattern.epi}} ends per inch</button>
-                        </div>
-                        <div class="col col-auto mb-3">
-                            <div class="input-group">
-                                <div class="form-floating">
-                                    <input class="form-control" id="selvageWidth" placeholder="selvage" type="number" formControlName="selvageWidth"/>
-                                    <label for="selvageWidth">selvage</label>
-                                </div>
-                                <span class="input-group-text">ends</span>
-                            </div>
-                        </div>
-                        <div class="col col-auto mb-3">
-                            <div class="input-group">
-                                <div class="form-floating">
-                                    <input class="form-control" id="waste" placeholder="loom waste" type="number" formControlName="waste">
-                                    <label for="waste">loom waste</label>
-                                </div>
-                                <span class="input-group-text">inches</span>
-                            </div>
-                        </div>
-                        <div class="col col-auto mb-3">
-                            <div class="input-group">
-                                <div class="form-floating w-auto">
-                                    <select class="form-select" style="width: 8.5rem" id="topEdgeType" formControlName="topEdgeType" (change)="edgeTypeChanged()">
-                                        <option value="fringe">fringe</option>
-                                        <option value="hem">hem</option>
-                                    </select>
-                                    <label for="topEdgeType">top edge type</label>
-                                </div>
-                                <div class="form-floating">
-                                    <input class="form-control" id="topEdgeLength" placeholder="top edge length" type="number" formControlName="topEdgeLength" (change)="edgeChanged('warp')">
-                                    <label for="topEdgeLength">top edge length</label>
-                                </div>
-                                <span class="input-group-text">ends</span>
-                            </div>
-                        </div>
-                        <div class="col col-auto mb-3">
-                            <div class="input-group">
-                                <div class="form-floating w-auto">
-                                    <select class="form-select" style="width: 10rem" id="bottomEdgeType" formControlName="bottomEdgeType" (change)="edgeTypeChanged()">
-                                        <option value="fringe">fringe</option>
-                                        <option value="hem">hem</option>
-                                    </select>
-                                    <label for="bottomEdgeType">bottom edge type</label>
-                                </div>
-                                <div class="form-floating">
-                                    <input class="form-control" id="bottomEdgeLength" placeholder="bottom edge length" type="number" formControlName="bottomEdgeLength" (change)="edgeChanged('warp')">
-                                    <label for="bottomEdgeLength">bottom edge length</label>
-                                </div>
-                                <span class="input-group-text">ends</span>
-                            </div>
-                        </div>
-                        <div class="col col-auto mb-3">
-                            <div class="input-group">
-                                <div class="form-floating">
-                                    <input class="form-control" type="number" id="pieces" placeholder="pieces" formControlName="pieces">
-                                    <label for="pieces"># of pieces</label>
-                                </div>
-                            </div>
+                            <button type="button" class="btn btn-outline-secondary h-100" title="calculate or manually enter epi" (click)="open(settCalculator, 'ends per inch')">{{pattern.epi}} ends per inch</button>
                         </div>
                         <div class="col col-auto mb-3">
                             <div class="form-floating">
-                                <select class="form-select" id="warpMaterial" formControlName="warpMaterial" (change)="yarnChanged('warp')">
+                                <select class="form-select" id="warpMaterial" formControlName="warpMaterial" (change)="yarnChanged('warp')" title="What is the fiber composition of the yarn you'd like to use?">
                                     <option *ngFor="let yarn of YarnTypes" [value]="yarn.name">{{yarn.name}}</option>
                                 </select>
                                 <label for="warpMaterial">yarn type</label>
@@ -164,7 +138,7 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" id="warpTakeUp" placeholder="take-up" formControlName="warpTakeUp">
+                                    <input class="form-control" type="number" id="warpTakeUp" placeholder="take-up" formControlName="warpTakeUp" title="Take-up is calculated by yarn type or from sample results but can be manually entered">
                                     <label for="warpTakeUp">take-up</label>
                                 </div>
                                 <span class="input-group-text">%</span>
@@ -173,10 +147,53 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" id="warpShrinkage" placeholder="shrinkage" formControlName="warpShrinkage">
+                                    <input class="form-control" type="number" id="warpShrinkage" placeholder="shrinkage" formControlName="warpShrinkage" title="Shrinkage is calculated by yarn type or from sample results but can be manually entered">
                                     <label for="warpShrinkage">shrinkage</label>
                                 </div>
                                 <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-col-auto">
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating w-auto">
+                                    <select class="form-select" style="width: 8.5rem" id="topEdgeType" formControlName="topEdgeType" (change)="edgeTypeChanged()" title="Will you hem or fringe the top of each piece? Optional">
+                                        <option value="fringe">fringe</option>
+                                        <option value="hem">hem</option>
+                                    </select>
+                                    <label for="topEdgeType">top edge type</label>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="topEdgeLength" placeholder="top edge length" type="number" formControlName="topEdgeLength" (change)="edgeChanged('warp')" title="How many inches of hem or fringe do you want? Lengths are in addition to desired finished length">
+                                    <label for="topEdgeLength">top edge length</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating w-auto">
+                                    <select class="form-select" style="width: 10rem" id="bottomEdgeType" formControlName="bottomEdgeType" (change)="edgeTypeChanged()" title="Will you hem or fringe the bottom of each piece? Optional">
+                                        <option value="fringe">fringe</option>
+                                        <option value="hem">hem</option>
+                                    </select>
+                                    <label for="bottomEdgeType">bottom edge type</label>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="bottomEdgeLength" placeholder="bottom edge length" type="number" formControlName="bottomEdgeLength" (change)="edgeChanged('warp')" title="How many inches of hem or fringe do you want? Lengths are in addition to desired finished length">
+                                    <label for="bottomEdgeLength">bottom edge length</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" id="selvageWidth" placeholder="selvage" type="number" formControlName="selvageWidth" title="How many ends will be used for selvage? Optioonal - not used in calculations"/>
+                                    <label for="selvageWidth">selvage</label>
+                                </div>
+                                <span class="input-group-text">ends</span>
                             </div>
                         </div>
                     </div>
@@ -187,45 +204,18 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" id="finished-length" placeholder="finished length" formControlName="finishedLength">
-                                    <label for="finishedLength">finished length</label>
-                                </div>
-                                <span class="input-group-text">inches</span>
-                            </div>
-                        </div>
-                        <div class="col col-auto mb-3">
-                            <div class="input-group">
-                                <div class="form-floating">
-                                    <input class="form-control" type="number" id="patternLength" placeholder="pattern length" formControlName="patternLength">
+                                    <input class="form-control" type="number" id="patternLength" placeholder="pattern length" formControlName="patternLength" title="How many picks will there be in your pattern? Optional">
                                     <label for="patternLength">pattern length</label>
                                 </div>
                                 <span class="input-group-text">picks</span>
                             </div>
                         </div>
                         <div class="col col-auto mb-3">
-                            <button type="button" class="btn btn-outline-secondary h-100" [disabled]="patternForm.controls['trompAsWrit'].value" (click)="open(settCalculator, 'picks per inch')">{{pattern.ppi}} picks per inch</button>
-                        </div>
-                        <div class="col col-auto mb-3">
-                            <div class="input-group">
-                                <div class="form-floating">
-                                    <input class="form-control" type="number" id="weft-left-fringe" placeholder="left fringe" formControlName="weftLeftFringe" (change)="edgeChanged('weft')">
-                                    <label for="weftLeftFringe">left fringe</label>
-                                </div>
-                                <span class="input-group-text">picks</span>
-                            </div>
-                        </div>
-                        <div class="col col-auto mb-3">
-                            <div class="input-group">
-                                <div class="form-floating">
-                                    <input class="form-control" type="number" id="weft-right-fringe" placeholder="right fringe" formControlName="weftRightFringe" (change)="edgeChanged('weft')">
-                                    <label for="weftRightFringe">right fringe</label>
-                                </div>
-                                <span class="input-group-text">picks</span>
-                            </div>
+                            <button type="button" class="btn btn-outline-secondary h-100" [disabled]="patternForm.controls['trompAsWrit'].value" (click)="open(settCalculator, 'picks per inch')"  title="calculate or manually enter epi">{{pattern.ppi}} picks per inch</button>
                         </div>
                         <div class="col col-auto mb-3">
                             <div class="form-floating">
-                                <select class="form-select" id="weftMaterial" formControlName="weftMaterial" (change)="yarnChanged('weft')">
+                                <select class="form-select" id="weftMaterial" formControlName="weftMaterial" (change)="yarnChanged('weft')" title="What is the fiber composition of the yarn you'd like to use?">
                                     <option *ngFor="let yarn of YarnTypes" [value]="yarn.name">{{yarn.name}}</option>
                                 </select>
                                 <label for="weftMaterial">yarn type</label>
@@ -234,7 +224,7 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" id="weftTakeUp" placeholder="take-up" formControlName="weftTakeUp">
+                                    <input class="form-control" type="number" id="weftTakeUp" placeholder="take-up" formControlName="weftTakeUp" title="Take-up is calculated by yarn type or from sample results but can be manually entered">
                                     <label for="weftTakeUp">take-up</label>
                                 </div>
                                 <span class="input-group-text">%</span>
@@ -243,10 +233,30 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" id="weftShrinkage" placeholder="shrinkage" formControlName="weftShrinkage">
+                                    <input class="form-control" type="number" id="weftShrinkage" placeholder="shrinkage" formControlName="weftShrinkage" title="Shrinkage is calculated by yarn type or from sample results but can be manually entered">
                                     <label for="weftShrinkage">shrinkage</label>
                                 </div>
                                 <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-col-auto">
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="weft-left-fringe" placeholder="left fringe" formControlName="weftLeftFringe" (change)="edgeChanged('weft')" title="How many inches of fringe do you want on the left of each piece? Lengths are in addition to desired finished length">
+                                    <label for="weftLeftFringe">left fringe</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="weft-right-fringe" placeholder="right fringe" formControlName="weftRightFringe" (change)="edgeChanged('weft')"  title="How many inches of hem or fringe do you want on the right of each piece? Lengths are in addition to desired finished length">
+                                    <label for="weftRightFringe">right fringe</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
                             </div>
                         </div>
                     </div>
@@ -257,7 +267,7 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" id="sampleLength" placeholder="sample length" formControlName="sampleLength">
+                                    <input class="form-control" type="number" id="sampleLength" placeholder="sample length" formControlName="sampleLength" title="How long will you make your sample? Not including fringe. Sampling is optional but recommended">
                                     <label for="sampleLength">sample length</label>
                                 </div>
                                 <span class="input-group-text">inches</span>
@@ -266,7 +276,18 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" id="sampleOffLoomLength" placeholder="sample length off loom" formControlName="sampleOffLoomLength" (change)="updateFromSample('warp', 'take-up')">
+                                    <input class="form-control" type="number" id="widthInReed" [value]="pattern.widthInReedNoFringe" title="calculated from dents, width, take up, and shrinkage" disabled placeholder="width in reed - no fringe" title="If your measured width doesn't match this number, double check your reed density and sleying">
+                                    <label for="widthInReed">width in reed - no fringe</label>
+                                </div>
+                                <span class="input-group-text">inches</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-col-auto">
+                        <div class="col col-auto mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input class="form-control" type="number" id="sampleOffLoomLength" placeholder="sample length off loom" formControlName="sampleOffLoomLength" (change)="updateFromSample('warp', 'take-up')" title="How long was your sample when removed from the loom before washing? Not including fringe">
                                     <label for="sampleOffLoomLength">sample length off loom</label>
                                 </div>
                                 <span class="input-group-text">inches</span>
@@ -275,16 +296,18 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" id="sampleOffLoomWidth" placeholder="sample width off loom" formControlName="sampleOffLoomWidth" (change)="updateFromSample('weft', 'take-up')">
+                                    <input class="form-control" type="number" id="sampleOffLoomWidth" placeholder="sample width off loom" formControlName="sampleOffLoomWidth" (change)="updateFromSample('weft', 'take-up')" title="How wide was your sample when removed from the loom before washing? Not including fringe">
                                     <label for="sampleOffLoomWidth">sample width off loom</label>
                                 </div>
                                 <span class="input-group-text">inches</span>
                             </div>
                         </div>
+                    </div>
+                    <div class="row row-col-auto">
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" id="sampleAfterWashLength" placeholder="sample length after wash" formControlName="sampleAfterWashLength" (change)="updateFromSample('warp', 'shrinkage')">
+                                    <input class="form-control" type="number" id="sampleAfterWashLength" placeholder="sample length after wash" formControlName="sampleAfterWashLength" (change)="updateFromSample('warp', 'shrinkage')" title="How long was your washed sample? Not including fringe">
                                     <label for="sampleAfterWashLength">sample length after wash</label>
                                 </div>
                                 <span class="input-group-text">inches</span>
@@ -293,7 +316,7 @@
                         <div class="col col-auto mb-3">
                             <div class="input-group">
                                 <div class="form-floating">
-                                    <input class="form-control" type="number" id="sampleAfterWashWidth" placeholder="sample width after wash" formControlName="sampleAfterWashWidth" (change)="updateFromSample('weft', 'shrinkage')">
+                                    <input class="form-control" type="number" id="sampleAfterWashWidth" placeholder="sample width after wash" formControlName="sampleAfterWashWidth" (change)="updateFromSample('weft', 'shrinkage')" title="How wide was your washed sample? Not including fringe">
                                     <label for="sampleAfterWashWidth">sample width after wash</label>
                                 </div>
                                 <span class="input-group-text">inches</span>
@@ -302,7 +325,7 @@
                     </div>
                 </section>
                 <section align="end">
-                    <button class="btn btn-primary">Update</button>
+                    <button class="btn btn-primary" title="Updating re-renders the visualizer and yarn breakdown but does not save the pattern">Update</button>
                 </section>
             </form>
         </ng-template>
@@ -327,22 +350,39 @@
                 <div class="col col-auto">total yardage: {{pattern.totalYds }} yds</div>
                 <div class="col col-auto">total warp yardage: {{pattern.warpYds }} yds</div>
                 <div class="col col-auto">total weft yardage: {{pattern.weftYds }} yds</div>
+                <div class="col col-auto">total Price: ${{pattern.totalPrice }}</div>
             </section>
             <section class="row row-col-auto">
                 <div class="col col-auto" *ngFor="let color of pattern.colors">
-                    <div class="align-middle">
-                        <span style="width: 15px; height: 15px; display: inline-block; border: 1px solid black" [style.backgroundColor]="color.colorCode"></span>
-                        : {{color.colorYds}} yds
+                    <div class="row row-col-auto align-items-center">
+                        <div class="col col-auto">
+                            <span style="width: 15px; height: 15px; display: inline-block; border: 1px solid black" [style.backgroundColor]="color.colorCode"></span>
+                            : {{color.colorYds}} yds @ 
+                        </div>
+                        <div class="col col-auto">
+                            <div class="input-group">
+                                <span class="input-group-text">$</span> 
+                                <input class="form-control" style="width: 5rem;" [(ngModel)]="color.colorPricePerUnit" placeholder="price per unit" type="number" step=".01" (change)="calculatePrice(color.colorCode)" />
+                            </div>
+                        </div>
+                        <div class="col col-auto"> / </div>
+                        <div class="col col-auto">
+                            <div class="input-group">
+                                <input class="form-control" style="width: 5rem;" [(ngModel)]="color.colorUnitYds" placeholder="yards" type="number" step=".01" (change)="calculatePrice(color.colorCode)" />
+                                <span class="input-group-text">Yds</span> 
+                            </div>
+                        </div>
+                        <div class="col col-auto" *ngIf="color.colorUnitsNeeded && color.colorTotalPrice"> = {{color.colorUnitsNeeded}} units - ${{color.colorTotalPrice}}</div>
                     </div>
                 </div>
             </section>
             <section class="row row-col-auto">
-                <div class="col col-auto">width in reed: {{pattern.widthInReed > 36 ? pattern.widthInReed / 36 : pattern.widthInReed | number}} {{pattern.widthInReed > 36 ? 'yds' : 'in'}}</div>
-                <div class="col col-auto">length on loom: {{pattern.lengthOnLoom > 36 ? pattern.lengthOnLoom / 36 : pattern.lengthOnLoom | number}} {{pattern.lengthOnLoom > 36 ? 'yds' : 'in'}}</div>
+                <div class="col col-auto">width in reed: {{pattern.widthInReed > 36 ? (pattern.widthInReed / 36 | number : '1.0-2') : (pattern.widthInReed | number : '1.0-2')}} {{pattern.widthInReed > 36 ? 'yds' : 'in'}}</div>
+                <div class="col col-auto">length on loom: {{pattern.lengthOnLoom > 36 ? (pattern.lengthOnLoom / 36 | number : '1.0-2') : (pattern.lengthOnLoom | number : '1.0-2')}} {{pattern.lengthOnLoom > 36 ? 'yds' : 'in'}}</div>
             </section>
             <section class="row row-col-auto">
-                <div class="col col-auto">width pattern repeats: {{pattern.wpr | number}}</div>
-                <div class="col col-auto">length pattern repeats (per piece): {{pattern.lpr | number}}</div>
+                <div class="col col-auto">width pattern repeats: {{pattern.wpr | number : '1.0-2'}}</div>
+                <div class="col col-auto">length pattern repeats (per piece): {{pattern.lpr | number : '1.0-2'}}</div>
                 <!-- project preview -->
             </section>
         </ng-template>
@@ -351,7 +391,7 @@
 
 <ng-template #srtDialog let-modal>
     <div class="modal-header">
-        <h1 class="h3" ngbAutofocus>Scottish Registry of Tartans</h1>
+        <h1 class="h3" ngbAutofocus>Scottish Register of Tartans</h1>
         <button type="button" class="close btn btn-link" aria-label="Close" (click)="modal.dismiss('Cross click')">
           <i class="fa fa-times fa-2x" aria-hidden="true"></i>
         </button>
@@ -359,11 +399,11 @@
     <form class="modal-body" [formGroup]="srtForm">
         <div class="mb-3">
             <label for="srtThreadcount">Threadcount</label>
-            <input class="form-control" type="text" placeholder="e.g. G20R4B40W4R4W4A40W4A40W4Y4" id="srtThreadcount" formControlName="srtThreadcount" />
+            <input class="form-control" type="text" placeholder="e.g. G20R4B40W4R4W4A40W4A40W4Y4" id="srtThreadcount" formControlName="srtThreadcount" title="Threadcount provided by the Scottish Register of Tartans, usually found in an email" />
         </div>
         <div>
             <label for="srtPalette">Palette</label>
-            <textarea class="form-control" rows="3" placeholder="e.g. W=E0E0E0WHITE;A=5C8CA8AZURE;R=C80000RED;B=2C2C80BLUE;G=006818GREEN;Y=E8C000YELLOW" id="srtPalette" formControlName="srtPalette"></textarea>
+            <textarea class="form-control" rows="3" placeholder="e.g. W=E0E0E0WHITE;A=5C8CA8AZURE;R=C80000RED;B=2C2C80BLUE;G=006818GREEN;Y=E8C000YELLOW" id="srtPalette" formControlName="srtPalette" title="Palette provided by the Scottish Register of Tartans, usually found in an email"></textarea>
         </div>
     </form>
     <div class="modal-footer">
@@ -384,13 +424,13 @@
         <div class="row">
             <div class="col col-auto mb-3">
                 <div class="form-floating">
-                    <input class="form-control" type="number" id="ypp" placeholder="yards per pound" formControlName="ypp" (change)="settCalcUpdated()">
+                    <input class="form-control" type="number" id="ypp" placeholder="yards per pound" formControlName="ypp" (change)="settCalcUpdated()" title="yards per pound (YPP) provided by yarn manufacturer">
                     <label for="ypp">yards per pound</label>
                 </div>
             </div>
             <div class="col col-auto mb-3">
                 <div class="form-floating">
-                    <select class="form-select" id="yarnType" formControlName="yarnType" (change)="settCalcUpdated()">
+                    <select class="form-select" id="yarnType" formControlName="yarnType" (change)="settCalcUpdated()" title="If you're no sure of your yarn type, select firm">
                         <option value="firm">Firm (worsted wool/cotton)</option>
                         <option value="soft">Soft (woolen/tweed)</option>
                     </select>
@@ -401,7 +441,7 @@
         <div class="row">
             <div class="col col-auto mb-3">
                 <div class="form-floating">
-                    <select class="form-select" id="density" formControlName="density" (change)="settSelected()">
+                    <select class="form-select" id="density" formControlName="density" (change)="settSelected()" title="How dense do you want your weave to be? Maximum is equivalent to upholstery. Twill and satin have higher counts because they are looser weaves">
                         <option *ngFor="let density of densities" [value]="density.calc">{{density.weave}} {{density.percent}} {{density.example}}</option>
                     </select>
                     <label for="density">density</label>
@@ -411,7 +451,7 @@
         <div class="row">
             <div class="col col-auto mb-3">
                 <div class="form-floating">
-                    <input type="number" class="form-control" [placeholder]="editing" id="sett" formControlName="sett">
+                    <input type="number" class="form-control" [placeholder]="editing" id="sett" formControlName="sett" title="This can either be calculated by selecting options above or manually entered">
                     <label for="sett">{{editing}}</label>
                 </div>
             </div>
