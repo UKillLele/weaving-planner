@@ -226,6 +226,15 @@ export class DataCollectorComponent implements OnInit {
     }
   }
 
+  getContrastText(hex: string) {
+      hex = hex.replace("#", "");
+      var r = parseInt(hex.substring(0,2),16);
+      var g = parseInt(hex.substring(2,2),16);
+      var b = parseInt(hex.substring(4,2),16);
+      var yiq = ((r*299)+(g*587)+(b*114))/1000;
+      return (yiq >= 128) ? 'black' : 'white';
+  }
+
   onPatternSubmit() {
     this.calculateYarn();
     this.weavingService.changeShafts(this.patternForm.controls['shafts'].value);
@@ -453,19 +462,6 @@ export class DataCollectorComponent implements OnInit {
       let colors = new Array();
       let weftIn = 0;
       let warpIn = 0;
-      this.pattern.colorBoxes?.forEach(section => {
-        section.forEach(colorBox => {
-          const namedColor = ntc.name(colorBox.color);
-          if (!namedColor[1].toLowerCase().includes("invalid")) {
-            const color: Yarn = new Yarn();
-            color.colorCode = colorBox.color;
-            color.colorName = namedColor[1];
-            if (color && !colors.map(x => x.colorName).includes(color.colorName)) {
-              colors.push(color);
-            }
-          }
-        });
-      });
       // TODO: account for half sett
       this.pattern.lengthOnLoom = 
         (
@@ -529,13 +525,16 @@ export class DataCollectorComponent implements OnInit {
       // weft threads
       this.pattern.treadlingBoxes?.forEach(weft => {
         const colorBox = this.pattern.colorBoxes[1]?.find(x => x.y == weft.y);
-        const color = colors?.find(x => x.colorCode === colorBox?.color)
-        if (color) {
-          // width * # of pieces * lpr
-          const inches = (this.pattern.widthInReed * (this.patternForm.controls['pieces'].value ?? 1) * this.pattern.lpr) ?? 0;
-          color.colorInches += inches;
-          weftIn += inches;
+        if (!colors.map(x => x.colorCode).find(x => x === colorBox?.color)) {
+          const color = new Yarn();
+          color.colorCode = colorBox?.color ?? "";
+          colors.push(color);
         }
+        const color = colors.find(x => x.colorCode === colorBox?.color)
+        // width * # of pieces * lpr
+        const inches = (this.pattern.widthInReed * (this.patternForm.controls['pieces'].value ?? 1) * this.pattern.lpr) ?? 0;
+        color.colorInches += inches;
+        weftIn += inches;
       });
 
       // width pattern repeats
@@ -549,23 +548,34 @@ export class DataCollectorComponent implements OnInit {
       // warp threads
       this.pattern.threadingBoxes?.forEach(warp => {
         const colorBox = this.pattern.colorBoxes[0]?.find(x => x.x == warp.x);
-        const color = colors?.find(x => x.colorCode == colorBox?.color)
-        if (color) {
-          // length * wpr
-          const inches = (this.pattern.lengthOnLoom * this.pattern.wpr) ?? 0;
-          color.colorInches += inches;
-          warpIn += inches;
+        if (!colors.map(x => x.colorCode).find(x => x === colorBox?.color)) {
+          const color = new Yarn();
+          color.colorCode = colorBox?.color ?? "";
+          colors.push(color);
+        }
+        const color = colors.find(x => x.colorCode === colorBox?.color)
+        // length * wpr
+        const inches = (this.pattern.lengthOnLoom * this.pattern.wpr) ?? 0;
+        color.colorInches += inches;
+        warpIn += inches;
+      });
+      // if color isn't already in saved colors, add it
+      colors?.forEach(color => {
+        const patternColor = this.pattern.colors.find(x => x.colorCode === color.colorCode);
+        if (!patternColor) {
+          this.pattern.colors.push(color);
         }
       });
-      // make sure all yardage matches up
-      colors?.forEach(color => {
-        color.colorYds = Math.ceil(color.colorInches / 36);
-      });
+      console.log(this.pattern.colors);
       this.pattern.colors.forEach(color => {
-        const col = colors.find(x => x.colorCode === color.colorCode);
-        color.colorYds = col.colorYds;
-        color.colorInches = col.colorInches;
-      })
+        const patternColor = colors.find(c => c.colorCode === color.colorCode);
+        if (patternColor && patternColor.colorInches > 0) {
+          color.colorInches = patternColor.colorInches;
+          color.colorYds = Math.ceil(color.colorInches / 36);
+        } else {
+          this.pattern.colors = this.pattern.colors.filter(x => x.colorCode !== color.colorCode);
+        }
+      });
       this.pattern.warpYds = Math.ceil(warpIn / 36);
       this.pattern.weftYds = Math.ceil(weftIn / 36);
       this.pattern.totalYds = this.pattern.warpYds + this.pattern.weftYds;

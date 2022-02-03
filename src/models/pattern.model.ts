@@ -2,7 +2,6 @@ import { Box } from "./box.model";
 import { UUID } from 'angular2-uuid';
 
 export class Yarn {
-  colorName: string = "";
   colorCode: string = "";
   colorInches: number = 0;
   colorYds: number = 0;
