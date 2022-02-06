@@ -212,6 +212,7 @@ export class DataCollectorComponent implements OnInit {
   }
 
   getPattern(patternId: UUID) {
+    this.clearForm();
     if (patternId) {
       this.apiService.getPattern(patternId).then(resp => {
         if (resp.success) {
@@ -237,8 +238,8 @@ export class DataCollectorComponent implements OnInit {
     this.weavingService.changeTreadles(this.patternForm.controls['treadles'].value);
     this.weavingService.changeTromp(this.patternForm.controls['trompAsWrit'].value);
     this.weavingService.changeHalfSett(this.patternForm.controls['halfSett'].value);
-    this.weavingService.changePatternLength(this.pattern.patternLength);
-    this.weavingService.changePatternWidth(this.pattern.patternWidth);
+    this.weavingService.changePatternLength(this.patternForm.controls['patternLength'].value);
+    this.weavingService.changePatternWidth(this.patternForm.controls['patternWidth'].value);
     this.weavingService.changeEpi(this.pattern.epi);
     this.weavingService.changefinishedWidth(this.patternForm.controls['finishedWidth'].value);
     this.weavingService.changeColorBoxes(this.pattern.colorBoxes);
@@ -568,6 +569,7 @@ export class DataCollectorComponent implements OnInit {
         if (patternColor && patternColor.colorInches > 0) {
           color.colorInches = patternColor.colorInches;
           color.colorYds = Math.ceil(color.colorInches / 36);
+          this.calculatePrice(color.colorCode);
         } else {
           this.pattern.colors = this.pattern.colors.filter(x => x.colorCode !== color.colorCode);
         }
