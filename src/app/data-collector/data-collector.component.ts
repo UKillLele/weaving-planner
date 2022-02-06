@@ -418,8 +418,8 @@ export class DataCollectorComponent implements OnInit {
   }
 
   settChanged() {
+    // TODO
     if (this.patternForm.controls['halfSett'].value === true) {
-      // TODO
     }
   }
 
