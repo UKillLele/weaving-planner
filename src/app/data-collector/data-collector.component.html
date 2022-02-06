@@ -195,8 +195,8 @@
                             <div class="col-auto mb-3">
                                 <div class="input-group">
                                     <div class="form-floating">
-                                        <input class="form-control" id="selvageWidth" placeholder="selvage" type="number" formControlName="selvageWidth" title="How many ends will be used for selvage? Optioonal - not used in calculations"/>
-                                        <label for="selvageWidth">selvage</label>
+                                        <input class="form-control" id="selvedgeWidth" placeholder="selvedge" type="number" formControlName="selvedgeWidth" title="How many ends will be used for selvedge? Optioonal - not used in calculations"/>
+                                        <label for="selvedgeWidth">selvedge</label>
                                     </div>
                                     <span class="input-group-text">ends</span>
                                 </div>
@@ -365,42 +365,89 @@
                     <section class="row row-col-auto mb-3">
                         <div class="col">
                             <div class="card shadow-sm bg-light">
-                                <div class="card-body text-center">
-                                    total: {{pattern.totalYds }} yds
+                                <div class="card-body">
+                                    <div class="row row-col-auto align-items-center">
+                                        <div class="col-auto card-title h4  mb-3">
+                                            yardage
+                                        </div>
+                                        <div class="col">
+                                            <div class="card mb-3">
+                                                <div class="card-body shadow-sm text-center">
+                                                    <strong>total: {{pattern.totalYds }} yds</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card  mb-3">
+                                                <div class="card-body shadow-sm text-center">
+                                                    warp: {{pattern.warpYds }} yds
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card  mb-3">
+                                                <div class="card-body shadow-sm text-center">
+                                                    weft: {{pattern.weftYds }} yds
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row row-col-auto">
+                                        <div class="col shadow-sm" *ngFor="let color of pattern.colors">
+                                            <div class="card" [style.backgroundColor]="color.colorCode" [style.color]="getContrastText(color.colorCode)">
+                                                <div class="card-body text-center">
+                                                    {{color.colorYds}} yds
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="row mb-3">
+                        <div class="col">
+                            <div class="card shadow-sm bg-light">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto card-title h4">dimensions</div>
+                                        <div class="col-auto">
+                                            <div class="row">
+                                                <div class="col">
+                                                    width in reed: {{pattern.widthInReed > 36 ? (pattern.widthInReed / 36 | number : '1.0-2') : (pattern.widthInReed | number : '1.0-2')}} {{pattern.widthInReed > 36 ? 'yds' : 'in'}}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    length on loom: {{pattern.lengthOnLoom > 36 ? (pattern.lengthOnLoom / 36 | number : '1.0-2') : (pattern.lengthOnLoom | number : '1.0-2')}} {{pattern.lengthOnLoom > 36 ? 'yds' : 'in'}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col">
                             <div class="card shadow-sm bg-light">
-                                <div class="card-body text-center">
-                                    warp: {{pattern.warpYds }} yds
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto card-title h4">pattern repeats</div>
+                                        <div class="col-auto">
+                                            <div class="row">
+                                                <div class="col">
+                                                    width : {{pattern.wpr | number : '1.0-2'}}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    length (per piece): {{pattern.lpr | number : '1.0-2'}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card shadow-sm bg-light">
-                                <div class="card-body text-center">
-                                    weft: {{pattern.weftYds }} yds
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="row row-col-auto mb-3">
-                        <div class="col" *ngFor="let color of pattern.colors">
-                            <div class="card" [style.backgroundColor]="color.colorCode" [style.color]="getContrastText(color.colorCode)">
-                                <div class="card-body text-center">
-                                    {{color.colorYds}} yds
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="row row-col-auto mb-3">
-                        <div class="col-auto">width in reed: {{pattern.widthInReed > 36 ? (pattern.widthInReed / 36 | number : '1.0-2') : (pattern.widthInReed | number : '1.0-2')}} {{pattern.widthInReed > 36 ? 'yds' : 'in'}}</div>
-                        <div class="col-auto">length on loom: {{pattern.lengthOnLoom > 36 ? (pattern.lengthOnLoom / 36 | number : '1.0-2') : (pattern.lengthOnLoom | number : '1.0-2')}} {{pattern.lengthOnLoom > 36 ? 'yds' : 'in'}}</div>
-                    </section>
-                    <section class="row row-col-auto mb-3">
-                        <div class="col-auto">width pattern repeats: {{pattern.wpr | number : '1.0-2'}}</div>
-                        <div class="col-auto">length pattern repeats (per piece): {{pattern.lpr | number : '1.0-2'}}</div>
                         <!-- project preview -->
                     </section>
                 </div>

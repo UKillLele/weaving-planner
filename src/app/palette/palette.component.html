@@ -27,12 +27,16 @@
                     </button>
                 </div>
             </div>
+            <div class="col col-auto my-2">
+                <button
+                    class="rounded border d-flex justify-content-center align-items-center bg-light cursor" 
+                    style="width: 2.75rem; height: 2.75rem;"
+                    (click)="addToPalette()" aria-label="add"
+                >
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
-    </div>
-    <div class="col col-auto">
-        <button class="btn btn-success rounded-circle" (click)="addToPalette()" aria-label="add">
-            <i class="fa fa-plus" aria-hidden="true"></i>
-        </button>
     </div>
     <div class="col col-auto">
         <div class="form-switch form-floating">

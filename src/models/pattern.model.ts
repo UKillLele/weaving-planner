@@ -25,7 +25,7 @@ export class Pattern {
   dpi: number | null = null;
   epi: number | null = null;
   finishedWidth: number | null = null;
-  selvageWidth: number | null = null;
+  selvedgeWidth: number | null = null;
   waste: number | null = null;
   trompAsWrit: boolean = false;
   halfSett: boolean = false;

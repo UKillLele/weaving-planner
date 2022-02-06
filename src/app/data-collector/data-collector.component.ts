@@ -32,7 +32,7 @@ export class DataCollectorComponent implements OnInit {
     treadles: [ this.pattern.treadles ],
     dpi: [ this.pattern.dpi ],
     finishedWidth: [ this.pattern.finishedWidth ],
-    selvageWidth: [ this.pattern.selvageWidth ],
+    selvedgeWidth: [ this.pattern.selvedgeWidth ],
     waste: [ this.pattern.waste ],
     trompAsWrit: [ this.pattern.trompAsWrit],
     halfSett: [ this.pattern.halfSett ],
@@ -227,12 +227,8 @@ export class DataCollectorComponent implements OnInit {
   }
 
   getContrastText(hex: string) {
-      hex = hex.replace("#", "");
-      var r = parseInt(hex.substring(0,2),16);
-      var g = parseInt(hex.substring(2,2),16);
-      var b = parseInt(hex.substring(4,2),16);
-      var yiq = ((r*299)+(g*587)+(b*114))/1000;
-      return (yiq >= 128) ? 'black' : 'white';
+    const [r, g, b] = [1, 3, 5].map( p => parseInt( hex.substring( p, p + 2 ), 16 ) ); 	
+    return ((r * 299) + (g * 587) + (b * 114)) / 1000 >= 128 ? 'black' : 'white';
   }
 
   onPatternSubmit() {
@@ -539,11 +535,12 @@ export class DataCollectorComponent implements OnInit {
 
       // width pattern repeats
       this.pattern.wpr = 1;
+      const selvedge = (this.patternForm.controls['selvedgeWidth'].value > 0 ? this.patternForm.controls['selvedgeWidth'].value * 2 : 0);
       if (this.patternForm.controls['patternWidth'].value > 0) {
         // (width * epi) / pattern width
-        this.pattern.wpr = (this.pattern.widthInReed * this.pattern.epi!) / this.patternForm.controls['patternWidth'].value;
+        this.pattern.wpr = ((this.pattern.widthInReedNoFringe - selvedge)  * this.pattern.epi!) / this.patternForm.controls['patternWidth'].value;
       } else {
-        this.pattern.patternWidth = Math.round(this.pattern.widthInReed * this.pattern.epi!);
+        this.pattern.patternWidth = Math.round((this.pattern.widthInReedNoFringe - selvedge) * this.pattern.epi!);
       }
       // warp threads
       this.pattern.threadingBoxes?.forEach(warp => {
@@ -566,7 +563,6 @@ export class DataCollectorComponent implements OnInit {
           this.pattern.colors.push(color);
         }
       });
-      console.log(this.pattern.colors);
       this.pattern.colors.forEach(color => {
         const patternColor = colors.find(c => c.colorCode === color.colorCode);
         if (patternColor && patternColor.colorInches > 0) {
