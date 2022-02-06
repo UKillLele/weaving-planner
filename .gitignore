@@ -33,8 +33,9 @@ npm-debug.log
 yarn-error.log  
 testem.log  
 /typings  
-.angular/cache/
+/.angular/cache/
 local.settings.json
+
   
 # System Files  
 .DS_Store  
