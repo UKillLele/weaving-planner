@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     this.apiService.user.subscribe(user => this.userDetails = user?.userDetails ?? "");
-    this.apiService.getUserInfo();
+    this.apiService.getUserInfo(); 
     this.weavingService.changePreviewAvailable(true);
     this.weavingService.patternWidth.subscribe((patternWidth: number) => {
       this.patternWidth = patternWidth;
