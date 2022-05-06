@@ -459,18 +459,20 @@ export class DataCollectorComponent implements OnInit {
       let colors = new Array();
       let weftIn = 0;
       let warpIn = 0;
+      const waste = this.patternForm.controls['waste'].value ?? 0;
+      const fringe = this.patternForm.controls['topEdgeLength'].value ?? 0 + this.patternForm.controls['bottomEdgeLength'].value ?? 0;
+      const sample = this.patternForm.controls['sampleLength'].value ?? 0;
       // TODO: account for half sett
       this.pattern.lengthOnLoom = 
         (
           (
             ( // lengths that get multplied by pieces
               this.patternForm.controls['finishedLength'].value // required
-              + (this.patternForm.controls['topEdgeLength'].value ?? 0)
-              + (this.patternForm.controls['bottomEdgeLength'].value ?? 0)
+              + fringe
             ) 
             * (this.patternForm.controls['pieces'].value ?? 1)
           ) // used once but still shrinks
-          + (this.patternForm.controls['sampleLength'].value ?? 0)
+          + sample
         ) * ( //1.xx%, to accomodate shrinkage and take-up
           1 + 
           (
@@ -481,7 +483,7 @@ export class DataCollectorComponent implements OnInit {
             /100
           )
         ) // used once and doesn't shrink
-        + (this.patternForm.controls['waste'].value ?? 0);
+      + (waste);
       this.pattern.widthInReed = 
         (
           this.patternForm.controls['finishedWidth'].value // required
@@ -513,25 +515,28 @@ export class DataCollectorComponent implements OnInit {
 
       // length pattern repeats
       this.pattern.lpr = 1;
+      const wovenLength = this.pattern.lengthOnLoom - waste - fringe - sample;
       if (this.patternForm.controls['patternLength'].value > 0) {
         // (length * ppi) / pattern length
-        this.pattern.lpr = (this.pattern.lengthOnLoom * this.pattern.ppi!) / this.patternForm.controls['patternLength'].value;
+        this.pattern.lpr = (wovenLength * this.pattern.ppi!) / this.patternForm.controls['patternLength'].value;
       } else {
-        this.pattern.patternLength = Math.round(this.pattern.lengthOnLoom * this.pattern.ppi!);
+        this.pattern.patternLength = Math.round(wovenLength * this.pattern.ppi!);
       }
       // weft threads
       this.pattern.treadlingBoxes?.forEach(weft => {
-        const colorBox = this.pattern.colorBoxes[1]?.find(x => x.y == weft.y);
-        if (!colors.map(x => x.colorCode).find(x => x === colorBox?.color)) {
-          const color = new Yarn();
-          color.colorCode = colorBox?.color ?? "";
-          colors.push(color);
+        if (weft.selected) {
+          const colorBox = this.pattern.colorBoxes[1]?.find(x => x.y == weft.y);
+          if (!colors.map(x => x.colorCode).find(x => x === colorBox?.color)) {
+            const color = new Yarn();
+            color.colorCode = colorBox?.color ?? "";
+            colors.push(color);
+          }
+          const color = colors.find(x => x.colorCode === colorBox?.color)
+          // width * # of pieces * lpr
+          const inches = (this.pattern.widthInReed * (this.patternForm.controls['pieces'].value ?? 1) * this.pattern.lpr) ?? 0;
+          color.colorInches += inches;
+          weftIn += inches;
         }
-        const color = colors.find(x => x.colorCode === colorBox?.color)
-        // width * # of pieces * lpr
-        const inches = (this.pattern.widthInReed * (this.patternForm.controls['pieces'].value ?? 1) * this.pattern.lpr) ?? 0;
-        color.colorInches += inches;
-        weftIn += inches;
       });
 
       // width pattern repeats
@@ -545,17 +550,19 @@ export class DataCollectorComponent implements OnInit {
       }
       // warp threads
       this.pattern.threadingBoxes?.forEach(warp => {
-        const colorBox = this.pattern.colorBoxes[0]?.find(x => x.x == warp.x);
-        if (!colors.map(x => x.colorCode).find(x => x === colorBox?.color)) {
-          const color = new Yarn();
-          color.colorCode = colorBox?.color ?? "";
-          colors.push(color);
+        if (warp.selected) {
+          const colorBox = this.pattern.colorBoxes[0]?.find(x => x.x == warp.x);
+          if (!colors.map(x => x.colorCode).find(x => x === colorBox?.color)) {
+            const color = new Yarn();
+            color.colorCode = colorBox?.color ?? "";
+            colors.push(color);
+          }
+          const color = colors.find(x => x.colorCode === colorBox?.color)
+          // length * wpr
+          const inches = (this.pattern.lengthOnLoom * this.pattern.wpr) ?? 0;
+          color.colorInches += inches;
+          warpIn += inches;
         }
-        const color = colors.find(x => x.colorCode === colorBox?.color)
-        // length * wpr
-        const inches = (this.pattern.lengthOnLoom * this.pattern.wpr) ?? 0;
-        color.colorInches += inches;
-        warpIn += inches;
       });
       // if color isn't already in saved colors, add it
       colors?.forEach(color => {
