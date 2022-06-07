@@ -13,7 +13,7 @@
             [(ngModel)]="box.selected"
             ngDefaultControl
         >
-            <i [ngClass]="[box.selected ? 'visible' : 'invisible', 'fa-check']" aria-hidden="true"></i>
+            <span [ngClass]="[box.selected ? 'visible' : 'invisible', 'text-light']" aria-hidden="true">{{box.y}}</span>
         </div>
     </div>
 </div>
