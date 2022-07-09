@@ -618,19 +618,17 @@ export class DataCollectorComponent implements OnInit {
     const takeUpLength = this.patternForm.controls['sampleOffLoomLength'].value;
     const shrinkageLength = this.patternForm.controls['sampleAfterWashLength'].value;
     const sampleLength = this.patternForm.controls['sampleLength'].value;
-    const finishedLength = this.patternForm.controls['finishedLength'].value;
-    const finishedWidth = this.patternForm.controls['finishedWidth'].value;
     if (direction === "warp") {
       if (percentage === "take-up") {
-        this.patternForm.controls['warpTakeUp'].setValue(Math.round((sampleLength - takeUpLength)*100)/finishedLength);
+        this.patternForm.controls['warpTakeUp'].setValue(+(((sampleLength - takeUpLength)/sampleLength)*100).toFixed(2));
       } else {
-        this.patternForm.controls['warpShrinkage'].setValue(Math.round((takeUpLength - shrinkageLength)*100)/finishedLength);
+        this.patternForm.controls['warpShrinkage'].setValue(+(((takeUpLength - shrinkageLength)/takeUpLength)*100).toFixed(2));
       }
     } else {
       if (percentage === "take-up") {
-        this.patternForm.controls['weftTakeUp'].setValue(Math.round((widthInReedNoFringe - takeUpWidth)*100)/finishedWidth);
+        this.patternForm.controls['weftTakeUp'].setValue(+(((widthInReedNoFringe - takeUpWidth)/widthInReedNoFringe)*100).toFixed(2));
       } else {
-        this.patternForm.controls['weftShrinkage'].setValue(Math.round((takeUpWidth - shrinkageWidth)*100)/finishedWidth);
+        this.patternForm.controls['weftShrinkage'].setValue(+(((takeUpWidth - shrinkageWidth)/takeUpWidth)*100).toFixed(2));
       }
     }
   }
