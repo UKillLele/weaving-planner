@@ -272,63 +272,152 @@
                 <section class="card shadow-sm bg-light mt-3">
                     <div class="card-body">
                         <h2 class="card-title h3">Sample</h2>
-                        <div class="row row-col-auto">
-                            <div class="col-auto mb-3">
-                                <div class="input-group">
-                                    <div class="form-floating">
-                                        <input class="form-control" type="number" id="sampleLength" placeholder="sample length" formControlName="sampleLength" title="How long will you make your sample? Not including fringe. Sampling is optional but recommended">
-                                        <label for="sampleLength">sample length</label>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row row-col-auto">
+                                    <div class="col-auto mb-3">
+                                        <div class="input-group">
+                                            <div class="form-floating">
+                                                <input class="form-control" type="number" id="sampleLength" placeholder="sample length"
+                                                    formControlName="sampleLength"
+                                                    title="How long will you make your sample? Not including fringe. Sampling is optional but recommended">
+                                                <label for="sampleLength">sample length</label>
+                                            </div>
+                                            <span class="input-group-text">inches</span>
+                                        </div>
                                     </div>
-                                    <span class="input-group-text">inches</span>
+                                    <div class="col-auto mb-3">
+                                        <div class="input-group">
+                                            <div class="form-floating">
+                                                <input class="form-control" type="number" id="widthInReed" [value]="pattern.widthInReedNoFringe"
+                                                    disabled placeholder="width in reed - no fringe"
+                                                    title="Calculated from dents, width, take up, and shrinkage. If your measured width doesn't match this number, double check your reed density and sleying">
+                                                <label for="widthInReed">width in reed - no fringe</label>
+                                            </div>
+                                            <span class="input-group-text">inches</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-col-auto">
+                                    <div class="col-auto mb-3">
+                                        <div class="input-group">
+                                            <div class="form-floating">
+                                                <input class="form-control" type="number" id="sampleOffLoomLength" placeholder="sample length off loom"
+                                                    formControlName="sampleOffLoomLength" (change)="updateFromSample('warp', 'take-up')"
+                                                    title="How long was your sample when removed from the loom before washing? Not including fringe">
+                                                <label for="sampleOffLoomLength">sample length off loom</label>
+                                            </div>
+                                            <span class="input-group-text">inches</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto mb-3">
+                                        <div class="input-group">
+                                            <div class="form-floating">
+                                                <input class="form-control" type="number" id="sampleOffLoomWidth" placeholder="sample width off loom"
+                                                    formControlName="sampleOffLoomWidth" (change)="updateFromSample('weft', 'take-up')"
+                                                    title="How wide was your sample when removed from the loom before washing? Not including fringe">
+                                                <label for="sampleOffLoomWidth">sample width off loom</label>
+                                            </div>
+                                            <span class="input-group-text">inches</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-col-auto">
+                                    <div class="col-auto mb-3">
+                                        <div class="input-group">
+                                            <div class="form-floating">
+                                                <input class="form-control" type="number" id="sampleAfterWashLength"
+                                                    placeholder="sample length after wash" formControlName="sampleAfterWashLength"
+                                                    (change)="updateFromSample('warp', 'shrinkage')"
+                                                    title="How long was your washed sample? Not including fringe">
+                                                <label for="sampleAfterWashLength">sample length after wash</label>
+                                            </div>
+                                            <span class="input-group-text">inches</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto mb-3">
+                                        <div class="input-group">
+                                            <div class="form-floating">
+                                                <input class="form-control" type="number" id="sampleAfterWashWidth"
+                                                    placeholder="sample width after wash" formControlName="sampleAfterWashWidth"
+                                                    (change)="updateFromSample('weft', 'shrinkage')"
+                                                    title="How wide was your washed sample? Not including fringe">
+                                                <label for="sampleAfterWashWidth">sample width after wash</label>
+                                            </div>
+                                            <span class="input-group-text">inches</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-auto mb-3">
-                                <div class="input-group">
-                                    <div class="form-floating">
-                                        <input class="form-control" type="number" id="widthInReed" [value]="pattern.widthInReedNoFringe" title="calculated from dents, width, take up, and shrinkage" disabled placeholder="width in reed - no fringe" title="If your measured width doesn't match this number, double check your reed density and sleying">
-                                        <label for="widthInReed">width in reed - no fringe</label>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-auto mb-3">
+                                        <div class="input-group">
+                                            <div class="form-floating">
+                                                <input class="form-control" type="text" id="newYarnTypeWarp" formControlName="newYarnTypeWarp"
+                                                    title="TODO" placeholder="new yarn type">
+                                                <label for="newYarnTypeWarp">yarn type</label>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <span class="input-group-text">inches</span>
+                                    <div class="col-auto mb-3">
+                                        <div class="input-group">
+                                            <div class="form-floating">
+                                                <input class="form-control" type="number" id="calculatedWarpTakeUp" [value]="pattern.calculatedWarpTakeUp"
+                                                    title="TODO" disabled placeholder="calculated warp take-up">
+                                                <label for="calculatedWarpTakeUp">calculated warp take-up</label>
+                                            </div>
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto mb-3">
+                                        <div class="input-group">
+                                            <div class="form-floating">
+                                                <input class="form-control" type="number" id="calculatedWarpShrinkage" [value]="pattern.calculatedWarpShrinkage"
+                                                    title="TODO" disabled placeholder="calculated warp shrinkage">
+                                                <label for="calculatedWarpShrinkage">calc'd warp shrinkage</label>
+                                            </div>
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto mb-3 align-self-center h-auto">
+                                        <button class="btn btn-outline-primary" type="button" (click)="saveYarn('warp')" title="TODO">Save</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row row-col-auto">
-                            <div class="col-auto mb-3">
-                                <div class="input-group">
-                                    <div class="form-floating">
-                                        <input class="form-control" type="number" id="sampleOffLoomLength" placeholder="sample length off loom" formControlName="sampleOffLoomLength" (change)="updateFromSample('warp', 'take-up')" title="How long was your sample when removed from the loom before washing? Not including fringe">
-                                        <label for="sampleOffLoomLength">sample length off loom</label>
+                                <div class="row">
+                                    <div class="col-auto mb-3">
+                                        <div class="input-group">
+                                            <div class="form-floating">
+                                                <input class="form-control" type="text" id="newYarnTypeWeft"  formControlName="newYarnTypeWeft"
+                                                    title="TODO" placeholder="new yarn type">
+                                                <label for="newYarnTypeWeft">yarn type</label>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <span class="input-group-text">inches</span>
-                                </div>
-                            </div>
-                            <div class="col-auto mb-3">
-                                <div class="input-group">
-                                    <div class="form-floating">
-                                        <input class="form-control" type="number" id="sampleOffLoomWidth" placeholder="sample width off loom" formControlName="sampleOffLoomWidth" (change)="updateFromSample('weft', 'take-up')" title="How wide was your sample when removed from the loom before washing? Not including fringe">
-                                        <label for="sampleOffLoomWidth">sample width off loom</label>
+                                    <div class="col-auto mb-3">
+                                        <div class="input-group">
+                                            <div class="form-floating">
+                                                <input class="form-control" type="number" id="calculatedWeftTakeUp"
+                                                    [value]="pattern.calculatedWeftTakeUp" title="TODO" disabled placeholder="calculated weft take-up">
+                                                <label for="calculatedWeftTakeUp">calculated weft take-up</label>
+                                            </div>
+                                            <span class="input-group-text">%</span>
+                                        </div>
                                     </div>
-                                    <span class="input-group-text">inches</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row row-col-auto">
-                            <div class="col-auto mb-3">
-                                <div class="input-group">
-                                    <div class="form-floating">
-                                        <input class="form-control" type="number" id="sampleAfterWashLength" placeholder="sample length after wash" formControlName="sampleAfterWashLength" (change)="updateFromSample('warp', 'shrinkage')" title="How long was your washed sample? Not including fringe">
-                                        <label for="sampleAfterWashLength">sample length after wash</label>
+                                    <div class="col-auto mb-3">
+                                        <div class="input-group">
+                                            <div class="form-floating">
+                                                <input class="form-control" type="number" id="calculatedWeftShrinkage"
+                                                    [value]="pattern.calculatedWeftShrinkage" title="TODO" disabled
+                                                    placeholder="calculated weft shrinkage">
+                                                <label for="calculatedWeftShrinkage">calc'd weft shrinkage</label>
+                                            </div>
+                                            <span class="input-group-text">%</span>
+                                        </div>
                                     </div>
-                                    <span class="input-group-text">inches</span>
-                                </div>
-                            </div>
-                            <div class="col-auto mb-3">
-                                <div class="input-group">
-                                    <div class="form-floating">
-                                        <input class="form-control" type="number" id="sampleAfterWashWidth" placeholder="sample width after wash" formControlName="sampleAfterWashWidth" (change)="updateFromSample('weft', 'shrinkage')" title="How wide was your washed sample? Not including fringe">
-                                        <label for="sampleAfterWashWidth">sample width after wash</label>
+                                    <div class="col-auto mb-3 align-self-center h-auto">
+                                        <button class="btn btn-outline-primary" type="button" (click)="saveYarn('weft')" title="TODO">Save</button>
                                     </div>
-                                    <span class="input-group-text">inches</span>
                                 </div>
                             </div>
                         </div>

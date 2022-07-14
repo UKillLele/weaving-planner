@@ -69,4 +69,10 @@ export class Pattern {
   widthInReedNoFringe: number = 0;
   lengthOnLoom: number = 0;
   totalPrice: number = 0;
+  newYarnTypeWarp: string = "";
+  calculatedWarpTakeUp: number | null = null;
+  calculatedWarpShrinkage: number | null = null;
+  newYarnTypeWeft: string = "";
+  calculatedWeftTakeUp: number | null = null;
+  calculatedWeftShrinkage: number | null = null;
 };

@@ -24,6 +24,7 @@ export class DataCollectorComponent implements OnInit {
   previewAvailable: boolean = false;
   editing: string = "";
   ashenhurst: number = 0;
+  sampleWidth: number = 0;
 
   patternForm = this.fb.group({
     id: [ this.pattern.id ],
@@ -57,6 +58,8 @@ export class DataCollectorComponent implements OnInit {
     sampleAfterWashLength: [ this.pattern.sampleAfterWashLength ],
     sampleOffLoomWidth: [ this.pattern.sampleOffLoomWidth ],
     sampleAfterWashWidth: [ this.pattern.sampleAfterWashWidth ],
+    newYarnTypeWarp: [ this.pattern.newYarnTypeWarp ],
+    newYarnTypeWeft: [ this.pattern.newYarnTypeWeft ]
   });
     
   srtForm = this.fb.group({
@@ -461,7 +464,7 @@ export class DataCollectorComponent implements OnInit {
       let warpIn = 0;
       const waste = this.patternForm.controls['waste'].value ?? 0;
       const fringe = this.patternForm.controls['topEdgeLength'].value ?? 0 + this.patternForm.controls['bottomEdgeLength'].value ?? 0;
-      const sample = this.patternForm.controls['sampleLength'].value ?? 0;
+      const sampleLength = this.patternForm.controls['sampleLength'].value ?? 0;
       // TODO: account for half sett
       this.pattern.lengthOnLoom = 
         (
@@ -472,7 +475,7 @@ export class DataCollectorComponent implements OnInit {
             ) 
             * (this.patternForm.controls['pieces'].value ?? 1)
           ) // used once but still shrinks
-          + sample
+          + sampleLength
         ) * ( //1.xx%, to accomodate shrinkage and take-up
           1 + 
           (
@@ -512,10 +515,13 @@ export class DataCollectorComponent implements OnInit {
               /100
             )
           );
+        if (!this.patternForm.controls['weftTakeUp'].value && !this.patternForm.controls['weftShrinkage'].value) {
+          this.sampleWidth = this.pattern.widthInReedNoFringe;
+        }
 
       // length pattern repeats
       this.pattern.lpr = 1;
-      const wovenLength = this.pattern.lengthOnLoom - waste - fringe - sample;
+      const wovenLength = this.pattern.lengthOnLoom - waste - fringe - sampleLength;
       if (this.patternForm.controls['patternLength'].value > 0) {
         // (length * ppi) / pattern length
         this.pattern.lpr = (wovenLength * this.pattern.ppi!) / this.patternForm.controls['patternLength'].value;
@@ -618,19 +624,24 @@ export class DataCollectorComponent implements OnInit {
     const takeUpLength = this.patternForm.controls['sampleOffLoomLength'].value;
     const shrinkageLength = this.patternForm.controls['sampleAfterWashLength'].value;
     const sampleLength = this.patternForm.controls['sampleLength'].value;
+    // TODO: update finished dimensions instead of in-loom dimensions
     if (direction === "warp") {
       if (percentage === "take-up") {
-        this.patternForm.controls['warpTakeUp'].setValue(+(((sampleLength - takeUpLength)/sampleLength)*100).toFixed(2));
+        this.pattern.calculatedWarpTakeUp = +(((sampleLength - takeUpLength)/sampleLength)*100).toFixed(2);
       } else {
-        this.patternForm.controls['warpShrinkage'].setValue(+(((takeUpLength - shrinkageLength)/takeUpLength)*100).toFixed(2));
+        this.pattern.calculatedWarpShrinkage = +(((takeUpLength - shrinkageLength)/takeUpLength)*100).toFixed(2);
       }
     } else {
       if (percentage === "take-up") {
-        this.patternForm.controls['weftTakeUp'].setValue(+(((widthInReedNoFringe - takeUpWidth)/widthInReedNoFringe)*100).toFixed(2));
+        this.pattern.calculatedWeftTakeUp = +(((widthInReedNoFringe - takeUpWidth)/widthInReedNoFringe)*100).toFixed(2);
       } else {
-        this.patternForm.controls['weftShrinkage'].setValue(+(((takeUpWidth - shrinkageWidth)/takeUpWidth)*100).toFixed(2));
+        this.pattern.calculatedWeftShrinkage = +(((takeUpWidth - shrinkageWidth)/takeUpWidth)*100).toFixed(2);
       }
     }
+  }
+
+  saveYarn(direction: string) {
+    
   }
   
   open(content: any, editing: string = "") {
