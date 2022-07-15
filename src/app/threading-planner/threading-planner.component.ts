@@ -23,6 +23,7 @@ export class ThreadingPlannerComponent implements OnInit {
   menuTopLeftPosition =  {x: '0', y: '0'};
   mouseDown: boolean = false;
   boxWidth: number = 0;
+  loading: boolean = false;
 
   @HostListener('window:keyup', ['$event'])
   handleKeyUp(event: KeyboardEvent) {
@@ -34,14 +35,24 @@ export class ThreadingPlannerComponent implements OnInit {
   constructor(private weavingService: WeavingService) { }
 
   ngOnInit(): void {
-    this.weavingService.threadingBoxes.subscribe((threadingBoxes: Box[]) => this.threadingBoxes = threadingBoxes);
+    this.weavingService.threadingBoxes.subscribe((threadingBoxes: Box[]) => {
+      if(threadingBoxes != this.threadingBoxes && threadingBoxes?.length != 0) {
+        this.threadingBoxes = threadingBoxes
+        this.loading = true;
+        setTimeout(() => {this.loading = false}, 3000)
+      }
+    });
     this.weavingService.shafts.subscribe((shafts: number) => {
-      this.shafts = shafts;
-      this.updateThreading();
+      if (shafts != this.shafts) {
+        this.shafts = shafts ?? 0;
+        if(!this.loading) this.updateThreading();
+      }
     });
     this.weavingService.patternWidth.subscribe((patternWidth: number) => {
-      this.patternWidth = patternWidth;
-      this.updateThreading();
+      if (patternWidth != this.patternWidth) {
+        this.patternWidth = patternWidth ?? 0;
+        if(!this.loading) this.updateThreading();
+      }
     });
     this.weavingService.boxWidth.subscribe((boxWidth: number) => { 
       this.boxWidth = boxWidth;
@@ -50,27 +61,23 @@ export class ThreadingPlannerComponent implements OnInit {
   }
 
   updateThreading() {
-    this.threadingBoxes = [];
-    let row: number = 1;
-    let column: number = 1;
-    const cells = this.shafts * this.patternWidth;
-    for (let i = 1; i <= cells; i++) {
-      let x: Box = {
-        id: `${column}-${row}`,
-        selected: false,
-        border: "allBorders",
-        color: "",
-        x: column,
-        y: row
-      }
-      this.threadingBoxes.push(x);
-      if (column + 1 > this.patternWidth) {
-        column = 1;
-        row ++;
-      } else {
-        column ++;
+    const existingBoxes = this.threadingBoxes;
+    let newBoxes = [];
+    for (let row = 1; row <= this.shafts; row++) {
+      for (let column = 1; column <= this.patternWidth; column ++) {
+        const id = `${column}-${row}`;
+        let box: Box = existingBoxes?.find(y => y.id === id) ?? {
+          id: `${column}-${row}`,
+          selected: false,
+          border: "allBorders",
+          color: "",
+          x: column,
+          y: row
+        }
+        newBoxes.push(box);
       }
     }
+    this.weavingService.changeThreadingBoxes(newBoxes);
   }
 
   boxesChanged(i: number) {
