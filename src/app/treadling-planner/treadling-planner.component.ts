@@ -34,15 +34,23 @@ export class TreadlingPlannerComponent implements OnInit {
   constructor(private weavingService: WeavingService) { }
 
   ngOnInit(): void {
-    this.weavingService.patternLength.subscribe((patternLength: number) => {
-      this.patternLength = patternLength;
-      this.updateTreadling();
+    this.weavingService.treadlingBoxes.subscribe((treadlingBoxes: Box[]) => {
+      if(treadlingBoxes?.length > 0 && treadlingBoxes != this.treadlingBoxes) {
+        this.treadlingBoxes = treadlingBoxes
+      }
     });
     this.weavingService.treadles.subscribe((treadles: number) => {
       this.treadles = treadles;
-      this.updateTreadling();
+      if (this.treadlingBoxes?.length > 0) {
+        this.updateTreadling();
+      }
     });
-    this.weavingService.treadlingBoxes.subscribe((treadlingBoxes: Box[]) => this.treadlingBoxes = treadlingBoxes);
+    this.weavingService.patternLength.subscribe((patternLength: number) => {
+      this.patternLength = patternLength;
+      if (this.treadlingBoxes?.length > 0) {
+        this.updateTreadling();
+      }
+    });
     
     this.weavingService.boxWidth.subscribe((boxWidth: number) => { 
       this.boxWidth = boxWidth;
@@ -56,27 +64,23 @@ export class TreadlingPlannerComponent implements OnInit {
 
   updateTreadling() {
     this.setWidths();
-    this.treadlingBoxes = [];
-    let row: number = 1;
-    let column: number = 1;
-    const cells = this.treadles * this.patternLength;
-    for (let i = 1; i <= cells; i++) {
-      let x: Box = {
-        id: `${column}-${row}`,
-        selected: false,
-        border: "allBorders",
-        color: "",
-        x: column,
-        y: row
-      }
-      this.treadlingBoxes.push(x);
-      if (column + 1 > this.treadles) {
-        column = 1;
-        row ++;
-      } else {
-        column ++;
+    const existingBoxes = this.treadlingBoxes;
+    let newBoxes = [];
+    for (let row = 1; row <= this.patternLength; row++) {
+      for (let column = 1; column <= this.treadles; column ++) {
+        const id = `${column}-${row}`;
+        let box: Box = existingBoxes?.find(y => y.id === id) ?? {
+          id: `${column}-${row}`,
+          selected: false,
+          border: "allBorders",
+          color: "",
+          x: column,
+          y: row
+        }
+        newBoxes.push(box);
       }
     }
+    this.weavingService.changeTreadlingBoxes(newBoxes);
   }
 
   boxesChanged(i: number) {

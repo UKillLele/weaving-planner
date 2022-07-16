@@ -23,7 +23,6 @@ export class ThreadingPlannerComponent implements OnInit {
   menuTopLeftPosition =  {x: '0', y: '0'};
   mouseDown: boolean = false;
   boxWidth: number = 0;
-  loading: boolean = false;
 
   @HostListener('window:keyup', ['$event'])
   handleKeyUp(event: KeyboardEvent) {
@@ -36,22 +35,20 @@ export class ThreadingPlannerComponent implements OnInit {
 
   ngOnInit(): void {
     this.weavingService.threadingBoxes.subscribe((threadingBoxes: Box[]) => {
-      if(threadingBoxes != this.threadingBoxes && threadingBoxes?.length != 0) {
+      if(threadingBoxes?.length > 0 && threadingBoxes != this.threadingBoxes) {
         this.threadingBoxes = threadingBoxes
-        this.loading = true;
-        setTimeout(() => {this.loading = false}, 3000)
       }
     });
     this.weavingService.shafts.subscribe((shafts: number) => {
-      if (shafts != this.shafts) {
-        this.shafts = shafts ?? 0;
-        if(!this.loading) this.updateThreading();
+      this.shafts = shafts ?? 0;
+      if (this.threadingBoxes?.length > 0) {
+        this.updateThreading();
       }
     });
     this.weavingService.patternWidth.subscribe((patternWidth: number) => {
-      if (patternWidth != this.patternWidth) {
-        this.patternWidth = patternWidth ?? 0;
-        if(!this.loading) this.updateThreading();
+      this.patternWidth = patternWidth ?? 0;
+      if (this.threadingBoxes?.length > 0) {
+        this.updateThreading();
       }
     });
     this.weavingService.boxWidth.subscribe((boxWidth: number) => { 
