@@ -532,12 +532,13 @@ export class DataCollectorComponent implements OnInit {
       this.pattern.treadlingBoxes?.forEach(weft => {
         if (weft.selected) {
           const colorBox = this.pattern.colorBoxes[1]?.find(x => x.y == weft.y);
+          let color = colors.find(x => x.colorCode === colorBox?.color);
+          console.log(colorBox);
           if (!colors.map(x => x.colorCode).find(x => x === colorBox?.color)) {
-            const color = new Yarn();
+            color = new Yarn();
             color.colorCode = colorBox?.color ?? "";
             colors.push(color);
           }
-          const color = colors.find(x => x.colorCode === colorBox?.color)
           // width * # of pieces * lpr
           const inches = (this.pattern.widthInReed * (this.patternForm.controls['pieces'].value ?? 1) * this.pattern.lpr) ?? 0;
           color.colorInches += inches;
