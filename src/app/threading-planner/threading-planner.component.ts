@@ -41,15 +41,11 @@ export class ThreadingPlannerComponent implements OnInit {
     });
     this.weavingService.shafts.subscribe((shafts: number) => {
       this.shafts = shafts ?? 0;
-      if (this.threadingBoxes?.length > 0) {
-        this.updateThreading();
-      }
+      this.updateThreading();
     });
     this.weavingService.patternWidth.subscribe((patternWidth: number) => {
       this.patternWidth = patternWidth ?? 0;
-      if (this.threadingBoxes?.length > 0) {
-        this.updateThreading();
-      }
+      this.updateThreading();
     });
     this.weavingService.boxWidth.subscribe((boxWidth: number) => { 
       this.boxWidth = boxWidth;

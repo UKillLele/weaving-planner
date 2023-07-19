@@ -41,15 +41,11 @@ export class TreadlingPlannerComponent implements OnInit {
     });
     this.weavingService.treadles.subscribe((treadles: number) => {
       this.treadles = treadles;
-      if (this.treadlingBoxes?.length > 0) {
-        this.updateTreadling();
-      }
+      this.updateTreadling();
     });
     this.weavingService.patternLength.subscribe((patternLength: number) => {
       this.patternLength = patternLength;
-      if (this.treadlingBoxes?.length > 0) {
-        this.updateTreadling();
-      }
+      this.updateTreadling();
     });
     
     this.weavingService.boxWidth.subscribe((boxWidth: number) => { 

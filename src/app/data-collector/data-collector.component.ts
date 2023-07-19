@@ -184,7 +184,7 @@ export class DataCollectorComponent implements OnInit {
 
   ngOnInit(): void {
     this.apiService.user.subscribe(user => {
-      if (user.userId && this.user !== user) this.getPatterns();
+      if (user?.userId && this.user !== user) this.getPatterns();
       this.user = user;
     });
     this.weavingService.colorBoxes.subscribe((colorBoxes: Box[][]) => {
