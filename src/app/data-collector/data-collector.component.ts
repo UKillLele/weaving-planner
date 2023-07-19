@@ -533,7 +533,6 @@ export class DataCollectorComponent implements OnInit {
         if (weft.selected) {
           const colorBox = this.pattern.colorBoxes[1]?.find(x => x.y == weft.y);
           let color = colors.find(x => x.colorCode === colorBox?.color);
-          console.log(colorBox);
           if (!colors.map(x => x.colorCode).find(x => x === colorBox?.color)) {
             color = new Yarn();
             color.colorCode = colorBox?.color ?? "";
